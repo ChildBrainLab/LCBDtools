@@ -1,0 +1,53 @@
+#!/bin/csh -x
+
+set patid = $1
+echo $patid
+@ run = $2 # set run = 0 will run dicom_srt, otherwise will run cross_bold
+
+set dest = $preproc_dir/$patid
+
+if ($run == 0) then
+	mkdir -p $dest
+	pushd $dest
+	if (-e $dicom_dir/$patid/SCANS) then
+		set dicom_folder = $dicom_dir/$patid/SCANS
+	else if (-e $dicom_dir/$patid/scans) then
+		 set dicom_folder = $dicom_dir/$patid/scans
+	else if (-e $dicom_dir/$patid/) then
+		mkdir $dicom_dir/$patid/SCANS
+		set dicom_folder = $dicom_dir/$patid/SCANS
+		mv $dicom_dir/$patid/* $dicom_folder
+	endif
+	pseudo_dcm_sort.csh -s  $dicom_folder >! $dest/dicom_sort.log
+	mv $dest/SCANS.studies.txt $dest/scans.studies.txt
+	set dicom = $dest/scans.studies.txt
+
+	#############################
+	# make params files
+	#############################
+	$preproc_scripts_dir/make_params_indiv_sefm_forJKKcode_QYmod.csh $patid
+
+	popd
+else
+	###############
+	# cross_bold pp
+	###############
+	set errlog = $preproc_dir/error.log; touch $errlog
+	set D = $preproc_dir
+	set QCdir = $preproc_dir/QC/
+
+	mkdir -p $QCdir
+	set dest = $preproc_dir/$patid
+	pushd $dest
+	/bin/rm -rf unwarp
+	$preproc_scripts_dir/cross_bold_pp_161012_JKK_ind_sefm_ind_BC_QYmod.csh ${patid}.params $preproc_scripts_dir/OddballResponse_indiv_sefm.params >! ${patid}_cross_bold_pp_161012_indiv_sefm_bc.log
+	$preproc_scripts_dir/QC_cross_bold_pp.csh ${patid}.params $QCdir
+	if ($status) then
+		echo $patid failed cross_bold_pp_161012.csh	>> $errlog
+	endif
+
+	popd
+endif
+
+exit 0
+
