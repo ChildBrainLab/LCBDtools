@@ -72,8 +72,51 @@ def plot_xy_line(
     # plt.ylim()
 
     if fig_fname is not None:
-        import os
-        print(os.getcwd())
+        plt.savefig(
+            join(fig_fname+'.png'),
+            dpi=100)
+        plt.close()
+    else:
+        plt.show()
+
+
+def plot_colormesh(
+    x,
+    xlabel="",
+    ylabel="Density",
+    yticks=None,
+    title="",
+    fig_fname=None):
+    """
+    2D colormesh
+
+    :param x: 2D array of data with shape (num_samples, num_features)
+    :type x: numpy.array
+    :param xlabel: (Default: Time) label to use on x-axis
+    :type xlabel: str
+    :param ylabel: (Default: Amplitude) label to use on y-axis
+    :type ylabel: str
+    :param yticks: (Default: None) ticks to use to label individual y spots
+    :type yticks: list of str
+    :param title: (Default: "") Super plot title
+    :type title: str
+    :param fig_fname: (Default: None) If given value, saves as <fig_fname>.png
+    :type fig_fname: str
+    """
+    fig, ax = plt.subplots()
+
+    ax.pcolormesh(
+        x*255, # make sure to scale it to rgb
+        cmap='gray')
+
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.yticks(
+        ticks=[i+1 for i in range(x.shape[0])],
+        labels=yticks, rotation=-45)
+    plt.title(title)
+
+    if fig_fname is not None:
         plt.savefig(
             join('figures', fig_fname+'.png'),
             dpi=100)
@@ -140,7 +183,7 @@ def plot_outcome_hist(
 
     if fig_fname is not None:
         plt.savefig(
-            join('figures', fig_fname+'.png'),
+            join(fig_fname+'.png'),
             dpi=100)
         plt.close()
     else:
