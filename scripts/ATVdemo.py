@@ -1,3 +1,4 @@
+import argParser
 import sys
 sys.path.append('..')
 
@@ -14,44 +15,48 @@ from src import Plots
 from FreeViewing import Viewings
 
 
-# /data/perlman/moochie/user_data/SchneiderClayton/studyData/ATV_task
-baseDir = "/data/perlman/moochie/user_data/SchneiderClayton/studyData/ATV_task"
-studyDir = ""
+args = argParser.main([
+    "data_folder",
+    "TR",
+    "run",
+    "ex_subs",
+    "participant_num_len"
+])
 
-TR = 2
-episode = 0
-subjectsWhoDidntUnderstand = [
+# "/data/perlman/moochie/user_data/SchneiderClayton/\
+# studyData/ATV_LCBD_copy_120821/data"
+dataDir = args.dataFolder
 
-]
+episode = args.run
 
-
-path = join(baseDir, studyDir)
-subjectFiles = {}
-# for subject folder in data folder
-total = 0
-for subFolder in os.listdir(path):
-    # make dict with key of subject number
-    # and value = sorted list of its associated filnames
-    # using the FULL path to each file, and only
-    # if the file is a .csv
-    subjectFiles[subFolder] = sorted(\
-        [join(path, subFolder, file) \
-            for file in os.listdir(join(path, subFolder)) \
-            if ".csv" in file])
-    total += len(subjectFiles[subFolder])
+# list of all fnames in dataDir if the first n characters are not bad subjects
+fnames = [join(dataDir, fname) for fname in os.listdir(dataDir)\
+    if os.path.basename(fname)[:args.participant_num_len] not in args.ex_subs]
 
 dataset = []
-with tqdm(total=total) as pbar:
-    for sub in subjectFiles:
-        for fpath in subjectFiles[sub]:
-            try:
-                dataset.append(Viewings.Viewing(fpath))
-            except:
-                pass
-            pbar.update(1)
+for fpath in tqdm(fnames):
+    try:
+        # build Viewing object for each filepath in scan
+        dataset.append(Viewings.Viewing(fpath))
+    except:
+        pass
 
+# dataset = []
+# with tqdm(total=total) as pbar:
+#     for sub in subjectFiles:
+#         for fpath in subjectFiles[sub]:
+#             if os.path.basename(fpath)[:3] not in badSubs:
+#                 try:
+#                     dataset.append(Viewings.Viewing(fpath))
+#                 except:
+#                     pass
+#             pbar.update(1)
+print("Length of dataset:", len(dataset))
+print("Dataset[0]:", dataset[0])
+
+quit()
 # mvg_avgs = []
-# w = int(dataset[0].sampleRate) * TR
+# w = int(dataset[0].sampleRate) * args.TR
 
 dataset = [view for view in dataset if view.episodeNumber == episode]
 
@@ -100,6 +105,6 @@ for view in dataset:
 
 Plots.plot_colormesh(
     np.array([view.rating/2 for view in dataset]),
-    xlabel='Time (TR)',
+    xlabel='Time (TRs)',
     ylabel='Subject',
     yticks=[view.participant for view in dataset])

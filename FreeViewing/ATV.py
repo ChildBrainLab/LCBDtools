@@ -11,12 +11,13 @@ from tqdm import tqdm
 
 
 # "/home/usr/schneiderc/study_data/ATV/task_behavioral_data/ATV_task/8001/8001_ATV_ratings_2020_Jan_29_1405"
-class Viewing:
+class Trial:
     """
-    Object used to store data from a single trial (i.e., one viewing of one
-    continuous video by one subject), with methods for operands within the trial
+    Object used to store data from a single trial (i.e., one continuous run
+    of PsychoPy experiment, where one or more runs are completed),
+    with methods for operands within the trial
 
-    :param path: relative path to data file in which time series is stored
+    :param path: relative path to data file from the working directory
     :type path: str
     """
     def __init__(self, path):
@@ -37,7 +38,7 @@ class Viewing:
             # self.episode = str(WS['episode_file'][0])
             # self.episodeNumber = int(WS['episode'][0])
             # self.dimension = str(WS['rating_name'][0])
-            self.episodeCode = os.path.basename(self.path)[4:7]
+            self.episodeCode = str(int(WS['episodeCode'][0]))
         except (UnboundLocalError, KeyError) as e:
             print("Error: an incorrect key was not found during"
             " the loading of some files and they will be skipped.")
