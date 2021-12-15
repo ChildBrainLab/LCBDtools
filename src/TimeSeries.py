@@ -18,35 +18,126 @@ class TimeSeries:
     :type sampleRate: int
     """
 
-    def __init__(self, signal, time=None, sampleRate=1024):
+    def __init__(self, signal, time=None, sampleRate=1024, meta={}, unit='s'):
         self.signal = signal
         if time is None:
             self.time = np.arange(len(self.signal))
         else:
             self.time = time
         self.sampleRate = sampleRate
-        self.meta = {}
+        self.meta = meta
 
     def fix_nan(self, val='interpol'):
         """
-        Replaces any NaN encountered in signal with val
-        :param val: (Default: interpol) If 'interpol', interpolates missing
-            or NaN value. Else replaces with float or int.
-        :type val: {'interpol', float, int}
+        Helper to fill occurances of NaNs in self.rating and self.time
+        First trims tails, then retro-fills any remaining middle-wise
+
+        :param val: (Default: 'interpol') if not 'interpol', float or int which
+            will replace NaNs
+        :type val: str, float, int
         """
-        signal = self.signal
-        for loc in zip(*np.where(np.isnan(signal))):
-            if (isinstance(val, float)) or (isinstance(val, int)):
-                signal[loc] = val
-            elif val == 'interpol':
-                # account for potential of having NaN at a tail
-                neighbors = []
-                if loc[-1] > 0:
-                    neighbors.append(signal[loc[-1]-1])
-                if loc[-1] < len(signal):
-                    neighbors.append(signal[loc[-1]+1])
-                signal[loc] = np.mean(neighbors)
-        self.signal = signal
+        # HEAD
+        i = 0
+        while np.isnan(self.signal[i]):
+            i += 1
+        self.signal = self.signal[i:]
+        self.time = self.time[i:]
+
+        # TAIL
+        i = len(self.signal)-1
+        while np.isnan(self.signal[i]):
+            i -= 1
+        self.signal = self.signal[:i+1]
+        self.time = self.time[:i+1]
+
+        nans, x = np.isnan(self.signal), lambda z: z.nonzero()[0]
+        self.signal[nans] = np.interp(x(nans), x(~nans), self.signal[~nans])
+
+        nans, x = np.isnan(self.time), lambda z: z.nonzero()[0]
+        self.time[nans] = np.interp(x(nans), x(~nans), self.time[~nans])
+
+    def center(self, difference=1):
+        """
+        Substracts 'difference' from signal
+
+        :param difference: amount substracted from signal
+        :type difference: int, float
+        """
+        self.signal = self.signal - difference
+
+    def scale(self, ylim=(-1, 1)):
+        """
+        Linearly scales max and min values of the signal to the respective lower
+        and upper bounds of ylim
+
+        :param ylim: lower and upper bound of scale
+        :type ylim: tuple of type int or float
+        """
+        self.signal = np.interp(
+            self.signal,
+            (self.signal.min(), self.signal.max()),
+            (ylim[0], ylim[1]))
+
+    def standardize(self):
+        """
+        Normalizes rating (i.e. subtract mean) and scale variance to 1
+        """
+        self.rating = (self.rating - np.mean(self.rating)) / np.std(self.rating)
+
+
+    def lag_correct(self):
+        """
+        During recording, skipped frames can add up to significant differences
+        in the number of samples collected between subjects, even though the
+        start / stop time are correct, and the sample rate generally holds true.
+
+        This method regularizes time axis values along an ARTIFICIAL new
+        axis, such that they are equally spaced apart.
+        """
+        self.time = np.linspace(0, self.time[-1], num=len(self.time))
+
+    def resample(
+        self,
+        sample_rate=1
+        new_unit=None):
+        """
+        Resamples self.signal and self.time with numpy (tail padding)
+
+        :param sample_rate: (default 1) new sample rate (in Hz) to which data
+            are resampled
+        :type sample_rate: float
+        :param new_unit: (default None) if not None, reassigns self.unit
+        :type new_unit: str
+        """
+        new_time = np.linspace(
+            0,
+            math.floor(self.time[-1]),
+            num=math.floor(self.time[-1]*sample_rate))
+
+        new_signal = np.interp(
+            new_time,
+            xp=self.time,
+            fp=self.signal)
+
+        self.time = new_time
+        self.signal = new_signal
+        self.sampleRate = sample_rate
+        if new_unit is not None:
+            self.unit = new_unit
+
+    def get_moving_average(self, x, w=10, mode='same'):
+        """
+        Builds moving average via convolution
+
+        :param x: data with shape (n_timepoints,) or (n_samples,)
+        :type x: numpy.array
+        :param w: (Default: 5) length of window over which averages are made
+        :type w: int
+        """
+        return np.convolve(
+            x,
+            np.ones(w)/w,
+            mode=mode)
 
     # TODO: peak by prominence / z-score
     def set_n_peaks(self, n=3, bin_ranges=None):
@@ -84,20 +175,6 @@ class TimeSeries:
                 (timepoint <= bin_range[1]):
                     n_peaks[i] += 1
         self.n_peaks = n_peaks
-
-    def set_moving_average(self, x, w=5):
-        """
-        Builds moving average via convolution
-        :param x: time-series data with shape (n_timepoints,)
-        :type x: numpy.array
-        :param w: (Default: 5) length of window over which averages are made
-        :type w: int
-        """
-        self.mvg_avg = TimeSeries(
-            np.convolve(
-                x,
-                np.ones(w),
-                mode='full'))
 
     def set_PSD(self, x, window='boxcar'):
         """
