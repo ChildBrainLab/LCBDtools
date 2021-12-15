@@ -25,7 +25,7 @@ args = argParser.main([
 
 # "/data/perlman/moochie/user_data/SchneiderClayton/\
 # studyData/ATV_LCBD_copy_120821/data"
-dataDir = args.dataFolder
+dataDir = args.data_folder
 
 episode = args.run
 
@@ -35,14 +35,18 @@ fnames = [join(dataDir, fname) for fname in os.listdir(dataDir)\
     if os.path.basename(fname)[:args.participant_num_len] not in args.ex_subs]
 
 dataset = []
+
+print("Loading ATV files as TimeSeries objects:")
+print("==========")
 for fpath in tqdm(fnames):
     try:
         # for each filepath in the list, run an ATV.TrialReader builder
         # add each src.TimeSeries object generated from the TrialReader to
         # the dataset list
-        for ts in TrialReader(fpath):
+        for ts in TrialReader(fpath).ratingsSeries:
             dataset.append(ts)
     except:
+        print("Failure to read:", os.path.basename(fpath))
         pass
 
 print("Number of viewings in dataset:", len(dataset))
@@ -53,10 +57,22 @@ print("Number of viewings in dataset:", len(dataset))
 # idx = np.argsort([view.participant for view in dataset])
 # dataset = [dataset[i] for i in idx]
 
-for ts in dataset:
+print("Preprocessing TimeSeries:")
+print("==========")
+for ts in tqdm(dataset):
     ts.fix_nan()
     ts.lag_correct()
     ts.resample(sample_rate=args.TR)
+
+# truncate each batch of runs with the same episode to the length of the
+# shortest trial in the batch
+for episode in list(set([ts.meta['episode'] for ts in dataset])):
+    ep_min = min([len(ts.signal) for ts in dataset\
+        if ts.meta['episode']==episode])
+    for ts in [ts for ts in dataset if ts.meta['episode']==episode]:
+        ts.signal = ts.signal[:ep_min]
+        ts.time = ts.time[:ep_min]
+
     # some subjects didn't understand the actual scale...
     # these are found in the study notes
     # ATV_data_tracker_20200312.xlsx
@@ -70,30 +86,34 @@ for ts in dataset:
 # plt.show()
 
 # get a plain old raw subject rating
-# for view in dataset[:1]:
+# for ts in dataset[:1]:
 #     Plots.plot_xy_line(
-#         view.time,
-#         view.rating,
-#         xlabel="Time (s)",
-#         ylabel="Subject " + str(view.participant) + " Raw Rating",
-#         fig_fname="raw_"+str(view.participant))
+#         ts.time,
+#         ts.signal,
+#         xlabel="Time (" + dataset[0].unit + ")",
+#         ylabel="Subject " + str(ts.meta['participant']) + " Raw Rating",
+#         fig_fname="raw_"+str(ts.meta['participant']))
 
-Plots.plot_xy_line(
-    dataset[0].time,
-    dataset[0].signal,
-    xlabel="Time (" + dataset[0].time_unit + ")",
-    title="Subject " + str(dataset[0].participant) + " Raw Rating")
+# for i in range(len(dataset)):
+#     Plots.plot_xy_line(
+#         dataset[i].time,
+#         dataset[i].signal,
+#         xlabel="Time (" + dataset[i].unit + ")",
+#         title="Subject " + str(dataset[i].meta['participant']) + " Raw Rating")
 
 # for plotting with 'same' padding i.e. time as x-axis instead of TR
-Plots.plot_xy_line(
-    dataset[0].time,
-    mvg_avgs[0],
-    xlabel="Time (" + dataset[0].time_unit + ")",
-    title="Subject " + str(dataset[0].participant) + \
-    ' Moving Average w =' + str(w))
+# Plots.plot_xy_line(
+#     dataset[0].time,
+#     mvg_avgs[0],
+#     xlabel="Time (" + dataset[0].time_unit + ")",
+#     title="Subject " + str(dataset[0].participant) + \
+#     ' Moving Average w =' + str(w))
+
+# purge dataset of all except the queried run
+purged_dataset = [ts for ts in dataset if ts.meta['episode']==args.run]
 
 Plots.plot_colormesh(
-    np.array([view.signal/2 for view in dataset]),
-    xlabel='Time (TRs)',
+    np.array([ts.signal/2 for ts in purged_dataset]),
+    xlabel="Time (" + purged_dataset[0].unit + ")",
     ylabel='Subject',
-    yticks=[view.participant for view in dataset])
+    yticks=[ts.meta['participant'] for ts in purged_dataset])

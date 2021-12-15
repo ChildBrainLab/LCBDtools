@@ -1,6 +1,7 @@
 import sys
 sys.path.append('..')
-from src import Plots, TimeSeries
+from src import Plots
+from src.TimeSeries import TimeSeries
 
 import os, shutil
 import numpy as np
@@ -40,9 +41,9 @@ class TrialReader:
             # self.episode = str(WS['episode_file'][0])
             # self.episodeNumber = int(WS['episode'][0])
             # self.dimension = str(WS['rating_name'][0])
-            self.episodeCode = str(int(WS['episodeCode'][0]))
+            self.episodeCode = str(WS['episodeCode'][0])
             # read date and time
-            self.sessionTime = datetime.strptime(WS['date'], '%Y_%b_%d_%I%M%p')
+            # self.sessionTime = datetime.strptime(WS['date'], '%Y_%b_%d_%I%M%p')
 
         except (UnboundLocalError, KeyError) as e:
             print("Error: an incorrect key was not found during"
@@ -53,15 +54,17 @@ class TrialReader:
         self.sampleRate = self.frameRates[0]
 
         # generate a TimeSeries object for each column associated with a rating
-        ratingsSeries = [
-            src.TimeSeries(
+        self.ratingsSeries = [
+            TimeSeries(
                 np.array(WS[col]),
-                time=np.array(WS["rating_time"+col[-1]]),
+                time=np.array(WS["rating_time"+col.strip("rating_amplitude")]),
                 sampleRate=self.sampleRate,
                 meta={
                     'participant': self.participant,
-                    'episode': self.episodeCode[int(col[-1])-1],
+                    'episode': ord(
+                        self.episodeCode[int(
+                            col.strip("rating_amplitude"))-1])%32-1,
+                    # 'episode': self.episodeCode.find(
+                    #     self.episodeCode[int(col.strip("rating_amplitude"))-1]),
                     'viewingOrder': self.episodeCode})\
-            for col in WS.colums if 'rating_amplitude' in col]
-
-        return ratingsSeries
+            for col in WS.columns if 'rating_amplitude' in col]

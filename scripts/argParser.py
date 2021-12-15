@@ -44,7 +44,7 @@ def add_bool_arg(parser, name, default=False, help=""):
 
 def main(query):
     parser = argparse.ArgumentParser(
-        description="Established CLI-parameters for scripting with the LCBD \
+        description="Queried CLI-parameters for scripting with the LCBD \
         prep and analysis toolbox")
 
     # Paths Setup
@@ -70,8 +70,8 @@ def main(query):
         parser.add_argument(
             '--participant_num_len',
             dest='participant_num_len',
-            type=3,
-            default="3",
+            type=int,
+            default=3,
             help="(Default: 3) Number of characters in participant numbers")
 
     if 'ex_subs' in query:

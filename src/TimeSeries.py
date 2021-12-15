@@ -1,6 +1,6 @@
 import os, shutil
 from os.path import join
-import numpyas np
+import numpy as np
 import math
 from tqdm import tqdm
 
@@ -26,10 +26,11 @@ class TimeSeries:
             self.time = time
         self.sampleRate = sampleRate
         self.meta = meta
+        self.unit = unit
 
     def fix_nan(self, val='interpol'):
         """
-        Helper to fill occurances of NaNs in self.rating and self.time
+        Helper to fill occurances of NaNs in self.signal and self.time
         First trims tails, then retro-fills any remaining middle-wise
 
         :param val: (Default: 'interpol') if not 'interpol', float or int which
@@ -98,7 +99,7 @@ class TimeSeries:
 
     def resample(
         self,
-        sample_rate=1
+        sample_rate=1,
         new_unit=None):
         """
         Resamples self.signal and self.time with numpy (tail padding)
