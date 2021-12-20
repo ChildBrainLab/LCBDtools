@@ -13,6 +13,7 @@ import pdb
 # LCBD modules
 from src import Plots
 from FreeViewing.ATV import TrialReader
+from src import Statistics
 
 
 args = argParser.main([
@@ -109,8 +110,57 @@ for episode in list(set([ts.meta['episode'] for ts in dataset])):
 #     title="Subject " + str(dataset[0].participant) + \
 #     ' Moving Average w =' + str(w))
 
+# make an average timecourse for each episode
+# episodes = list(set([ts.meta['episode'] for ts in dataset]))
+# averages = {}
+#
+# for episode in episodes:
+#     averages[episode] = (
+#         np.average(
+#             [ts.signal for ts in dataset if ts.meta['episode']==episode],
+#             axis=0),
+#         next(filter(
+#             lambda ts: ts.meta['episode']==episode), dataset, None).time)
+#     print("shape of average:", average[episode].shape)
+#     print("shape of episode:", dataset[0].signal.shape)
+#
+#     Plots.plot_xy_line(
+#         averages[episode][0],
+#         averages[episode][1],
+#         xlabel="Time (" + dataset[0].unit + ")",
+#         ylabel="Episode " + str(episode) + " Average Raw Rating")
+
+
 # purge dataset of all except the queried run
 purged_dataset = [ts for ts in dataset if ts.meta['episode']==args.run]
+
+# print("data shapes:")
+# for ts in purged_dataset:
+#     print(ts.signal.shape)
+
+# make average of raw ratings
+average = np.average(np.array([ts.signal for ts in purged_dataset]), axis=0)
+
+print("Dataset shape:", np.array([ts.signal for ts in purged_dataset]).shape)
+
+# iccs = np.array(purged_dataset[0].signal.shape)
+#
+# # traverse through axis 1 / columns / timeoints
+# for i, col in enumerate(np.array([ts.signal for ts in purged_dataset]).T):
+#     iccs[i] = Statistics.icc(np.array(np.expand_dims(col, 1)))
+#
+# mean_icc = np.mean(iccs)
+icc = Statistics.icc(np.array([ts.signal for ts in purged_dataset]))
+
+# plot average
+Plots.plot_xy_line(
+    purged_dataset[0].time,
+    # [average, iccs],
+    average,
+    # labels=['Mean rating', 'ICC(3, k)'],
+    title="Mean Rating: Mean ICC(3, k) = {icc:.2f}".format(icc=icc),
+    xlabel="Time (" + purged_dataset[0].unit + ")",
+    ylabel="Episode " + str(args.run) + " Average Raw Rating")
 
 Plots.plot_colormesh(
     np.array([ts.signal/2 for ts in purged_dataset]),
