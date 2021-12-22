@@ -134,6 +134,11 @@ for episode in list(set([ts.meta['episode'] for ts in dataset])):
 # purge dataset of all except the queried run
 purged_dataset = [ts for ts in dataset if ts.meta['episode']==args.run]
 
+np.savetxt(
+    "./episode"+str(args.run)+".csv",
+    np.array([ts.signal for ts in purged_dataset]),
+    delimiter=",")
+
 # print("data shapes:")
 # for ts in purged_dataset:
 #     print(ts.signal.shape)
@@ -141,24 +146,28 @@ purged_dataset = [ts for ts in dataset if ts.meta['episode']==args.run]
 # make average of raw ratings
 average = np.average(np.array([ts.signal for ts in purged_dataset]), axis=0)
 
-print("Dataset shape:", np.array([ts.signal for ts in purged_dataset]).shape)
+# print("Dataset shape:", np.array([ts.signal for ts in purged_dataset]).shape)
 
-# iccs = np.array(purged_dataset[0].signal.shape)
-#
-# # traverse through axis 1 / columns / timeoints
-# for i, col in enumerate(np.array([ts.signal for ts in purged_dataset]).T):
-#     iccs[i] = Statistics.icc(np.array(np.expand_dims(col, 1)))
-#
-# mean_icc = np.mean(iccs)
-icc = Statistics.icc(np.array([ts.signal for ts in purged_dataset]))
+# initialize empty array for icc values (one per timepoint)
+iccs = np.array(purged_dataset[0].signal.shape)
+
+# traverse through axis 1 / columns / timeoints
+for i, col in enumerate(np.array([ts.signal for ts in purged_dataset]).T):
+    # append icc for timepoint to iccs
+    iccs[i] = Statistics.icc(
+        np.array(col),
+        icc_type='ICC(3,k)')
+
+mean_icc = np.mean(iccs)
+# icc = Statistics.icc(np.array([ts.signal for ts in purged_dataset]))
 
 # plot average
 Plots.plot_xy_line(
     purged_dataset[0].time,
-    # [average, iccs],
-    average,
-    # labels=['Mean rating', 'ICC(3, k)'],
-    title="Mean Rating: Mean ICC(3, k) = {icc:.2f}".format(icc=icc),
+    [average, iccs],
+    # average,
+    labels=['Mean rating', 'ICC(3, k)'],
+    title="Mean Rating: Mean ICC(3, k) = {icc:.2f}".format(icc=mean_icc),
     xlabel="Time (" + purged_dataset[0].unit + ")",
     ylabel="Episode " + str(args.run) + " Average Raw Rating")
 

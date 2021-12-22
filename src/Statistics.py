@@ -9,7 +9,21 @@ from tqdm import tqdm
 # https://stats.stackexchange.com/questions/63368/
 # intra-class-correlation-and-experimental-design
 
+def unordered_pearson(Y):
+    """
+    The assessment of correlation via the familiar Pearson product-moment
+    procedure applies only to those situations where one particular member of a
+    bivariate pair of measures unequivocally belongs to the X variable and the
+    other unequivocally belongs to the Y variable.
 
+    When it is entirely arbitrary which of the items within the pair is listed
+    first and which is listed second.
+
+    :param Y: N x X matrix (rows = raters, columns = measurements)
+    :type Y: numpy.array
+
+
+    """
 
 def icc(Y, icc_type='ICC(3,k)'):
     """
@@ -34,12 +48,22 @@ def icc(Y, icc_type='ICC(3,k)'):
     from numpy import ones, kron, mean, eye, hstack, dot, tile
     from numpy.linalg import pinv
 
-    [n, k] = Y.shape
+    try:
+        [n, k] = Y.shape
+    except:
+        n = Y.shape[0]
+        k = 2
 
     # Degrees of Freedom
     dfc = k - 1
-    dfe = (n - 1) * (k-1)
     dfr = n - 1
+
+    # if dfc == 0:
+    #     dfc = 1
+    # if dfr == 0:
+    #     dfr = 1
+
+    dfe = dfc * dfr
 
     # Sum Square Total
     mean_Y = np.mean(Y)
@@ -58,7 +82,7 @@ def icc(Y, icc_type='ICC(3,k)'):
 
     MSE = SSE / dfe
 
-    # Sum square column effect - between colums
+    # Sum square column effect - between columns
     SSC = ((np.mean(Y, 0) - mean_Y) ** 2).sum() * n
     MSC = SSC / dfc  # / n (without n in SPSS results)
 
@@ -89,6 +113,13 @@ def icc(Y, icc_type='ICC(3,k)'):
         ICC = (MSR - MSE) / (MSR + (k-1) * MSE)
 
     return ICC
+
+# def simple_icc(Y):
+#     s2 = (1 / (2 * Y.shape[0])) * (np.sum([
+#         ((Y[rater] - np.mean(Y))**2) for rater in Y]) +\
+#         np.sum()
+#     ])
+#     r = (1 / (3 * Y.shape[0] * ))
 
 # INTER-RATER RELIABILITY METHODS
 # =================================
