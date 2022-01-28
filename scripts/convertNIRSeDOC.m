@@ -8,7 +8,7 @@
 
 path = "/data/perlman/moochie/study_data/eDOC_NARSAD/NIRS_data_clean/";
 
-NirsPaths = dir(fullfile(path, '**', '*_fNIRS'));
+NirsPaths = dir(fullfile(path, '*', '**', '*_fNIRS*'));
 %%
 for i = 1:numel(NirsPaths)
     fpath = strcat(NirsPaths(i).folder, '/', NirsPaths(i).name);
