@@ -49,67 +49,61 @@ if len(subfolders) != 1:
     raise Exception
     sys.exit(3)
 
-try:
-    subject_name = os.listdir(join(mri_dir, "temp_dir"))
+subject_name = os.listdir(join(mri_dir, "temp_dir"))
 
-    if len(subject_name[0].split('_')) > 1:
-        subject_name = subject_name[0].split('_')[1:]
+if len(subject_name[0].split('_')) > 1:
+    subject_name = subject_name[0].split('_')[1:]
 
-        # cleanup of subject name to replace hyphens and stuff
-        subject_name_str = ""
-        for part in subject_name:
-            subject_name_str += part
+    # cleanup of subject name to replace hyphens and stuff
+    subject_name_str = ""
+    for part in subject_name:
+        subject_name_str += part
 
-    subject_name = subject_name_str.replace('-', '')
+subject_name = subject_name_str.replace('-', '')
 
-    print("Subject name:", subject_name)
+print("Subject name:", subject_name)
 
-    # move temp dir subfolders to subject name
+# move temp dir subfolders to subject name
+shutil.move(
+    join(mri_dir, "temp_dir", os.listdir(join(mri_dir, "temp_dir"))[0]),
+    join(mri_dir, "temp_dir", subject_name))
+
+CNDAids = os.listdir(join(mri_dir, "temp_dir", subject_name))
+
+if len(CNDAids) != 1:
+    print("More than one session downloaded in same zip folder. Exiting.")
+    raise Exception
+    sys.exit(3)
+
+# if we are using a visit num
+if visit is not None:
     shutil.move(
-        join(mri_dir, "temp_dir", os.listdir(join(mri_dir, "temp_dir"))[0]),
+        join(mri_dir, "temp_dir", subject_name, CNDAids[0]),
+        join(mri_dir, "temp_dir", subject_name, visit))
+
+    folder = join(mri_dir, "temp_dir", subject_name, visit)
+else:
+    shutil.move(
+        join(mri_dir, "temp_dir", subject_name, CNDAids[0]),
         join(mri_dir, "temp_dir", subject_name))
 
-    CNDAids = os.listdir(join(mri_dir, "temp_dir", subject_name))
+    folder = join(mri_dir, "temp_dir", subject_name)
 
-    if len(CNDAids) != 1:
-        print("More than one session downloaded in same zip folder. Exiting.")
-        raise Exception
-        sys.exit(3)
+# bring up contents from temp dir
+shutil.copytree(
+    join(mri_dir, "temp_dir", subject_name),
+    join(mri_dir, subject_name),
+    dirs_exist_ok=True)
 
-    # if we are using a visit num
-    if visit is not None:
-        shutil.move(
-            join(mri_dir, "temp_dir", subject_name, CNDAids[0]),
-            join(mri_dir, "temp_dir", subject_name, visit))
+print("Moved successfully.")
 
-        folder = join(mri_dir, "temp_dir", subject_name, visit)
-    else:
-        shutil.move(
-            join(mri_dir, "temp_dir", subject_name, CNDAids[0]),
-            join(mri_dir, "temp_dir", subject_name))
-
-        folder = join(mri_dir, "temp_dir", subject_name)
-
-    # bring up contents from temp dir
-    shutil.copytree(
-        join(mri_dir, "temp_dir", subject_name),
-        join(mri_dir, subject_name),
-        dirs_exist_ok=True)
-
-    print("Moved successfully.")
-
-    # delete temp dir
-    print("Deleting temp files.")
-    os.rmdir(join(mri_dir, "temp_dir"))
-    folder = folder.replace("/temp_dir", "")
-    # delete OG zip
-    print("Removing .zip file.")
-    os.remove(zippath)
-
-
-except:
-    print("Failure.")
-    sys.exit(3)
+# delete temp dir
+print("Deleting temp files.")
+os.rmdir(join(mri_dir, "temp_dir"))
+folder = folder.replace("/temp_dir", "")
+# delete OG zip
+print("Removing .zip file.")
+os.remove(zippath)
 
 try:
     seqs = listdir(folder)
