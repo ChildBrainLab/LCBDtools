@@ -24,9 +24,9 @@ while read line
 do
     let i=$i+1
     echo Downloading ${i} ${line}
-    proj=`echo $line | cut -d, -f2`
-    subj=`echo $line | cut -d, -f3`
-    exp=`echo $line | cut -d, -f4`
+    proj=`echo $line | cut -d, -f1`
+    subj=`echo $line | cut -d, -f2`
+    exp=`echo $line | cut -d, -f3`
     # Option 1: Download all files in the session
     curl -b JSESSIONID=${JSESSION} "${SITE}/data/archive/projects/${proj}/subjects/${subj}/experiments/${exp}/scans/*/files?format=zip" > ${SESSIONS_DIR}/${exp}.zip
     # Option 2: Download specific scans by name (be sure to encode spaces as %20)
