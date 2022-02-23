@@ -115,6 +115,12 @@ folder = folder.replace("/temp_dir", "")
 #print("Removing .zip file.")
 print("Skipping removal of .zip file. Do it manually if it's in MRI_data! Or place in CNDA_download_repo.")
 # os.remove(zippath)
+# rename Zip to be subject_visit
+print("Renaming ", zippath, "to ", subject_name+"_"+visit, ":")
+shutil.move(
+    zippath,
+    join(os.path.split(zippath)[0], subject_name+"_"+visit)+".zip")
+
 
 folder = folder.replace(mri_dir, new_mri_dir)
 
