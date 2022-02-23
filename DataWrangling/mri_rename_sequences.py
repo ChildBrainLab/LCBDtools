@@ -14,6 +14,7 @@ if len(sys.argv) != 3:
         "1. zip filepath\n",
         "2. Vx")
     print("If there is no visit-data available, enter Vx as 'None'.")
+    print("Usage: python3.8 rename_sequences.py /full/path/to/CNDAzip/ Vx")
     raise Exception
     sys.exit(3)
 
@@ -90,20 +91,32 @@ else:
     folder = join(mri_dir, "temp_dir", subject_name)
 
 # bring up contents from temp dir
-shutil.copytree(
-    join(mri_dir, "temp_dir", subject_name),
-    join(mri_dir, subject_name),
-    dirs_exist_ok=True)
+
+new_mri_dir = join(os.path.split(mri_dir)[0], "MRI_data")
+
+if not os.path.isdir(
+    join(new_mri_dir, subject_name)): 
+        shutil.copytree(
+            join(mri_dir, "temp_dir", subject_name),
+            join(new_mri_dir, subject_name))
+else:
+    print("Subject MRI folder already existed, only copying visit folder.")
+    shutil.copytree(
+        join(mri_dir, "temp_dir", subject_name, visit),
+        join(new_mri_dir, subject_name, visit))
 
 print("Moved successfully.")
 
 # delete temp dir
 print("Deleting temp files.")
-os.rmdir(join(mri_dir, "temp_dir"))
+shutil.rmtree(join(mri_dir, "temp_dir"))
 folder = folder.replace("/temp_dir", "")
 # delete OG zip
-print("Removing .zip file.")
-os.remove(zippath)
+#print("Removing .zip file.")
+print("Skipping removal of .zip file. Do it manually if it's in MRI_data! Or place in CNDA_download_repo.")
+# os.remove(zippath)
+
+folder = folder.replace(mri_dir, new_mri_dir)
 
 try:
     seqs = listdir(folder)

@@ -1,0 +1,1 @@
+python3 /home/usr/schneiderc/.local/bin/bids2nda /data/perlman/moochie/study_data/CARE/MRI_data_clean/ /data/perlman/moochie/study_data/CARE/study_info/NIH_data_upload/GUIDs/sid2guid.txt /data/perlman/moochie/study_data/CARE/bids2nda/
