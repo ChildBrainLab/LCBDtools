@@ -71,8 +71,8 @@ def main(query):
             '--participant_num_len',
             dest='participant_num_len',
             type=int,
-            default=3,
-            help="(Default: 3) Number of characters in participant numbers")
+            default=5,
+            help="(Default: 5) Number of characters in participant numbers")
 
     if 'ex_subs' in query:
         parser.add_argument(
