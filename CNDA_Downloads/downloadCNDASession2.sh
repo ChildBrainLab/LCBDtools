@@ -14,7 +14,7 @@ CURR_DIR=`pwd`
 JSESSION=`curl -u ${USER} "${SITE}/data/JSESSION"`
 
 #!! Update this with directory where sessions should be stored.
-SESSIONS_DIR=`dirname $INPUT_FILE`
+SESSIONS_DIR=./CNDA_download_repo
 # if [ ! -d ${SESSIONS_DIR} ]; then
 #    mkdir ${SESSIONS_DIR}
 # fi
