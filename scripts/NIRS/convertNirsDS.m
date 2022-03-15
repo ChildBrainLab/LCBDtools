@@ -6,9 +6,9 @@
 % fNIRS dataset. 
 
 
-path = "/data/perlman/moochie/study_data/eDOC_NARSAD/NIRS_data_clean/";
+path = "/data/perlman/moochie/study_data/P-CAT/NIRS_data_PSU/";
 
-NirsPaths = dir(fullfile(path, '**', '*_fNIRS'));
+NirsPaths = dir(fullfile(path, '2022*', '*'));
 %%
 for i = 1:numel(NirsPaths)
     fpath = strcat(NirsPaths(i).folder, '/', NirsPaths(i).name);

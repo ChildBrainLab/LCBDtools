@@ -1,7 +1,7 @@
 import sys
-sys.path.append('..')
-from src import Plots
-from src.TimeSeries import TimeSeries
+sys.path.append('../../../')
+from preprocessing.src import Plots
+from preprocessing.src.TimeSeries import TimeSeries
 
 import os, shutil
 import numpy as np
