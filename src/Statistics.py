@@ -25,6 +25,44 @@ def unordered_pearson(Y):
 
     """
 
+
+def simple_icc(
+    X,
+    Y,
+    icc_type='ICC1'):
+    """
+    Computes the intraclass correlation coefficient via Pingouin
+    of a given 2 equally-sized arrays. The expectation at build
+    is that they are linear time-series. 
+
+    :param icc_type: one of {ICC1, ICC2, ICC3, ICC1k, ICC2k, ICC3k}
+    :type icc_type: str
+    """
+    import pingouin as pg
+    import pandas as pd
+
+    df1 = pd.DataFrame(X.signal, columns=['rating'])
+    df1['participant'] = X.meta['participant']
+    df1['time'] = X.time
+
+    df2 = pd.DataFrame(Y.signal, columns=['rating'])
+    df2['participant'] = Y.meta['participant']
+    df2['time'] = Y.time
+
+    df3 = pd.concat([df1, df2])
+
+    icc = pg.intraclass_corr(
+        data=df3,
+        targets='time',
+        raters='participant',
+        ratings='rating')
+
+    icc.set_index("Type")
+
+    return icc
+
+
+
 def icc(Y, icc_type='ICC(3,k)'):
     """
     Calculate intraclass correlation coefficient

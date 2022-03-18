@@ -7,7 +7,7 @@
 docker run -it \
 	--name BIDSKIT_p1 \
 	--cpu-shares 2048 \
-	--memory 31458000000 \
+	# --memory 31458000000 \
 	-v $1:/dataset jmtyszka/bidskit \
 	bidskit -d /dataset \
 	--clean-conv-dir \
