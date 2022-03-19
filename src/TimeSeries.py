@@ -140,6 +140,38 @@ class TimeSeries:
             np.ones(w)/w,
             mode=mode)
 
+    def round_res(self, n=5, vmin=0, vmax=2):
+        """
+        This method is a form of "chunking" a signal, such that a "smooth"
+        signal becomes piece-wise in appearance, with every value in the
+        original signal being rounded to one of n possible values. Effectively,
+        it lowers the amplitudinal resolution of a signal to n.
+
+        :param n: (Default: 5) number of possible values, i.e. bins
+        :type n: int
+        :param vmin: (Default: 0) the virtual minimum of the original signal
+        :type vmin: int, float
+        :param vmax: (Default: 2) the virtual maximum of the original signal
+        :type vmax: int, float
+        """
+
+        # subtract min (move floor to zero)
+        new_sig = self.signal - vmin
+        # scale potential max to 1
+        new_sig = new_sig / vmax
+        # scale potential max to n
+        new_sig = new_sig * (n-1)
+        # round to ints
+        new_sig = np.rint(new_sig)
+        # scale potential max back to 1
+        new_sig = new_sig / (n-1)
+        # scale potential max back to vmax
+        new_sig = new_sig * vmax
+        # add min (move floor to vmin)
+        new_sig = new_sig + vmin
+
+        return new_sig
+
     # TODO: peak by prominence / z-score
     def set_n_peaks(self, n=3, bin_ranges=None):
         """

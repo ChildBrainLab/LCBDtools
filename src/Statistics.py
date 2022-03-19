@@ -26,33 +26,73 @@ def unordered_pearson(Y):
     """
 
 
-def simple_icc(
-    X,
-    Y,
+# def simple_icc(
+#     X,
+#     Y,
+#     icc_type='ICC1'):
+#     """
+#     Computes the intraclass correlation coefficient via Pingouin
+#     of a given 2 equally-sized arrays. The expectation at build
+#     is that they are linear time-series.
+#
+#     :param X: TimeSeries
+#     :type X: TimeSeries.TimeSeries
+#     :param Y: TimeSeries
+#     :type Y: TimeSeries.TimeSeries
+#     :param icc_type: one of {ICC1, ICC2, ICC3, ICC1k, ICC2k, ICC3k}
+#     :type icc_type: str
+#     """
+#     import pingouin as pg
+#     import pandas as pd
+#
+#     df1 = pd.DataFrame(X.signal, columns=['rating'])
+#     df1['participant'] = X.meta['participant']
+#     df1['time'] = X.time
+#
+#     df2 = pd.DataFrame(Y.signal, columns=['rating'])
+#     df2['participant'] = Y.meta['participant']
+#     df2['time'] = Y.time
+#
+#     df3 = pd.concat([df1, df2])
+#
+#     icc = pg.intraclass_corr(
+#         data=df3,
+#         targets='time',
+#         raters='participant',
+#         ratings='rating')
+#
+#     icc.set_index("Type")
+#
+#     return icc
+
+def ping_icc(
+    dX,
     icc_type='ICC1'):
     """
     Computes the intraclass correlation coefficient via Pingouin
     of a given 2 equally-sized arrays. The expectation at build
-    is that they are linear time-series. 
+    is that they are linear time-series.
 
+    :param dX: list of TimeSeries.TimeSeries objects for which the
+        icc will be calculated
+    :type dX: list of TimeSeries.TimeSeries
     :param icc_type: one of {ICC1, ICC2, ICC3, ICC1k, ICC2k, ICC3k}
     :type icc_type: str
     """
     import pingouin as pg
     import pandas as pd
 
-    df1 = pd.DataFrame(X.signal, columns=['rating'])
-    df1['participant'] = X.meta['participant']
-    df1['time'] = X.time
+    dfs = []
+    for ts in dX:
+        df = pd.DataFrame(ts.signal, columns=['rating'])
+        df['participant'] = ts.meta['participant']
+        df['time'] = ts.time
+        dfs.append(df)
 
-    df2 = pd.DataFrame(Y.signal, columns=['rating'])
-    df2['participant'] = Y.meta['participant']
-    df2['time'] = Y.time
-
-    df3 = pd.concat([df1, df2])
+    df = pd.concat(dfs)
 
     icc = pg.intraclass_corr(
-        data=df3,
+        data=df,
         targets='time',
         raters='participant',
         ratings='rating')
@@ -60,8 +100,6 @@ def simple_icc(
     icc.set_index("Type")
 
     return icc
-
-
 
 def icc(Y, icc_type='ICC(3,k)'):
     """
