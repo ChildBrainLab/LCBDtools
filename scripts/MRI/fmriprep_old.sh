@@ -4,20 +4,17 @@
 
 # source /data/perlman/moochie/resources/server_access/MRIenv/bin/activate.csh
 
-python3 participant_list_builder.py $1
-
 export FREESURFER_HOME="/usr/local/pkg/freesurfer"
 
-docker run -ti --rm -u $( id -u )\
+docker run -ti --rm \
 	--name FMRIPREP \
 	--cpu-shares 2048 \
 	-v $1:/data:ro \
-	-v $1/derivatives:/out \
+	-v $1/derivatives/fmriprep/:/out \
 	-v $FREESURFER_HOME/license.txt:/opt/freesurfer/license.txt \
 	nipreps/fmriprep:latest \
-	/data /out/fmriprep \
+	/data /out/out \
 	participant \
 	--skip_bids_validation \
         --use-aroma \
-	--output-spaces MNIPediatricAsym:cohort-2:res-native:res-1 \
 	--participant-label $(cat participant_list.txt)  

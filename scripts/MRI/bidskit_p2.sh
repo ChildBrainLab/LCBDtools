@@ -8,7 +8,7 @@
 # first pass 
 if [[ $2 == "ses" ]]; then
 	docker run -it \
-		--name BIDSKIT_p1 \
+		--name BIDSKIT_p2 \
 		--cpu-shares 2048 \
 		-v $1:/dataset jmtyszka/bidskit \
 		bidskit -d /dataset \
@@ -17,7 +17,7 @@ if [[ $2 == "ses" ]]; then
 		--no-anon
 elif [[ $2 == "no-ses" ]]; then
         docker run -it \
-		--name BIDSKIT_p1 \
+		--name BIDSKIT_p2 \
 		--cpu-shares 2048 \
 		-v $1:/dataset jmtyszka/bidskit \
 		bidskit -d /dataset \
