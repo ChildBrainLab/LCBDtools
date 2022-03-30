@@ -64,6 +64,21 @@ def main(query):
             type=str,
             help="Path of data file relative to data folder")
 
+    if 'task_folder' in query:
+        parser.add_argument(
+            '--task_folder',
+            dest='task_folder',
+            type=str,
+            default=".",
+            help="(Default: .) Path to task folder")
+
+    if 'task_file' in query:
+        parser.add_argument(
+            '--task_file',
+            dest='task_file',
+            type=str,
+            help="Path of task file relative to task folder")
+
     # Metadata
     # ==========================
     if 'participant_num_len' in query:
