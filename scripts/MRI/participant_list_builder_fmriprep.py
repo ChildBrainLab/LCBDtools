@@ -25,8 +25,12 @@ sub_folders = glob(bids_folder+"/sub-*/**/func/*.nii.gz", recursive=True)
 subs = list(set([os.path.basename(sub).split('_')[0].strip('sub-') for sub in sub_folders]))
 
 for sub in subs:
-    f.write(sub)
-    f.write('\n')
+    conf = glob(
+        join(bids_folder, "derivatives", "fmriprep", "sub-"+sub)+"**/*confounds*.tsv",
+        recursive=True)
+    if len(conf) < 1:
+        f.write(sub)
+        f.write('\n')
 
 f.close()
 
