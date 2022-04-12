@@ -94,7 +94,7 @@ def main(query):
             '--ex_subs',
             dest='ex_subs',
             nargs='+',
-            default=['116, 106'],
+            default=[],
             type=str,
             help="(Default: ['116', '106']) List of subject numbers who will \
             be excluded from analysis")
@@ -145,6 +145,15 @@ def main(query):
             type=float,
             help="(Default: 0.8) Repetition time (TR)")
 
+    # NIRS Protocol Variables
+    # ==========================
+    if 'sample_rate' in query:
+        parser.add_argument(
+            '--sample_rate',
+            dest='sample_rate',
+            default=7.81250,
+            type=float,
+            help="(Default: 7.81250) In Hz, data acaquisition rate")    
 
     # Preprocessing Setup
     # ==========================
@@ -185,10 +194,10 @@ def main(query):
     #         sys.exit(3)
 
     # ex / in subs
-    if hasattr(args, "ex_subs") and hasattr(args, "in_subs"):
-        print("Parameters ex_subs and in_subs are mutually exclusive.")
-        raise ValueError
-        sys.exit(3)
+#     if hasattr(args, "ex_subs") and hasattr(args, "in_subs"):
+#         print("Parameters ex_subs and in_subs are mutually exclusive.")
+#         raise ValueError
+#         sys.exit(3)
 
     return args
 

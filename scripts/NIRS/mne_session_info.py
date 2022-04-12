@@ -3,7 +3,7 @@ Takes data folder as a "clean" path of hyperscanning data?
 Currently anticipating CARE format, although it should probably be set up
 to find the parent folders of any globbed .nirx formatted directories instead,
 because this will not work for any configuration of visit / parent / child
-interaction data. TODO ^ >> now may be fixed
+interaction data. TODO ^ >> now may be fixed, check with eDOC / etc.
 """
 
 # General dependencies
@@ -79,31 +79,42 @@ def create_boxcar(raw, event_id=None, stim_dur=1):
 args = argParser.main([
     "data_folder",
     # "run",
+    "participant_num_len",
     "ex_subs",
-    "participant_num_len"
+    "in_subs",
 ])
 
 # Some configuration variables
-study_dir = args.data_folder
-# default length of participant numbers
-participant_num_len = args.participant_num_len
+nirs_dir = args.data_folder
+participant_num_len = args.participant_num_len # default length of participant numbers
 ex_subs = args.ex_subs # any subjects to not include in the dataset
+in_subs = args.in_subs # limit inclusion to these subjects
 
-# session_dirs = [d for d in glob(study_dir+"/*/V*/*fNIRS") \
-#     if os.path.basename(os.path.split(os.path.split(d)[1])[1]) not in ex_subs]
-
+# all sessions that meet naming conventions
 session_dirs = [os.path.split(d)[0] for d in glob(
-    study_dir+"**/*_probeInfo.mat",
+    nirs_dir+"**/*_probeInfo.mat",
     recursive=True) \
-    if d.strip(study_dir).strip("/")[:participant_num_len] not in ex_subs]
+    if d.strip(nirs_dir).strip("/")[:participant_num_len] not in ex_subs]
 
+# generate list of subjects
 subjects = list(set([os.path.basename(d)[:participant_num_len] for \
     d in session_dirs]))
+
+# only include subs in 'in_subs', if given
+if in_subs is None:
+    in_subs = subjects
+else:
+    session_dirs = [ses for ses in session_dirs \
+        if ses.strip(nirs_dir).strip("/")[:participant_num_len] in in_subs]
+
+if len(session_dirs) == 0:
+    print("No session directories were considered valid.")
+    sys.exit(3)
 
 mne.viz.set_3d_backend('pyvista')
 raw_intensities = []
 
-print("Processing:")
+print("Generating Session Info:")
 print("================")
 for ses in tqdm(session_dirs):
     # if (os.path.basename(ses) != "50430_V1_fNIRS") and (os.path.basename(ses) != "50431_V1_fNIRS"):
