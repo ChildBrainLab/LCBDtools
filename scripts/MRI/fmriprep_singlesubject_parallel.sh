@@ -16,8 +16,8 @@ do
 		-v $1/work:/work \
 		-v $(dirname $1)/bids-database:/bids-database \
 		-v $FREESURFER_HOME/license.txt:/opt/freesurfer/license.txt \
-		-v /data/perlman/moochie/resources/templateflow:/templateflow \
-		-e TEMPLATEFLOW_HOME='/templateflow' \
+		-v /data/perlman/moochie/resources/templateflow:/home/fmriprep/.cache/templateflow \
+		-e TEMPLATEFLOW_HOME='/home/fmriprep/.cache/templateflow' \
 		nipreps/fmriprep:latest \
 		/data /out/fmriprep \
 		participant \
@@ -28,7 +28,7 @@ do
 		--nthreads 16 \
 		--low-mem \
 		--mem-mb 15000 \
-		--output-spaces MNIPediatricAsym:cohort-2:res-native \
+		--output-spaces MNIPediatricAsym:cohort-2:res-2 \
 		--participant-label $sub &
 
 	# docker system prune -f
