@@ -45,13 +45,13 @@ class TrialReader:
             # read date and time
             # self.sessionTime = datetime.strptime(WS['date'], '%Y_%b_%d_%I%M%p')
 
+            self.frameRates = np.array(WS['frameRate'])
+            self.sampleRate = self.frameRates[0]
+
         except (UnboundLocalError, KeyError) as e:
             print("Error: an incorrect key was not found during"
             " the loading of some files and they will be skipped.")
             print("Loading: ", self.path)
-
-        self.frameRates = np.array(WS['frameRate'])
-        self.sampleRate = self.frameRates[0]
 
         # generate a TimeSeries object for each column associated with a rating
         self.ratingsSeries = [
