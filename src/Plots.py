@@ -19,6 +19,7 @@ def plot_xy_line(
     plot_axis=False):
     """
     Inspect a handful of datapoints on a plot of data vs. features
+
     :param x: values along x-axis
     :type x: np.array with shape (num_features,)
     :param y: values or set of values along y-axis
@@ -142,6 +143,7 @@ def plot_outcome_hist(
     fig_fname=None):
     """
     Plot two overlaid histograms, one group with outcome=0, one with outcome=1
+
     :param x: 1D array of data
     :type x: np.array with shape (num_samples,)
     :param y: 1D array of corresponding outcomes
@@ -205,6 +207,7 @@ def plot_block_diffs(
     """
     Show percent of datapoints in each block where truth value is equal
     to active_label
+
     :param blocks: array of block or meta-values
     :type blocks: np.array with shape (num_samples,)
     :param truths: array of truth labels / ground truth data
@@ -263,6 +266,7 @@ def plot_model_history(
     ):
     """
     Plots desired metric over course of training
+
     :param history: fitted model (TF keras)
     :type history: tensorflow.keras.Sequential.fit
     :param metric: metric which will be plotted over epochs
@@ -299,6 +303,7 @@ def roc_curve(
     fig_fname=None):
     """
     Plot ROC curve for given predictions and truth array
+    
     :param preds: list of numpy.array objects, each with a pack of predictions
     :type preds: list
     :param truths: list of truth (outcome) values of type binary classification

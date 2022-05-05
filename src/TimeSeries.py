@@ -8,6 +8,7 @@ class TimeSeries:
     """
     Object which stores time-series data and offers various signal-related
     manipulations
+
     :param signal: Time-series data of shape (timepoints,)
     :type signal: numpy.array
     :param time: (Default: None) If None, defaults to np.arange(len(signal)),
@@ -175,6 +176,7 @@ class TimeSeries:
     def savgol_filter(self, w=13, poly_order=3):
         """
         Sets self.signal to the savgol-filtered (smoothed) timeseries
+
         :param w: (Default: 13) window length (in samples)
         :type w: int
         :param poly_order: (Default: 3) polynomial order of the filter
@@ -194,6 +196,7 @@ class TimeSeries:
         """
         Counts number of peaks (timepoints with signal in certain amplitudinal
         range) found in self.signal within n possible bins.
+
         :param n: (Default: 3) number of amplitude bins
         :type n: int
         :param bin_ranges: (None) if none, arbitrarily defines bins based off
@@ -229,6 +232,7 @@ class TimeSeries:
     def set_PSD(self, x, window='boxcar'):
         """
         Estimate power spectral density using a periodogram
+        
         :param window: (Default: boxcar) Desired window to use. If window is a
             string or tuple, it is passed to get_window to generate the window
             values, which are DFT-even by default. See get_window for a list of
