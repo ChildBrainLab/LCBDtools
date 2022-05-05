@@ -63,7 +63,7 @@ def plot_xy_line(
                 obj.plot(
                     plot_axis,
                     '--')
-                
+
         else:
             obj.semilogy(
                 x,
@@ -94,7 +94,7 @@ def plot_colormesh(
     title="",
     fig_fname=None):
     """
-    2D colormesh
+    2D colormesh (e.g. rastor plot)
 
     :param x: 2D array of data with shape (num_samples, num_features)
     :type x: numpy.array

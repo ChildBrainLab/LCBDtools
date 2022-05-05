@@ -35,6 +35,11 @@ class TrialReader:
         elif fext == ".xlsx":
             WS = pd.read_excel(self.path)
 
+        WS = WS.astype({
+            col: 'float' for col in WS.columns if\
+                ("rating_amplitude" in col) or\
+                ("rating_time" in col)})
+
         try:
             # read all required / expected metadata
             self.participant = str(int(WS['participant'][0]))
@@ -56,8 +61,12 @@ class TrialReader:
         # generate a TimeSeries object for each column associated with a rating
         self.ratingsSeries = [
             TimeSeries(
-                np.array(WS[col]),
-                time=np.array(WS["rating_time"+col.strip("rating_amplitude")]),
+                np.array(pd.to_numeric(
+                    WS[col],
+                    downcast="float")),
+                time=np.array(pd.to_numeric(
+                    WS["rating_time"+col.strip("rating_amplitude")],
+                    downcast="float")),
                 sampleRate=self.sampleRate,
                 meta={
                     'participant': self.participant,

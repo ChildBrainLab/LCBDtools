@@ -172,6 +172,23 @@ class TimeSeries:
 
         return new_sig
 
+    def savgol_filter(self, w=13, poly_order=3):
+        """
+        Sets self.signal to the savgol-filtered (smoothed) timeseries
+        :param w: (Default: 13) window length (in samples)
+        :type w: int
+        :param poly_order: (Default: 3) polynomial order of the filter
+        :type poly_order: int
+        """
+        from scipy.signal import savgol_filter
+
+        new_sig = savgol_filter(
+            self.signal,
+            window_length=w,
+            polyorder=poly_order)
+
+        self.signal = new_sig
+
     # TODO: peak by prominence / z-score
     def set_n_peaks(self, n=3, bin_ranges=None):
         """

@@ -1,6 +1,5 @@
 import sys
 sys.path.append('../../../')
-from preprocessing.src import Plots
 
 import os, shutil
 import numpy as np
@@ -25,8 +24,8 @@ class Flank:
         else:
             self.meta = meta
 
-    def score(self):
-        if self.meta['resp'] == self.meta['corr_answer']:
+    def eval(self):
+        if self.meta['response'] == self.meta['corr_answer']:
             return True
         else:
             return False
@@ -47,7 +46,7 @@ class TaskReader:
         fname, fext = os.path.splitext(path)
 
         if fext == ".csv":
-            WS = pd.read_csv(self,path, sep=",", low_memory=False)
+            WS = pd.read_csv(self.path, sep=",", low_memory=False)
         elif fext == ".tsv":
             WS = pd.read_csv(self.path, sep="\t", low_memory=False)
         elif fext == ".xlsx":
@@ -57,7 +56,9 @@ class TaskReader:
             # read all required / expected metadata
             self.participant = str(int(WS['participant'][0]))
             self.session = int(WS['session'][0])
-            self.date = datetime(str(WS['date'][0]))
+            self.date = datetime.strptime(
+                str(WS['date'][0]),
+                '%Y_%b_%d_%H%M')
 
             self.sampleRate = float(WS['frameRate'][0])
 
@@ -66,26 +67,63 @@ class TaskReader:
             " the loading of some files and they will be skipped.")
             print("Loading: ", self.path)
 
+        # some general cleaning of the file / preparing for errors lol
+        # TODO: if a key_resp{_block}.rt column doesn't exist for a given block,
+        # let's add it in as a NaN series
+        blocks = list(set([col.strip("_trial.thisRepN").strip("block") for \
+            col in WS.columns if "trial.thisRepN" in col]))
+
+        for block in blocks:
+            if block == "1":
+                if "key_resp.rt" not in WS.columns:
+                    WS["key_resp.rt"] = " "
+            else:
+                if "key_resp_{}.rt".format(block) not in WS.columns:
+                    WS["key_resp_{}.rt".format(block)] = " "
+
         # generate a Flank object for each column associated with a rating
-        self.flankerSeries = [
-            Flank(
+        self.flankerSeries = []
 
-            )
-        ]
+        trial_n = 0
+        for row_i, row in WS.iterrows():
 
+            if "stimuli" not in str(row["stimuli_file"]):
+                continue
+            else:
+                trial_n += 1
 
-
-        self.ratingsSeries = [
-            TimeSeries(
-                np.array(WS[col]),
-                time=np.array(WS["rating_time"+col.strip("rating_amplitude")]),
-                sampleRate=self.sampleRate,
-                meta={
-                    'participant': self.participant,
-                    'episode': ord(
-                        self.episodeCode[int(
-                            col.strip("rating_amplitude"))-1])%32-1,
-                    # 'episode': self.episodeCode.find(
-                    #     self.episodeCode[int(col.strip("rating_amplitude"))-1]),
-                    'viewingOrder': self.episodeCode})\
-            for col in WS.columns if 'rating_amplitude' in col]
+            self.flankerSeries.append(Flank(meta={
+                "trial_n": trial_n,
+                "block": int(row['stimuli_file'].split('_')[1].strip('block')),
+                "corr_answer": str(row['corrAns']),
+                "stim_file": str(row['stimuli_file']),
+                "directional": True if row['stimuli_file'].split('_')[2] == \
+                    "D" else False,
+                "congruent": True if row['stimuli_file'].split('_')[3][0] == \
+                    "C" else False,
+                "stim_start_time": float(row['stimuli_{}.started'.format(
+                    row['stimuli_file'].split('_')[1].strip(
+                        'block'))]),
+                "stim_stop_time": float(row['stimuli_{}.stopped'.format(
+                    row['stimuli_file'].split('_')[1].strip(
+                        'block'))]),
+                "response": str(row['key_resp_{}.keys'.format(
+                    row['stimuli_file'].split('_')[1].strip(
+                        'block'))]) if \
+                    int(row['stimuli_file'].split('_')[1].strip(
+                        'block')) > 1 else str(row['key_resp.keys']),
+                "response_time": float(row['key_resp_{}.rt'.format(
+                    row['stimuli_file'].split('_')[1].strip(
+                        'block'))]) if \
+                    int(row['stimuli_file'].split('_')[1].strip(
+                        'block')) > 1 else float(row['key_resp.rt']),
+                "fixation_start_time": float(row['fixation_{}.started'.format(
+                    row['stimuli_file'].split('_')[1].strip(
+                        'block'))]) if \
+                    int(row['stimuli_file'].split('_')[1].strip(
+                        'block')) > 1 else float(row['fixation.started']),
+                "fixation_stop_time": float(row['fixation_{}.stopped'.format(
+                    row['stimuli_file'].split('_')[1].strip(
+                        'block'))]) if \
+                    int(row['stimuli_file'].split('_')[1].strip(
+                        'block')) > 1 else float(row['fixation.stopped'])}))
