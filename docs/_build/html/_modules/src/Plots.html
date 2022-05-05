@@ -84,6 +84,7 @@
     <span class="n">plot_axis</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Inspect a handful of datapoints on a plot of data vs. features</span>
+
 <span class="sd">    :param x: values along x-axis</span>
 <span class="sd">    :type x: np.array with shape (num_features,)</span>
 <span class="sd">    :param y: values or set of values along y-axis</span>
@@ -207,6 +208,7 @@
     <span class="n">fig_fname</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Plot two overlaid histograms, one group with outcome=0, one with outcome=1</span>
+
 <span class="sd">    :param x: 1D array of data</span>
 <span class="sd">    :type x: np.array with shape (num_samples,)</span>
 <span class="sd">    :param y: 1D array of corresponding outcomes</span>
@@ -270,6 +272,7 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Show percent of datapoints in each block where truth value is equal</span>
 <span class="sd">    to active_label</span>
+
 <span class="sd">    :param blocks: array of block or meta-values</span>
 <span class="sd">    :type blocks: np.array with shape (num_samples,)</span>
 <span class="sd">    :param truths: array of truth labels / ground truth data</span>
@@ -328,6 +331,7 @@
     <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Plots desired metric over course of training</span>
+
 <span class="sd">    :param history: fitted model (TF keras)</span>
 <span class="sd">    :type history: tensorflow.keras.Sequential.fit</span>
 <span class="sd">    :param metric: metric which will be plotted over epochs</span>
@@ -364,6 +368,7 @@
     <span class="n">fig_fname</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Plot ROC curve for given predictions and truth array</span>
+<span class="sd">    </span>
 <span class="sd">    :param preds: list of numpy.array objects, each with a pack of predictions</span>
 <span class="sd">    :type preds: list</span>
 <span class="sd">    :param truths: list of truth (outcome) values of type binary classification</span>

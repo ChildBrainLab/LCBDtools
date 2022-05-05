@@ -1,10 +1,10 @@
-FreeViewing package
-===================
+Stimuli package
+===============
 
 Module contents
 ---------------
 
-.. automodule:: FreeViewing
+.. automodule:: Stimuli
     :members:
     :undoc-members:
     :show-inheritance:

@@ -83,16 +83,22 @@
 <dt id="src.Plots.plot_block_diffs">
 <code class="descclassname">src.Plots.</code><code class="descname">plot_block_diffs</code><span class="sig-paren">(</span><em>blocks</em>, <em>truths</em>, <em>title=None</em>, <em>active_label=1</em>, <em>fig_fname=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Plots.html#plot_block_diffs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Plots.plot_block_diffs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Show percent of datapoints in each block where truth value is equal
-to active_label
-:param blocks: array of block or meta-values
-:type blocks: np.array with shape (num_samples,)
-:param truths: array of truth labels / ground truth data
-:type truths: np.array with shape (num_samples,)
-:param title: (Default: “”) Super plot title
-:type title: str
-:param active_label: (Default: 1) truth_value being counted from truths
-:param fig_fname: (Default: None) If given value, saves as &lt;fig_fname&gt;.png
-:type fig_fname: str</p>
+to active_label</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>blocks</strong> (<em>np.array with shape</em><em> (</em><em>num_samples</em><em>,</em><em>)</em>) – array of block or meta-values</li>
+<li><strong>truths</strong> (<em>np.array with shape</em><em> (</em><em>num_samples</em><em>,</em><em>)</em>) – array of truth labels / ground truth data</li>
+<li><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – (Default: “”) Super plot title</li>
+<li><strong>active_label</strong> – (Default: 1) truth_value being counted from truths</li>
+<li><strong>fig_fname</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – (Default: None) If given value, saves as &lt;fig_fname&gt;.png</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -120,77 +126,91 @@ to active_label
 <dl class="function">
 <dt id="src.Plots.plot_model_history">
 <code class="descclassname">src.Plots.</code><code class="descname">plot_model_history</code><span class="sig-paren">(</span><em>history</em>, <em>metric='loss'</em>, <em>fig_fname=None</em>, <em>xlabel='Epoch'</em>, <em>ylabel='Metric'</em>, <em>title=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Plots.html#plot_model_history"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Plots.plot_model_history" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plots desired metric over course of training
-:param history: fitted model (TF keras)
-:type history: tensorflow.keras.Sequential.fit
-:param metric: metric which will be plotted over epochs
-:type metric: str {‘loss’, ‘accuracy’}
-:param fig_fname: (Default: None) If given value, saves as &lt;fig_fname&gt;.png
-:type fig_fname: str
-:param xlabel: (Default: Time) label to use on x-axis
-:type xlabel: str
-:param ylabel: (Default: Amplitude) label to use on y-axis
-:type ylabel: str
-:param title: (Default: “”) Super plot title
-:type title: str</p>
+<dd><p>Plots desired metric over course of training</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>history</strong> (<em>tensorflow.keras.Sequential.fit</em>) – fitted model (TF keras)</li>
+<li><strong>metric</strong> (<em>str {'loss'</em><em>, </em><em>'accuracy'}</em>) – metric which will be plotted over epochs</li>
+<li><strong>fig_fname</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – (Default: None) If given value, saves as &lt;fig_fname&gt;.png</li>
+<li><strong>xlabel</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – (Default: Time) label to use on x-axis</li>
+<li><strong>ylabel</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – (Default: Amplitude) label to use on y-axis</li>
+<li><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – (Default: “”) Super plot title</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.Plots.plot_outcome_hist">
 <code class="descclassname">src.Plots.</code><code class="descname">plot_outcome_hist</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>n_bins=20</em>, <em>density=True</em>, <em>xlabel=''</em>, <em>ylabel='Density'</em>, <em>title=''</em>, <em>fig_fname=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Plots.html#plot_outcome_hist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Plots.plot_outcome_hist" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plot two overlaid histograms, one group with outcome=0, one with outcome=1
-:param x: 1D array of data
-:type x: np.array with shape (num_samples,)
-:param y: 1D array of corresponding outcomes
-:type y: np.array with shape (num_samples,)
-:param n_bins: number of bins to use
-:type n_bins: int
-:param density: (Default: True) Whether to use a density histogram or not
-:type density: bool
-:param xlabel: (Default: Time) label to use on x-axis
-:type xlabel: str
-:param ylabel: (Default: Amplitude) label to use on y-axis
-:type ylabel: str
-:param title: (Default: “”) Super plot title
-:type title: str
-:param fig_fname: (Default: None) If given value, saves as &lt;fig_fname&gt;.png
-:type fig_fname: str</p>
+<dd><p>Plot two overlaid histograms, one group with outcome=0, one with outcome=1</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>x</strong> (<em>np.array with shape</em><em> (</em><em>num_samples</em><em>,</em><em>)</em>) – 1D array of data</li>
+<li><strong>y</strong> (<em>np.array with shape</em><em> (</em><em>num_samples</em><em>,</em><em>)</em>) – 1D array of corresponding outcomes</li>
+<li><strong>n_bins</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – number of bins to use</li>
+<li><strong>density</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – (Default: True) Whether to use a density histogram or not</li>
+<li><strong>xlabel</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – (Default: Time) label to use on x-axis</li>
+<li><strong>ylabel</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – (Default: Amplitude) label to use on y-axis</li>
+<li><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – (Default: “”) Super plot title</li>
+<li><strong>fig_fname</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – (Default: None) If given value, saves as &lt;fig_fname&gt;.png</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.Plots.plot_xy_line">
 <code class="descclassname">src.Plots.</code><code class="descname">plot_xy_line</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>xlabel='Time'</em>, <em>ylabel='Amplitude'</em>, <em>logy=False</em>, <em>share=False</em>, <em>title=None</em>, <em>fig_fname=None</em>, <em>labels=None</em>, <em>plot_axis=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Plots.html#plot_xy_line"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Plots.plot_xy_line" title="Permalink to this definition">¶</a></dt>
-<dd><p>Inspect a handful of datapoints on a plot of data vs. features
-:param x: values along x-axis
-:type x: np.array with shape (num_features,)
-:param y: values or set of values along y-axis
-:type y: np.array with shape (num_samples, num_features)
-:param xlabel: (Default: Time) label to use on x-axis
-:type xlabel: str
-:param ylabel: (Default: Amplitude) label to use on y-axis
-:type ylabel: str
-:param logy: (Default: False) if True, uses semilogy
-:type logy: bool
-:param share: (Default: True) if True, doesn’t use subplots
-:type share: bool
-:param title: (Default: “”) Super plot title
-:type title: str
-:param fig_fname: (Default: None) If given value, saves as &lt;fig_fname&gt;.png
-:type fig_fname: str
-:param labels: (Default: None) If given, label for each sample in y
-:type labels: list or np.array with shape / len (num_samples,)</p>
+<dd><p>Inspect a handful of datapoints on a plot of data vs. features</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>x</strong> (<em>np.array with shape</em><em> (</em><em>num_features</em><em>,</em><em>)</em>) – values along x-axis</li>
+<li><strong>y</strong> (<em>np.array with shape</em><em> (</em><em>num_samples</em><em>, </em><em>num_features</em><em>)</em>) – values or set of values along y-axis</li>
+<li><strong>xlabel</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – (Default: Time) label to use on x-axis</li>
+<li><strong>ylabel</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – (Default: Amplitude) label to use on y-axis</li>
+<li><strong>logy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – (Default: False) if True, uses semilogy</li>
+<li><strong>share</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – (Default: True) if True, doesn’t use subplots</li>
+<li><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – (Default: “”) Super plot title</li>
+<li><strong>fig_fname</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – (Default: None) If given value, saves as &lt;fig_fname&gt;.png</li>
+<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em> or </em><em>np.array with shape / len</em><em> (</em><em>num_samples</em><em>,</em><em>)</em>) – (Default: None) If given, label for each sample in y</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.Plots.roc_curve">
 <code class="descclassname">src.Plots.</code><code class="descname">roc_curve</code><span class="sig-paren">(</span><em>preds</em>, <em>truths</em>, <em>fig_fname=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Plots.html#roc_curve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Plots.roc_curve" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plot ROC curve for given predictions and truth array
-:param preds: list of numpy.array objects, each with a pack of predictions
-:type preds: list
-:param truths: list of truth (outcome) values of type binary classification
-:type truths: numpy.array
-:param fig_fname: (Default: None) If given value, saves as &lt;fig_fname&gt;.png
-:type fig_fname: str</p>
+<dd><p>Plot ROC curve for given predictions and truth array</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>preds</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a>) – list of numpy.array objects, each with a pack of predictions</li>
+<li><strong>truths</strong> (<em>numpy.array</em>) – list of truth (outcome) values of type binary classification</li>
+<li><strong>fig_fname</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – (Default: None) If given value, saves as &lt;fig_fname&gt;.png</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
