@@ -96,14 +96,14 @@ class TimeSeries:
         This method regularizes time axis values along an ARTIFICIAL new
         axis, such that they are equally spaced apart.
         """
-        self.time = np.linspace(0, self.time[-1], num=len(self.time))
+        self.time = np.linspace(0, round(self.time[-1]), num=len(self.time))
 
     def resample(
         self,
         sample_rate=1,
         new_unit=None):
         """
-        Resamples self.signal and self.time with numpy (tail padding)
+        Resamples self.signal and self.time with scipy (tail padding)
 
         :param sample_rate: (default 1) new sample rate (in Hz) to which data
             are resampled
@@ -111,21 +111,45 @@ class TimeSeries:
         :param new_unit: (default None) if not None, reassigns self.unit
         :type new_unit: str
         """
-        new_time = np.linspace(
-            0,
-            math.floor(self.time[-1]),
-            num=math.floor(self.time[-1]*sample_rate))
+        from scipy.signal import resample
+        from math import floor
 
-        new_signal = np.interp(
-            new_time,
-            xp=self.time,
-            fp=self.signal)
+        new_signal, new_time = resample(
+            self.signal,
+            floor(floor(self.time[-1]) / sample_rate),
+            t=self.time)
 
-        self.time = new_time
-        self.signal = new_signal
-        self.sampleRate = sample_rate
-        if new_unit is not None:
-            self.unit = new_unit
+        self.signal = np.array(new_signal)
+        self.time = np.array(new_time)
+
+    # def resample(
+    #     self,
+    #     sample_rate=1,
+    #     new_unit=None):
+    #     """
+    #     Resamples self.signal and self.time with numpy (tail padding)
+    #
+    #     :param sample_rate: (default 1) new sample rate (in Hz) to which data
+    #         are resampled
+    #     :type sample_rate: float
+    #     :param new_unit: (default None) if not None, reassigns self.unit
+    #     :type new_unit: str
+    #     """
+    #     new_time = np.linspace(
+    #         0,
+    #         math.floor(self.time[-1]),
+    #         num=math.floor(self.time[-1]*sample_rate))
+    #
+    #     new_signal = np.interp(
+    #         new_time,
+    #         xp=self.time,
+    #         fp=self.signal)
+    #
+    #     self.time = new_time
+    #     self.signal = new_signal
+    #     self.sampleRate = sample_rate
+    #     if new_unit is not None:
+    #         self.unit = new_unit
 
     def get_moving_average(self, x, w=10, mode='same'):
         """
@@ -232,7 +256,7 @@ class TimeSeries:
     def set_PSD(self, x, window='boxcar'):
         """
         Estimate power spectral density using a periodogram
-        
+
         :param window: (Default: boxcar) Desired window to use. If window is a
             string or tuple, it is passed to get_window to generate the window
             values, which are DFT-even by default. See get_window for a list of

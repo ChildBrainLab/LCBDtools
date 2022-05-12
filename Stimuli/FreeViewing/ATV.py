@@ -11,7 +11,6 @@ import pandas as pd
 from tqdm import tqdm
 
 
-# "/home/usr/schneiderc/study_data/ATV/task_behavioral_data/ATV_task/8001/8001_ATV_ratings_2020_Jan_29_1405"
 class TrialReader:
     """
     Object used to read data from a single trial (i.e., one continuous run
@@ -43,9 +42,7 @@ class TrialReader:
         try:
             # read all required / expected metadata
             self.participant = str(int(WS['participant'][0]))
-            # self.episode = str(WS['episode_file'][0])
-            # self.episodeNumber = int(WS['episode'][0])
-            # self.dimension = str(WS['rating_name'][0])
+
             self.episodeCode = str(WS['episodeCode'][0])
             # read date and time
             # self.sessionTime = datetime.strptime(WS['date'], '%Y_%b_%d_%I%M%p')
@@ -62,11 +59,9 @@ class TrialReader:
         self.ratingsSeries = [
             TimeSeries(
                 np.array(pd.to_numeric(
-                    WS[col],
-                    downcast="float")),
+                    WS[col])),
                 time=np.array(pd.to_numeric(
-                    WS["rating_time"+col.strip("rating_amplitude")],
-                    downcast="float")),
+                    WS[col.replace("amplitude", "time")])),
                 sampleRate=self.sampleRate,
                 meta={
                     'participant': self.participant,

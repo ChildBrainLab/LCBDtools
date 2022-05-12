@@ -96,7 +96,7 @@ def ping_icc(
         targets='time',
         raters='participant',
         ratings='rating',
-#         nan_policy='omit'
+        # nan_policy='omit'
     )
 
     icc.set_index("Type")
