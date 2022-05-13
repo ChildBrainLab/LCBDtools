@@ -72,9 +72,9 @@ def main():
             zips.pop(-1)
             continue
 
-        except:
-            print("Error. Haulting transfer.")
-            sys.exit(3)
+        #except:
+        #    print("Error. Haulting transfer.")
+        #    sys.exit(3)
 
     subject_session_dict = {}
 
