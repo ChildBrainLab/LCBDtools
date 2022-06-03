@@ -36,9 +36,9 @@ from nilearn.plotting import plot_design_matrix
 # and not using relative paths that may change
 # in future releases
 import sys
-sys.path.append('../../..')
-from preprocessing.scripts import argParser
-from preprocessing.src import Plots
+sys.path.append('../../../')
+from LCBDtools.scripts import argParser
+from LCBDtools.src import Plots
 
 def create_boxcar(raw, event_id=None, stim_dur=1):
     """
@@ -130,8 +130,8 @@ for ses in tqdm(session_dirs):
         # raw_intensities[-1].resample(0.7) # downsample to 0.7 HZ to run faster
 
         # skip this ses if data < 10000 samples
-        if len(raw_intensity) < 10000:
-            print("Session too short. Skipping:", ses)
+#         if len(raw_intensity) < 10000:
+#             print("Session too short. Skipping:", ses)
         
         # plot sensors and save to session dir
         fig = raw_intensity.plot_sensors(
@@ -150,15 +150,11 @@ for ses in tqdm(session_dirs):
         try:
             raw_intensity.annotations.rename({
                 '1.0': 'Block 1 Start',
-                '2.0': 'Block 2 Start',
-                '4.0': 'Block 3 Start',
-                '128.0': 'Stop Signal'})
+                '2.0': 'Block 2 Start'})
 
             durations = {
-                'Block 1 Start': 120,
-                'Block 2 Start': 105,
-                'Block 3 Start': 120,
-                'Stop Signal': 1}
+                'Block 1 Start': 105,
+                'Block 2 Start': 120}
         except:
             print("The annotations are not as expected, skipping:", ses)
             continue
@@ -193,8 +189,7 @@ for ses in tqdm(session_dirs):
         plt.plot(raw_intensity.times, s, axes=axes)
         plt.legend([
             "Block 1 Start",
-            "Block 2 Start",
-            "Block 3 Start"],
+            "Block 2 Start"],
             loc="upper right")
         plt.xlabel("Time (s)")
         plt.ylabel("Stimulus")

@@ -36,9 +36,9 @@ from nilearn.plotting import plot_design_matrix
 # and not using relative paths that may change
 # in future releases
 import sys
-sys.path.append('../../..')
-from preprocessing.scripts import argParser
-from preprocessing.src import Plots
+sys.path.append('../../../..')
+from LCBDtools.scripts import argParser
+from LCBDtools.src import Plots
 
 def create_boxcar(raw, event_id=None, stim_dur=1):
     """
