@@ -1,5 +1,4 @@
 import sys
-sys.path.append('../../../')
 
 import os, shutil
 import numpy as np
@@ -25,6 +24,11 @@ class Flank:
             self.meta = meta
 
     def eval(self):
+    """
+    Evaluate whether the flank response was correct or incorrect
+
+    :return: True if correct, False if incorrect
+    """
         if self.meta['response'] == self.meta['corr_answer']:
             return True
         else:
@@ -105,8 +109,14 @@ class TaskReader:
                     row['stimuli_file'].split('_')[1].strip(
                         'block'))]),
                 "stim_stop_time": float(row['stimuli_{}.stopped'.format(
+                    # special case because sometimes we have null ones of these
                     row['stimuli_file'].split('_')[1].strip(
-                        'block'))]),
+                        'block'))]) if \
+                        not pd.isnull(row['stimuli_{}.stopped'.format(
+                            row['stimuli_file'].split('_')[1].strip('block'))])\
+                            else float(row['stimuli_{}.started'.format(
+                                row['stimuli_file'].split('_')[1].strip(
+                                'block'))])+float(1.01),
                 "response": str(row['key_resp_{}.keys'.format(
                     row['stimuli_file'].split('_')[1].strip(
                         'block'))]) if \
