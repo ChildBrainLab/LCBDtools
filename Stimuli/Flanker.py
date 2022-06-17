@@ -30,9 +30,9 @@ class Flank:
         :return: True if correct, False if incorrect
         """
         if self.meta['response'] == self.meta['corr_answer']:
-            return True
+            self.meta['correct'] = True
         else:
-            return False
+            self.meta['correct'] = False
 
 class TaskReader:
     """
