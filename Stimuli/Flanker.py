@@ -24,11 +24,11 @@ class Flank:
             self.meta = meta
 
     def eval(self):
-    """
-    Evaluate whether the flank response was correct or incorrect
+        """
+        Evaluate whether the flank response was correct or incorrect
 
-    :return: True if correct, False if incorrect
-    """
+        :return: True if correct, False if incorrect
+        """
         if self.meta['response'] == self.meta['corr_answer']:
             return True
         else:
