@@ -111,9 +111,11 @@ class TaskReader:
                 "stim_stop_time": float(row['stimuli_{}.stopped'.format(
                     # special case because sometimes we have null ones of these
                     row['stimuli_file'].split('_')[1].strip(
-                        'block'))]) if \
-                        not pd.isnull(row['stimuli_{}.stopped'.format(
+                        'block'))]) if (\
+                        not pd.isna(row['stimuli_{}.stopped'.format(
                             row['stimuli_file'].split('_')[1].strip('block'))])\
+                        or (not row['stimuli_{}.stopped'.format(
+                                row['stimuli_file'].split('_')[1].strip('block'))] == ""))\
                             else float(row['stimuli_{}.started'.format(
                                 row['stimuli_file'].split('_')[1].strip(
                                 'block'))])+float(1.01),
