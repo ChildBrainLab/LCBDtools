@@ -1,7 +1,7 @@
 import sys
 
-from LCBD.src import Plots
-from LCBD.src.TimeSeries import TimeSeries
+from LCBDtools.src import Plots
+from LCBDtools.src.TimeSeries import TimeSeries
 
 import os, shutil
 import numpy as np

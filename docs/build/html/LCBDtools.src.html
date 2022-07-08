@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LCBDtools.src package &mdash; LCBDtools v0.04b documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> LCBDtools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">LCBDtools.src package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-LCBDtools.src.Plots">LCBDtools.src.Plots module</a></li>
+<li><a class="reference internal" href="#module-LCBDtools.src.Statistics">LCBDtools.src.Statistics module</a></li>
+<li><a class="reference internal" href="#module-LCBDtools.src.TimeSeries">LCBDtools.src.TimeSeries module</a></li>
+<li><a class="reference internal" href="#module-LCBDtools.src">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">LCBDtools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>LCBDtools.src package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/LCBDtools.src.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="lcbdtools-src-package">
+<h1>LCBDtools.src package<a class="headerlink" href="#lcbdtools-src-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-LCBDtools.src.Plots">
+<span id="lcbdtools-src-plots-module"></span><h2>LCBDtools.src.Plots module<a class="headerlink" href="#module-LCBDtools.src.Plots" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="LCBDtools.src.Plots.plot_block_diffs">
+<span class="sig-prename descclassname"><span class="pre">LCBDtools.src.Plots.</span></span><span class="sig-name descname"><span class="pre">plot_block_diffs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">blocks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_fname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#LCBDtools.src.Plots.plot_block_diffs" title="Permalink to this definition"></a></dt>
+<dd><p>Show percent of datapoints in each block where truth value is equal
+to active_label</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>blocks</strong> (<em>np.array with shape</em><em> (</em><em>num_samples</em><em>,</em><em>)</em>) – array of block or meta-values</p></li>
+<li><p><strong>truths</strong> (<em>np.array with shape</em><em> (</em><em>num_samples</em><em>,</em><em>)</em>) – array of truth labels / ground truth data</p></li>
+<li><p><strong>title</strong> (<em>str</em>) – (Default: “”) Super plot title</p></li>
+<li><p><strong>active_label</strong> – (Default: 1) truth_value being counted from truths</p></li>
+<li><p><strong>fig_fname</strong> (<em>str</em>) – (Default: None) If given value, saves as &lt;fig_fname&gt;.png</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="LCBDtools.src.Plots.plot_colormesh">
+<span class="sig-prename descclassname"><span class="pre">LCBDtools.src.Plots.</span></span><span class="sig-name descname"><span class="pre">plot_colormesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Density'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yticks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_fname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#LCBDtools.src.Plots.plot_colormesh" title="Permalink to this definition"></a></dt>
+<dd><p>2D colormesh (e.g. rastor plot)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>numpy.array</em>) – 2D array of data with shape (num_samples, num_features)</p></li>
+<li><p><strong>xlabel</strong> (<em>str</em>) – (Default: Time) label to use on x-axis</p></li>
+<li><p><strong>ylabel</strong> (<em>str</em>) – (Default: Amplitude) label to use on y-axis</p></li>
+<li><p><strong>yticks</strong> (<em>list of str</em>) – (Default: None) ticks to use to label individual y spots</p></li>
+<li><p><strong>title</strong> (<em>str</em>) – (Default: “”) Super plot title</p></li>
+<li><p><strong>fig_fname</strong> (<em>str</em>) – (Default: None) If given value, saves as &lt;fig_fname&gt;.png</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="LCBDtools.src.Plots.plot_model_history">
+<span class="sig-prename descclassname"><span class="pre">LCBDtools.src.Plots.</span></span><span class="sig-name descname"><span class="pre">plot_model_history</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">history</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'loss'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_fname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Epoch'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Metric'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#LCBDtools.src.Plots.plot_model_history" title="Permalink to this definition"></a></dt>
+<dd><p>Plots desired metric over course of training</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>history</strong> (<em>tensorflow.keras.Sequential.fit</em>) – fitted model (TF keras)</p></li>
+<li><p><strong>metric</strong> (<em>str {'loss'</em><em>, </em><em>'accuracy'}</em>) – metric which will be plotted over epochs</p></li>
+<li><p><strong>fig_fname</strong> (<em>str</em>) – (Default: None) If given value, saves as &lt;fig_fname&gt;.png</p></li>
+<li><p><strong>xlabel</strong> (<em>str</em>) – (Default: Time) label to use on x-axis</p></li>
+<li><p><strong>ylabel</strong> (<em>str</em>) – (Default: Amplitude) label to use on y-axis</p></li>
+<li><p><strong>title</strong> (<em>str</em>) – (Default: “”) Super plot title</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="LCBDtools.src.Plots.plot_outcome_hist">
+<span class="sig-prename descclassname"><span class="pre">LCBDtools.src.Plots.</span></span><span class="sig-name descname"><span class="pre">plot_outcome_hist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_bins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Density'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_fname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#LCBDtools.src.Plots.plot_outcome_hist" title="Permalink to this definition"></a></dt>
+<dd><p>Plot two overlaid histograms, one group with outcome=0, one with outcome=1</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>np.array with shape</em><em> (</em><em>num_samples</em><em>,</em><em>)</em>) – 1D array of data</p></li>
+<li><p><strong>y</strong> (<em>np.array with shape</em><em> (</em><em>num_samples</em><em>,</em><em>)</em>) – 1D array of corresponding outcomes</p></li>
+<li><p><strong>n_bins</strong> (<em>int</em>) – number of bins to use</p></li>
+<li><p><strong>density</strong> (<em>bool</em>) – (Default: True) Whether to use a density histogram or not</p></li>
+<li><p><strong>xlabel</strong> (<em>str</em>) – (Default: Time) label to use on x-axis</p></li>
+<li><p><strong>ylabel</strong> (<em>str</em>) – (Default: Amplitude) label to use on y-axis</p></li>
+<li><p><strong>title</strong> (<em>str</em>) – (Default: “”) Super plot title</p></li>
+<li><p><strong>fig_fname</strong> (<em>str</em>) – (Default: None) If given value, saves as &lt;fig_fname&gt;.png</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="LCBDtools.src.Plots.plot_xy_line">
+<span class="sig-prename descclassname"><span class="pre">LCBDtools.src.Plots.</span></span><span class="sig-name descname"><span class="pre">plot_xy_line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Time'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Amplitude'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">share</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_fname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#LCBDtools.src.Plots.plot_xy_line" title="Permalink to this definition"></a></dt>
+<dd><p>Inspect a handful of datapoints on a plot of data vs. features</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>np.array with shape</em><em> (</em><em>num_features</em><em>,</em><em>)</em>) – values along x-axis</p></li>
+<li><p><strong>y</strong> (<em>np.array with shape</em><em> (</em><em>num_samples</em><em>, </em><em>num_features</em><em>)</em>) – values or set of values along y-axis</p></li>
+<li><p><strong>xlabel</strong> (<em>str</em>) – (Default: Time) label to use on x-axis</p></li>
+<li><p><strong>ylabel</strong> (<em>str</em>) – (Default: Amplitude) label to use on y-axis</p></li>
+<li><p><strong>logy</strong> (<em>bool</em>) – (Default: False) if True, uses semilogy</p></li>
+<li><p><strong>share</strong> (<em>bool</em>) – (Default: True) if True, doesn’t use subplots</p></li>
+<li><p><strong>title</strong> (<em>str</em>) – (Default: “”) Super plot title</p></li>
+<li><p><strong>fig_fname</strong> (<em>str</em>) – (Default: None) If given value, saves as &lt;fig_fname&gt;.png</p></li>
+<li><p><strong>labels</strong> (<em>list</em><em> or </em><em>np.array with shape / len</em><em> (</em><em>num_samples</em><em>,</em><em>)</em>) – (Default: None) If given, label for each sample in y</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="LCBDtools.src.Plots.roc_curve">
+<span class="sig-prename descclassname"><span class="pre">LCBDtools.src.Plots.</span></span><span class="sig-name descname"><span class="pre">roc_curve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">preds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_fname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#LCBDtools.src.Plots.roc_curve" title="Permalink to this definition"></a></dt>
+<dd><p>Plot ROC curve for given predictions and truth array</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>preds</strong> (<em>list</em>) – list of numpy.array objects, each with a pack of predictions</p></li>
+<li><p><strong>truths</strong> (<em>numpy.array</em>) – list of truth (outcome) values of type binary classification</p></li>
+<li><p><strong>fig_fname</strong> (<em>str</em>) – (Default: None) If given value, saves as &lt;fig_fname&gt;.png</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-LCBDtools.src.Statistics">
+<span id="lcbdtools-src-statistics-module"></span><h2>LCBDtools.src.Statistics module<a class="headerlink" href="#module-LCBDtools.src.Statistics" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="LCBDtools.src.Statistics.icc">
+<span class="sig-prename descclassname"><span class="pre">LCBDtools.src.Statistics.</span></span><span class="sig-name descname"><span class="pre">icc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">icc_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ICC(3,k)'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#LCBDtools.src.Statistics.icc" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate intraclass correlation coefficient</p>
+<p>ICC Formulas are based on:
+Shrout, P. E., &amp; Fleiss, J. L. (1979). Intraclass correlations: uses in
+assessing rater reliability. Psychological bulletin, 86(2), 420.
+icc1:  x_ij = mu + beta_j + w_ij
+icc2/3:  x_ij = mu + alpha_i + beta_j + (ab)_ij + epsilon_ij
+Code modifed from nipype algorithms.icc
+<a class="reference external" href="https://github.com/nipy/nipype/blob/master/nipype/algorithms/icc.py">https://github.com/nipy/nipype/blob/master/nipype/algorithms/icc.py</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Y</strong> (<em>numpy.array</em>) – N x X matrix (rows = raters, columns = measurements)</p></li>
+<li><p><strong>icc_type</strong> (<em>str</em>) – type of ICC to calculate, one of: {ICC(2,1), ICC(2, k),
+ICC(3, 1), ICC(3, k)}</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>ICC (numpy.array) intraclass correlation coefficient</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="LCBDtools.src.Statistics.ping_icc">
+<span class="sig-prename descclassname"><span class="pre">LCBDtools.src.Statistics.</span></span><span class="sig-name descname"><span class="pre">ping_icc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">icc_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ICC1'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#LCBDtools.src.Statistics.ping_icc" title="Permalink to this definition"></a></dt>
+<dd><p>Computes the intraclass correlation coefficient via Pingouin
+of a given 2 equally-sized arrays. The expectation at build
+is that they are linear time-series.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dX</strong> (<em>list of TimeSeries.TimeSeries</em>) – list of TimeSeries.TimeSeries objects for which the
+icc will be calculated</p></li>
+<li><p><strong>icc_type</strong> (<em>str</em>) – one of {ICC1, ICC2, ICC3, ICC1k, ICC2k, ICC3k}</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="LCBDtools.src.Statistics.unordered_pearson">
+<span class="sig-prename descclassname"><span class="pre">LCBDtools.src.Statistics.</span></span><span class="sig-name descname"><span class="pre">unordered_pearson</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#LCBDtools.src.Statistics.unordered_pearson" title="Permalink to this definition"></a></dt>
+<dd><p>The assessment of correlation via the familiar Pearson product-moment
+procedure applies only to those situations where one particular member of a
+bivariate pair of measures unequivocally belongs to the X variable and the
+other unequivocally belongs to the Y variable.</p>
+<p>When it is entirely arbitrary which of the items within the pair is listed
+first and which is listed second.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>Y</strong> (<em>numpy.array</em>) – N x X matrix (rows = raters, columns = measurements)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-LCBDtools.src.TimeSeries">
+<span id="lcbdtools-src-timeseries-module"></span><h2>LCBDtools.src.TimeSeries module<a class="headerlink" href="#module-LCBDtools.src.TimeSeries" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="LCBDtools.src.TimeSeries.TimeSeries">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">LCBDtools.src.TimeSeries.</span></span><span class="sig-name descname"><span class="pre">TimeSeries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampleRate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1024</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'s'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#LCBDtools.src.TimeSeries.TimeSeries" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Object which stores time-series data and offers various signal-related
+manipulations</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>signal</strong> (<em>numpy.array</em>) – Time-series data of shape (timepoints,)</p></li>
+<li><p><strong>time</strong> (<em>numpy.array</em>) – (Default: None) If None, defaults to np.arange(len(signal)),
+else array of shape (timepoints,)</p></li>
+<li><p><strong>sampleRate</strong> (<em>int</em>) – (Default: 1024) frequency (in Hz) at which
+data was collected</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="LCBDtools.src.TimeSeries.TimeSeries.center">
+<span class="sig-name descname"><span class="pre">center</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">difference</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#LCBDtools.src.TimeSeries.TimeSeries.center" title="Permalink to this definition"></a></dt>
+<dd><p>Substracts ‘difference’ from signal</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>difference</strong> (<em>int</em><em>, </em><em>float</em>) – amount substracted from signal</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LCBDtools.src.TimeSeries.TimeSeries.fix_nan">
+<span class="sig-name descname"><span class="pre">fix_nan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'interpol'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#LCBDtools.src.TimeSeries.TimeSeries.fix_nan" title="Permalink to this definition"></a></dt>
+<dd><p>Helper to fill occurances of NaNs in self.signal and self.time
+First trims tails, then retro-fills any remaining middle-wise</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>val</strong> (<em>str</em><em>, </em><em>float</em><em>, </em><em>int</em>) – (Default: ‘interpol’) if not ‘interpol’, float or int which
+will replace NaNs</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LCBDtools.src.TimeSeries.TimeSeries.get_moving_average">
+<span class="sig-name descname"><span class="pre">get_moving_average</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'same'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#LCBDtools.src.TimeSeries.TimeSeries.get_moving_average" title="Permalink to this definition"></a></dt>
+<dd><p>Builds moving average via convolution</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>numpy.array</em>) – data with shape (n_timepoints,) or (n_samples,)</p></li>
+<li><p><strong>w</strong> (<em>int</em>) – (Default: 5) length of window over which averages are made</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LCBDtools.src.TimeSeries.TimeSeries.lag_correct">
+<span class="sig-name descname"><span class="pre">lag_correct</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#LCBDtools.src.TimeSeries.TimeSeries.lag_correct" title="Permalink to this definition"></a></dt>
+<dd><p>During recording, skipped frames can add up to significant differences
+in the number of samples collected between subjects, even though the
+start / stop time are correct, and the sample rate generally holds true.</p>
+<p>This method regularizes time axis values along an ARTIFICIAL new
+axis, such that they are equally spaced apart.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LCBDtools.src.TimeSeries.TimeSeries.resample">
+<span class="sig-name descname"><span class="pre">resample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#LCBDtools.src.TimeSeries.TimeSeries.resample" title="Permalink to this definition"></a></dt>
+<dd><p>Resamples self.signal and self.time with scipy (tail padding)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sample_rate</strong> (<em>float</em>) – (default 1) new sample rate (in Hz) to which data
+are resampled</p></li>
+<li><p><strong>new_unit</strong> (<em>str</em>) – (default None) if not None, reassigns self.unit</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LCBDtools.src.TimeSeries.TimeSeries.round_res">
+<span class="sig-name descname"><span class="pre">round_res</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#LCBDtools.src.TimeSeries.TimeSeries.round_res" title="Permalink to this definition"></a></dt>
+<dd><p>This method is a form of “chunking” a signal, such that a “smooth”
+signal becomes piece-wise in appearance, with every value in the
+original signal being rounded to one of n possible values. Effectively,
+it lowers the amplitudinal resolution of a signal to n.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em>) – (Default: 5) number of possible values, i.e. bins</p></li>
+<li><p><strong>vmin</strong> (<em>int</em><em>, </em><em>float</em>) – (Default: 0) the virtual minimum of the original signal</p></li>
+<li><p><strong>vmax</strong> (<em>int</em><em>, </em><em>float</em>) – (Default: 2) the virtual maximum of the original signal</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LCBDtools.src.TimeSeries.TimeSeries.savgol_filter">
+<span class="sig-name descname"><span class="pre">savgol_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">13</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poly_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#LCBDtools.src.TimeSeries.TimeSeries.savgol_filter" title="Permalink to this definition"></a></dt>
+<dd><p>Sets self.signal to the savgol-filtered (smoothed) timeseries</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>w</strong> (<em>int</em>) – (Default: 13) window length (in samples)</p></li>
+<li><p><strong>poly_order</strong> (<em>int</em>) – (Default: 3) polynomial order of the filter</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LCBDtools.src.TimeSeries.TimeSeries.scale">
+<span class="sig-name descname"><span class="pre">scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ylim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(-</span> <span class="pre">1,</span> <span class="pre">1)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#LCBDtools.src.TimeSeries.TimeSeries.scale" title="Permalink to this definition"></a></dt>
+<dd><p>Linearly scales max and min values of the signal to the respective lower
+and upper bounds of ylim</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ylim</strong> (<em>tuple of type int</em><em> or </em><em>float</em>) – lower and upper bound of scale</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LCBDtools.src.TimeSeries.TimeSeries.set_PSD">
+<span class="sig-name descname"><span class="pre">set_PSD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'boxcar'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#LCBDtools.src.TimeSeries.TimeSeries.set_PSD" title="Permalink to this definition"></a></dt>
+<dd><p>Estimate power spectral density using a periodogram</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>window</strong> (<em>str</em>) – (Default: boxcar) Desired window to use. If window is a
+string or tuple, it is passed to get_window to generate the window
+values, which are DFT-even by default. See get_window for a list of
+windows and required parameters. If window is array_like it will
+be used directly as the window and its length must be nperseg.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LCBDtools.src.TimeSeries.TimeSeries.set_n_peaks">
+<span class="sig-name descname"><span class="pre">set_n_peaks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bin_ranges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#LCBDtools.src.TimeSeries.TimeSeries.set_n_peaks" title="Permalink to this definition"></a></dt>
+<dd><p>Counts number of peaks (timepoints with signal in certain amplitudinal
+range) found in self.signal within n possible bins.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em>) – (Default: 3) number of amplitude bins</p></li>
+<li><p><strong>bin_ranges</strong> (<em>length n list of tuples</em>) – (None) if none, arbitrarily defines bins based off
+range found in signal. If int / float, builds list of ranges based
+off this as max. If list, defines custom bin ranges.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LCBDtools.src.TimeSeries.TimeSeries.standardize">
+<span class="sig-name descname"><span class="pre">standardize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#LCBDtools.src.TimeSeries.TimeSeries.standardize" title="Permalink to this definition"></a></dt>
+<dd><p>Normalizes rating (i.e. subtract mean) and scale variance to 1</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-LCBDtools.src">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-LCBDtools.src" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Clayton Schneider.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
