@@ -371,4 +371,5 @@ for raw in raw_intensities:
     haemo.plot(
         duration=raw.times[-1],
         title=raw.info['subject_info']['his_id'][:participant_num_len],
-        block=True)
+        block=True,
+        clipping=None)
