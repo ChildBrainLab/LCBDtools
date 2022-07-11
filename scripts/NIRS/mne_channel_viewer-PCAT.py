@@ -8,6 +8,7 @@ import numpy as np
 # import seaborn as sns
 # from copy import deepcopy
 from glob import glob
+from itertools import compress
 
 import mne
 import mne_nirs
