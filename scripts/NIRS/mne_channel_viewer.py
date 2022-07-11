@@ -307,10 +307,10 @@ PSU_ages = [
 for age in PSU_ages:
     ages.append(age)
 
-session_dirs = [d for d in glob(study_dir+"/*/*Flanker") if \
+session_dirs = [d for d in glob(data_folder+"/*/*Flanker") if \
     os.path.basename(d)[:participant_num_len] in in_subs]
 
-PSUsession_dirs = [d for d in glob(PSUstudy_dir+"/*/*Flanker") if \
+PSUsession_dirs = [d for d in glob(PSUdata_folder+"/*/*Flanker") if \
     os.path.basename(d)[:participant_num_len] in in_subs]
 
 subjects = list(set([os.path.basename(d)[:participant_num_len] for d in session_dirs]))
