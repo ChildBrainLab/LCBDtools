@@ -360,9 +360,9 @@ for raw in raw_intensities:
 
     raw_od = mne.preprocessing.nirs.optical_density(raw)
 
-    sci = mne.preprocessing.nirs.scalp_coupling_index(raw_od)
+    # sci = mne.preprocessing.nirs.scalp_coupling_index(raw_od)
 
-    raw_od.info['bads'] = list(compress(raw_od.ch_names, sci < 0.5))
+    # raw_od.info['bads'] = list(compress(raw_od.ch_names, sci < 0.5))
 
     tddr_od = mne.preprocessing.nirs.tddr(raw_od)
 
