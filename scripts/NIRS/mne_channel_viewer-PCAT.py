@@ -356,7 +356,18 @@ for ses in PSUsession_dirs:
         print("Failure to load:", ses, "skipping.")
 
 for raw in raw_intensities:
-    raw.plot(
+
+    raw_od = mne.preprocessing.nirs.optical_density(raw)
+
+    sci = mne.preprocessing.nirs.scalp_coupling_index(raw_od)
+
+    raw_od.info['bads'] = list(compress(raw_od.ch_names, sci < 0.5))
+
+    tddr_od = mne.preprocessing.nirs.tddr(raw_od)
+
+    haemo = mne.preprocessing.nirs.beer_lambert_law(tddr_od, ppf=0.1)
+
+    haemo.plot(
         duration=raw.times[-1],
         title=raw.info['subject_info']['his_id'][:participant_num_len],
         block=True)
