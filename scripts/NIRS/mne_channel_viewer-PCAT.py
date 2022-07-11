@@ -75,7 +75,7 @@ participant_num_len = 4 # default length of participant numbers
 # ex_subs = args.ex_subs # any subjects to not include in the dataset
 # in_subs = args.in_subs # limit inclusion to these subjects
 
-# from data tracker June 24th 2022, list of subjects with v3 Flanker completed
+# from data tracker June 11th 2022, list of subjects with v3 Flanker completed
 in_subs = [
     "1115",
     "1116",
@@ -132,6 +132,7 @@ PSU_insubs = [
 #     "1229", # failed practice
 #     "1231", # failed practice
     "1238",
+    "1226",
 ]
 
 for sub in PSU_insubs:
