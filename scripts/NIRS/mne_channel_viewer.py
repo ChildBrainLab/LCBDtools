@@ -59,18 +59,19 @@ def create_boxcar(raw, event_id=None, stim_dur=1):
         s[:, idx] = np.convolve(s[:, idx], bc)[:len(raw.times)]
     return s
 
-args = argParser.main([
-    "data_folder",
-    # "run",
-    "participant_num_len",
-    "ex_subs",
-    # "in_subs",
-])
+# args = argParser.main([
+#     # "data_folder",
+#     # "run",
+#     "participant_num_len",
+#     "ex_subs",
+#     # "in_subs",
+# ])
 
 # Some configuration variables
-nirs_dir = args.data_folder
-participant_num_len = args.participant_num_len # default length of participant numbers
-ex_subs = args.ex_subs # any subjects to not include in the dataset
+nirs_dir = "/data/perlman/moochie/analysis/P-CAT/NIRS_data_clean"
+PSUnirs_dir = "/data/perlman/moochie/analysis/P-CAT/PSU_NIRS_data_clean"
+participant_num_len = 4 # default length of participant numbers
+# ex_subs = args.ex_subs # any subjects to not include in the dataset
 # in_subs = args.in_subs # limit inclusion to these subjects
 
 # from data tracker June 24th 2022, list of subjects with v3 Flanker completed
@@ -307,10 +308,10 @@ PSU_ages = [
 for age in PSU_ages:
     ages.append(age)
 
-session_dirs = [d for d in glob(data_folder+"/*/*Flanker") if \
+session_dirs = [d for d in glob(nirs_dir+"/*/*Flanker") if \
     os.path.basename(d)[:participant_num_len] in in_subs]
 
-PSUsession_dirs = [d for d in glob(PSUdata_folder+"/*/*Flanker") if \
+PSUsession_dirs = [d for d in glob(PSUnirs_dir+"/*/*Flanker") if \
     os.path.basename(d)[:participant_num_len] in in_subs]
 
 subjects = list(set([os.path.basename(d)[:participant_num_len] for d in session_dirs]))
