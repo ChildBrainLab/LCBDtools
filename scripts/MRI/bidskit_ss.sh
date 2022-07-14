@@ -7,16 +7,16 @@
 
 # first pass 
 if [[ $3 == "ses" ]]; then
-	docker run -it \
+	docker run \
 		--name BIDSKIT_$2 \
 		--cpu-shares 2048 \
 		-v $1:/dataset jmtyszka/bidskit \
 		bidskit -d /dataset \
 		--clean-conv-dir \
 		--no-anon \
-		--subject $2
+		--subject $2 &
 elif [[ $3 == "no-ses" ]]; then
-        docker run -it \
+        docker run \
 		--name BIDSKIT_$2 \
 		--cpu-shares 2048 \
 		-v $1:/dataset jmtyszka/bidskit \
@@ -24,7 +24,7 @@ elif [[ $3 == "no-ses" ]]; then
 		--clean-conv-dir \
 		--no-anon \
 		--no-sessions \
-		--subject $2
+		--subject $2 &
 else
 	echo "See usage notes to correctly use <ses | no-ses>."
 fi
