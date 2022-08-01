@@ -10,19 +10,20 @@ ml freesurfer
 export FREESURFER_HOME="/export/freesurfer/freesurfer-7.2.0/"
 export TEMPLATEFLOWHOME="/scratch/claytons/tlbx/templateflow"
 export SINGULARITYENV_TEMPLATEFLOW_HOME="/home/fmriprep/.cache/templateflow"
+export SINGULARITYENV_TEMPLATEFLOW_AUTOUPDATE=0
 
 sub=$2
 
 singularity run \
 	--cleanenv \
-	-B $1:/home/fmriprep \
-	-B /home/claytons/.cache/fmriprep:/home/claytons/.cache/fmriprep \
+	--no-home \
 	-B $1:/data \
 	-B $1/derivatives:/out \
 	-B $1/work:/work \
+	-B $TEMPLATEFLOWHOME:$SINGULARITYENV_TEMPLATEFLOW_HOME \
 	-B $FREESURFER_HOME/.license:/opt/freesurfer/license.txt \
 	/scratch/claytons/tlbx/singularity/fmriprep.simg \
-	/data /out/fmriprep \
+	/data /out \
 	participant \
 	-w /work \
 	--fs-license-file /opt/freesurfer/license.txt \
@@ -31,6 +32,6 @@ singularity run \
 	--use-aroma \
 	--nthreads 16 \
 	--low-mem \
-	--mem-mb 15000 \
+	--mem-mb 30000 \
 	--output-spaces MNIPediatricAsym:cohort-2:res-2 \
-	--participant-label $sub 
+	--participant-label $2
