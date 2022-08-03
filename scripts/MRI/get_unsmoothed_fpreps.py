@@ -1,5 +1,5 @@
 """
-usage: python3 participant_list_builder.py <path/to/bids/dataset>  
+usage: python3 get_unsmoothed_fpreps.py <path/to/bids/dataset>  
 """
 
 import sys

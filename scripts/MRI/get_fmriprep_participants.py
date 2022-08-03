@@ -6,7 +6,7 @@ i.e. those subjects in the given BIDS directory which contain generally usable
 - T1w
 - a functional run
 
-usage: python3 participant_list_builder.py <path/to/bids/dataset>  
+usage: python3 get_fmriprep_participants.py <path/to/bids/dataset>  
 """
 
 import sys

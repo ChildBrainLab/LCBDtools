@@ -6,7 +6,7 @@ i.e. those subjects in the fmriprep folder of the given BIDS directory which con
 - T1w
 - a functional run
 
-usage: python3 participant_list_builder.py <path/to/bids/dataset> <FD threshold>
+usage: python3 get_fsl_subs.py <path/to/bids/dataset> <FD threshold>
 """
 
 import sys
