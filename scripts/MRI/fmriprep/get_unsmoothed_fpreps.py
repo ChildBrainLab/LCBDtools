@@ -11,7 +11,7 @@ bids_folder = sys.argv[1]
 
 f = open("/home/"+str(os.environ.get("USER"))+"/smooth_subs.txt", 'w')
 
-preprocs = glob(bids_folder+"/derivatives/fmriprep/sub-*/ses-*/func/*preproc_bold.nii.gz")
+preprocs = glob(bids_folder+"/derivatives/fmriprep/sub-*/**/*preproc_bold.nii.gz", recursive=True)
 
 unsmoothed_niis = []
 

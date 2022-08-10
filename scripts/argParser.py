@@ -135,6 +135,14 @@ def main(query):
             help="(Default: 0) Run number (within visit) to select for \
             (zero-indexed)")
 
+    if 'task' in query:
+        parser.add_argument(
+            '--task',
+            dest='task',
+            type=str,
+            default="movieB",
+            help="(Default: movieB) Task name (in BIDS format)")
+
     # MRI Protocol Variables
     # ==========================
     if 'TR' in query:
@@ -144,6 +152,33 @@ def main(query):
             default=0.8,
             type=float,
             help="(Default: 0.8) Repetition time (TR)")
+
+    if 'FD_thresh' in query:
+        parser.add_argument(
+            '--fd_thresh',
+            dest='fd_thresh',
+            default=0.5,
+            type=float,
+            help="(Default: 0.5) Framewise displacement value (in mm) over which \
+            volumes are considered outliers of movement")
+
+    if 'FD_perc' in query:
+        parser.add_argument(
+            '--fd_perc',
+            dest='fd_perc',
+            default=0.30,
+            type=float,
+            help="(Default: 0.30) Number of volumes over which FD threshold can be \
+            exceeded without dropping the subject for excess motion")
+
+    if 'run_length' in query:
+        parser.add_argument(
+            '--run_length',
+            dest='run_length',
+            default=0.50,
+            type=float,
+            help="(Default: 0.50) Proportion of run which must have been completed \
+            for subject to be included in analysis / processing")
 
     # NIRS Protocol Variables
     # ==========================

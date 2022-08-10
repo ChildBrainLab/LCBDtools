@@ -1,0 +1,213 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Aug 10 10:50:55 CDT 2022 1660146655
+Job ID:		103
+Username:	claytons
+Partition:	small
+End Slurm Prologue Wed Aug 10 10:50:55 CDT 2022 1660146655
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Aug 10 10:50:55 CDT 2022 1660146655
+Job ID:		101
+Username:	claytons
+Partition:	small
+End Slurm Prologue Wed Aug 10 10:50:55 CDT 2022 1660146655
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Aug 10 10:50:55 CDT 2022 1660146655
+Job ID:		102
+Username:	claytons
+Partition:	small
+End Slurm Prologue Wed Aug 10 10:50:55 CDT 2022 1660146655
+--------------------------------------------------------------
+/home/claytons/LCBDtools/scripts/MRI/sbatch
+/home/claytons/LCBDtools/scripts/MRI/sbatch
+/home/claytons/LCBDtools/scripts/MRI/sbatch
+node23.cluster
+node23.cluster
+node23.cluster
+Wed Aug 10 10:50:55 CDT 2022
+Wed Aug 10 10:50:55 CDT 2022
+Wed Aug 10 10:50:55 CDT 2022
+/home/claytons/LCBDtools/scripts/MRI/sbatch
+/home/claytons/LCBDtools/scripts/MRI/sbatch
+/home/claytons/LCBDtools/scripts/MRI/sbatch
+node23.cluster
+node23.cluster
+node23.cluster
+Wed Aug 10 10:50:55 CDT 2022
+Wed Aug 10 10:50:55 CDT 2022
+Wed Aug 10 10:50:55 CDT 2022
+grep: /scratch/claytons/MRI_data_clean/derivatives/fmriprep/./feat_script.fsf: No such file or directory
+    while executing
+"exec sh -c "grep -a 'fmri(inmelodic)' $filename | tail -n 1 | awk '{ print \$3 }'" "
+    (procedure "feat5:load" line 5)
+    invoked from within
+"feat5:load -1 1 ${fsfroot}.fsf"
+    (file "/export/fsl/fsl-6.0.5/bin/feat" line 309)
+grep: /scratch/claytons/MRI_data_clean/derivatives/fmriprep/./feat_script.fsf: No such file or directory
+    while executing
+"exec sh -c "grep -a 'fmri(inmelodic)' $filename | tail -n 1 | awk '{ print \$3 }'" "
+    (procedure "feat5:load" line 5)
+    invoked from within
+"feat5:load -1 1 ${fsfroot}.fsf"
+    (file "/export/fsl/fsl-6.0.5/bin/feat" line 309)grep: /scratch/claytons/MRI_data_clean/derivatives/fmriprep//feat_script.fsf: No such file or directory
+    while executing
+"exec sh -c "grep -a 'fmri(inmelodic)' $filename | tail -n 1 | awk '{ print \$3 }'" "
+    (procedure "feat5:load" line 5)
+    invoked from within
+"feat5:load -1 1 ${fsfroot}.fsf"
+    (file "/export/fsl/fsl-6.0.5/bin/feat" line 309)
+
+/home/claytons/LCBDtools/scripts/MRI/sbatch
+/home/claytons/LCBDtools/scripts/MRI/sbatch
+/home/claytons/LCBDtools/scripts/MRI/sbatch
+node23.cluster
+node23.cluster
+node23.cluster
+Wed Aug 10 10:50:55 CDT 2022
+Wed Aug 10 10:50:55 CDT 2022
+Wed Aug 10 10:50:55 CDT 2022
+/home/claytons/LCBDtools/scripts/MRI/sbatch
+/home/claytons/LCBDtools/scripts/MRI/sbatch
+/home/claytons/LCBDtools/scripts/MRI/sbatch
+node23.cluster
+node23.cluster
+node23.cluster
+Wed Aug 10 10:50:55 CDT 2022
+Wed Aug 10 10:50:55 CDT 2022
+Wed Aug 10 10:50:55 CDT 2022
+grep: /scratch/claytons/MRI_data_clean/derivatives/fmriprep/./feat_script.fsf: No such file or directory
+    while executing
+"exec sh -c "grep -a 'fmri(inmelodic)' $filename | tail -n 1 | awk '{ print \$3 }'" "
+    (procedure "feat5:load" line 5)
+    invoked from within
+"feat5:load -1 1 ${fsfroot}.fsf"
+    (file "/export/fsl/fsl-6.0.5/bin/feat" line 309)
+grep: /scratch/claytons/MRI_data_clean/derivatives/fmriprep/./feat_script.fsf: No such file or directory
+    while executing
+"exec sh -c "grep -a 'fmri(inmelodic)' $filename | tail -n 1 | awk '{ print \$3 }'" "
+    (procedure "feat5:load" line 5)
+    invoked from within
+"feat5:load -1 1 ${fsfroot}.fsf"
+    (file "/export/fsl/fsl-6.0.5/bin/feat" line 309)grep: /scratch/claytons/MRI_data_clean/derivatives/fmriprep//feat_script.fsf: No such file or directory
+    while executing
+"exec sh -c "grep -a 'fmri(inmelodic)' $filename | tail -n 1 | awk '{ print \$3 }'" "
+    (procedure "feat5:load" line 5)
+    invoked from within
+"feat5:load -1 1 ${fsfroot}.fsf"
+    (file "/export/fsl/fsl-6.0.5/bin/feat" line 309)
+
+/home/claytons/LCBDtools/scripts/MRI/sbatch
+/home/claytons/LCBDtools/scripts/MRI/sbatch
+/home/claytons/LCBDtools/scripts/MRI/sbatch
+node23.cluster
+node23.cluster
+node23.cluster
+Wed Aug 10 10:50:55 CDT 2022
+Wed Aug 10 10:50:55 CDT 2022
+Wed Aug 10 10:50:55 CDT 2022
+/home/claytons/LCBDtools/scripts/MRI/sbatch
+/home/claytons/LCBDtools/scripts/MRI/sbatch
+/home/claytons/LCBDtools/scripts/MRI/sbatch
+node23.cluster
+node23.cluster
+node23.cluster
+Wed Aug 10 10:50:55 CDT 2022
+Wed Aug 10 10:50:55 CDT 2022
+Wed Aug 10 10:50:55 CDT 2022
+grep: /scratch/claytons/MRI_data_clean/derivatives/fmriprep/./feat_script.fsf: No such file or directory
+    while executing
+"exec sh -c "grep -a 'fmri(inmelodic)' $filename | tail -n 1 | awk '{ print \$3 }'" "
+    (procedure "feat5:load" line 5)
+    invoked from within
+"feat5:load -1 1 ${fsfroot}.fsf"
+    (file "/export/fsl/fsl-6.0.5/bin/feat" line 309)
+grep: /scratch/claytons/MRI_data_clean/derivatives/fmriprep/./feat_script.fsf: No such file or directory
+    while executing
+"exec sh -c "grep -a 'fmri(inmelodic)' $filename | tail -n 1 | awk '{ print \$3 }'" "
+    (procedure "feat5:load" line 5)
+    invoked from within
+"feat5:load -1 1 ${fsfroot}.fsf"
+    (file "/export/fsl/fsl-6.0.5/bin/feat" line 309)grep: /scratch/claytons/MRI_data_clean/derivatives/fmriprep//feat_script.fsf: No such file or directory
+    while executing
+"exec sh -c "grep -a 'fmri(inmelodic)' $filename | tail -n 1 | awk '{ print \$3 }'" "
+    (procedure "feat5:load" line 5)
+    invoked from within
+"feat5:load -1 1 ${fsfroot}.fsf"
+    (file "/export/fsl/fsl-6.0.5/bin/feat" line 309)
+
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Aug 10 10:50:57 CDT 2022 1660146657
+Name                : fsl_feat
+User                : claytons
+Partition           : small
+Nodes               : node21
+Cores               : 4
+State               : FAILED
+Submit              : 2022-08-10T10:50:55
+Start               : 2022-08-10T10:50:55
+End                 : 2022-08-10T10:50:55
+Reserved Walltime   : 1-00:00:00
+Used Walltime       : --
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 60G
+Max Mem Used        : 1.25M (1314816.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node21
+Max-Disk-Write Node : node21
+Max-Disk-Read Node  : node21
+End Slurm Epilogue Wed Aug 10 10:50:57 CDT 2022 1660146657
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Aug 10 10:50:57 CDT 2022 1660146657
+Name                : fsl_feat
+User                : claytons
+Partition           : small
+Nodes               : node21
+Cores               : 4
+State               : FAILED
+Submit              : 2022-08-10T10:50:55
+Start               : 2022-08-10T10:50:55
+End                 : 2022-08-10T10:50:55
+Reserved Walltime   : 1-00:00:00
+Used Walltime       : --
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 60G
+Max Mem Used        : 1.26M (1318912.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node21
+Max-Disk-Write Node : node21
+Max-Disk-Read Node  : node21
+End Slurm Epilogue Wed Aug 10 10:50:57 CDT 2022 1660146657
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Aug 10 10:50:57 CDT 2022 1660146657
+Name                : fsl_feat
+User                : claytons
+Partition           : small
+Nodes               : node21
+Cores               : 4
+State               : FAILED
+Submit              : 2022-08-10T10:50:55
+Start               : 2022-08-10T10:50:55
+End                 : 2022-08-10T10:50:55
+Reserved Walltime   : 1-00:00:00
+Used Walltime       : --
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 60G
+Max Mem Used        : 1.25M (1314816.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node21
+Max-Disk-Write Node : node21
+Max-Disk-Read Node  : node21
+End Slurm Epilogue Wed Aug 10 10:50:57 CDT 2022 1660146657
+--------------------------------------------------------------

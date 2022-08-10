@@ -239,7 +239,7 @@ set fmri(reghighres_search) 90
 set fmri(reghighres_dof) BBR
 
 # Registration to standard image?
-set fmri(regstandard_yn) 1
+set fmri(regstandard_yn) 0
 
 # Use alternate reference images?
 set fmri(alternateReference_yn) 0
@@ -251,7 +251,7 @@ set fmri(regstandard) "/export/fsl/fsl-6.0.5/data/standard/MNI152_T1_2mm_brain"
 # 0   : No search
 # 90  : Normal search
 # 180 : Full search
-set fmri(regstandard_search) 90
+set fmri(regstandard_search) 0
 
 # Degrees of Freedom for registration to standard space
 set fmri(regstandard_dof) 12
@@ -273,7 +273,8 @@ set fmri(totalVoxels) VOXELS
 set fmri(ncopeinputs) 0
 
 # 4D AVW data or FEAT directory (1)
-set feat_files(1) "/scratch/claytons/MRI_data_clean/derivatives/fmriprep/sub-SUBJECT/ses-SESSION/func/sub-SUBJECT_ses-SESSION_task-TASK_dir-PA_run-RUN_space-MNIPediatricAsym_cohort-2_res-2_desc-preproc_bold_smoothed7mm"
+set feat_files(1) "/scratch/claytons/MRI_data_clean/derivatives/fmriprep/sub-SUBJECT/ses-SESSION/func/sub-SUBJECT_ses-SESSION_task-TASK_dir-PA_run-RUN_space-MNIPediatricAsym_cohort-2_res-2_desc-preproc_bold_smoothed_7mm"
+
 
 # Add confound EVs text file
 set fmri(confoundevs) 0
