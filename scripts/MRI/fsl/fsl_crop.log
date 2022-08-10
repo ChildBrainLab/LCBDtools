@@ -1,0 +1,850 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Aug 10 11:25:07 CDT 2022 1660148707
+Job ID:		375
+Username:	claytons
+Partition:	small
+End Slurm Prologue Wed Aug 10 11:25:07 CDT 2022 1660148707
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Aug 10 11:25:07 CDT 2022 1660148707
+Job ID:		376
+Username:	claytons
+Partition:	small
+End Slurm Prologue Wed Aug 10 11:25:07 CDT 2022 1660148707
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Aug 10 11:25:07 CDT 2022 1660148707
+Job ID:		378
+Username:	claytons
+Partition:	small
+End Slurm Prologue Wed Aug 10 11:25:07 CDT 2022 1660148707
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Aug 10 11:25:07 CDT 2022 1660148707
+Job ID:		379
+Username:	claytons
+Partition:	small
+End Slurm Prologue Wed Aug 10 11:25:07 CDT 2022 1660148707
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Aug 10 11:25:07 CDT 2022 1660148707
+Job ID:		377
+Username:	claytons
+Partition:	small
+End Slurm Prologue Wed Aug 10 11:25:07 CDT 2022 1660148707
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Aug 10 11:25:04 CDT 2022 1660148704
+Job ID:		373
+Username:	claytons
+Partition:	small
+End Slurm Prologue Wed Aug 10 11:25:04 CDT 2022 1660148704
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Aug 10 11:25:04 CDT 2022 1660148704
+Job ID:		374
+Username:	claytons
+Partition:	small
+End Slurm Prologue Wed Aug 10 11:25:04 CDT 2022 1660148704
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Aug 10 11:24:57 CDT 2022 1660148697
+Job ID:		353
+Username:	claytons
+Partition:	small
+End Slurm Prologue Wed Aug 10 11:24:57 CDT 2022 1660148697
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Aug 10 11:24:57 CDT 2022 1660148697
+Job ID:		355
+Username:	claytons
+Partition:	small
+End Slurm Prologue Wed Aug 10 11:24:57 CDT 2022 1660148697
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Aug 10 11:24:57 CDT 2022 1660148697
+Job ID:		326
+Username:	claytons
+Partition:	small
+End Slurm Prologue Wed Aug 10 11:24:57 CDT 2022 1660148697
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Aug 10 11:24:57 CDT 2022 1660148697
+Job ID:		327
+Username:	claytons
+Partition:	small
+End Slurm Prologue Wed Aug 10 11:24:57 CDT 2022 1660148697
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Aug 10 11:24:58 CDT 2022 1660148698
+Job ID:		369
+Username:	claytons
+Partition:	small
+End Slurm Prologue Wed Aug 10 11:24:58 CDT 2022 1660148698
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Aug 10 11:24:58 CDT 2022 1660148698
+Job ID:		364
+Username:	claytons
+Partition:	small
+End Slurm Prologue Wed Aug 10 11:24:58 CDT 2022 1660148698
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Aug 10 11:24:58 CDT 2022 1660148698
+Job ID:		367
+Username:	claytons
+Partition:	small
+End Slurm Prologue Wed Aug 10 11:24:58 CDT 2022 1660148698
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Aug 10 11:24:58 CDT 2022 1660148698
+Job ID:		359
+Username:	claytons
+Partition:	small
+End Slurm Prologue Wed Aug 10 11:24:58 CDT 2022 1660148698
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Aug 10 11:25:07 CDT 2022 1660148707
+Name                : fsl_crop
+User                : claytons
+Partition           : small
+Nodes               : node14
+Cores               : 4
+State               : COMPLETED
+Submit              : 2022-08-10T11:24:47
+Start               : 2022-08-10T11:24:58
+End                 : 2022-08-10T11:25:05
+Reserved Walltime   : 18:00:00
+Used Walltime       : 00:00:07
+Used CPU Time       : 00:00:06
+% User (Computation): 89.24%
+% System (I/O)      :  0.00%
+Mem Reserved        : 60G
+Max Mem Used        : 1.27M (1327104.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node14
+Max-Disk-Write Node : node14
+Max-Disk-Read Node  : node14
+End Slurm Epilogue Wed Aug 10 11:25:07 CDT 2022 1660148707
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Aug 10 11:24:58 CDT 2022 1660148698
+Job ID:		368
+Username:	claytons
+Partition:	small
+End Slurm Prologue Wed Aug 10 11:24:58 CDT 2022 1660148698
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Aug 10 11:25:07 CDT 2022 1660148707
+Name                : fsl_crop
+User                : claytons
+Partition           : small
+Nodes               : node13
+Cores               : 4
+State               : COMPLETED
+Submit              : 2022-08-10T11:24:47
+Start               : 2022-08-10T11:24:58
+End                 : 2022-08-10T11:25:05
+Reserved Walltime   : 18:00:00
+Used Walltime       : 00:00:07
+Used CPU Time       : 00:00:06
+% User (Computation): 88.13%
+% System (I/O)      :  0.00%
+Mem Reserved        : 60G
+Max Mem Used        : 1.27M (1327104.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node13
+Max-Disk-Write Node : node13
+Max-Disk-Read Node  : node13
+End Slurm Epilogue Wed Aug 10 11:25:08 CDT 2022 1660148708
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Aug 10 11:25:08 CDT 2022 1660148708
+Name                : fsl_crop
+User                : claytons
+Partition           : small
+Nodes               : node13
+Cores               : 4
+State               : COMPLETED
+Submit              : 2022-08-10T11:24:47
+Start               : 2022-08-10T11:24:58
+End                 : 2022-08-10T11:25:06
+Reserved Walltime   : 18:00:00
+Used Walltime       : 00:00:08
+Used CPU Time       : 00:00:06
+% User (Computation): 88.06%
+% System (I/O)      :  0.00%
+Mem Reserved        : 60G
+Max Mem Used        : 3.50M (3670016.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node13
+Max-Disk-Write Node : node13
+Max-Disk-Read Node  : node13
+End Slurm Epilogue Wed Aug 10 11:25:08 CDT 2022 1660148708
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Aug 10 11:25:08 CDT 2022 1660148708
+Name                : fsl_crop
+User                : claytons
+Partition           : small
+Nodes               : node14
+Cores               : 4
+State               : COMPLETED
+Submit              : 2022-08-10T11:24:47
+Start               : 2022-08-10T11:24:58
+End                 : 2022-08-10T11:25:06
+Reserved Walltime   : 18:00:00
+Used Walltime       : 00:00:08
+Used CPU Time       : 00:00:06
+% User (Computation): 89.00%
+% System (I/O)      :  0.00%
+Mem Reserved        : 60G
+Max Mem Used        : 3.54M (3710976.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node14
+Max-Disk-Write Node : node14
+Max-Disk-Read Node  : node14
+End Slurm Epilogue Wed Aug 10 11:25:08 CDT 2022 1660148708
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Aug 10 11:25:08 CDT 2022 1660148708
+Name                : fsl_crop
+User                : claytons
+Partition           : small
+Nodes               : node13
+Cores               : 4
+State               : COMPLETED
+Submit              : 2022-08-10T11:24:47
+Start               : 2022-08-10T11:24:58
+End                 : 2022-08-10T11:25:06
+Reserved Walltime   : 18:00:00
+Used Walltime       : 00:00:08
+Used CPU Time       : 00:00:06
+% User (Computation): 87.65%
+% System (I/O)      :  0.00%
+Mem Reserved        : 60G
+Max Mem Used        : 1.26M (1323008.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node13
+Max-Disk-Write Node : node13
+Max-Disk-Read Node  : node13
+End Slurm Epilogue Wed Aug 10 11:25:08 CDT 2022 1660148708
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Aug 10 11:25:08 CDT 2022 1660148708
+Name                : fsl_crop
+User                : claytons
+Partition           : small
+Nodes               : node14
+Cores               : 4
+State               : COMPLETED
+Submit              : 2022-08-10T11:24:47
+Start               : 2022-08-10T11:24:58
+End                 : 2022-08-10T11:25:06
+Reserved Walltime   : 18:00:00
+Used Walltime       : 00:00:08
+Used CPU Time       : 00:00:06
+% User (Computation): 88.65%
+% System (I/O)      :  0.00%
+Mem Reserved        : 60G
+Max Mem Used        : 1.27M (1327104.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node14
+Max-Disk-Write Node : node14
+Max-Disk-Read Node  : node14
+End Slurm Epilogue Wed Aug 10 11:25:08 CDT 2022 1660148708
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Aug 10 11:25:08 CDT 2022 1660148708
+Name                : fsl_crop
+User                : claytons
+Partition           : small
+Nodes               : node09
+Cores               : 4
+State               : COMPLETED
+Submit              : 2022-08-10T11:24:47
+Start               : 2022-08-10T11:24:56
+End                 : 2022-08-10T11:25:06
+Reserved Walltime   : 18:00:00
+Used Walltime       : 00:00:10
+Used CPU Time       : 00:00:06
+% User (Computation): 88.79%
+% System (I/O)      :  0.00%
+Mem Reserved        : 60G
+Max Mem Used        : 1.27M (1327104.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node09
+Max-Disk-Write Node : node09
+Max-Disk-Read Node  : node09
+End Slurm Epilogue Wed Aug 10 11:25:08 CDT 2022 1660148708
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Aug 10 11:25:08 CDT 2022 1660148708
+Name                : fsl_crop
+User                : claytons
+Partition           : small
+Nodes               : node09
+Cores               : 4
+State               : COMPLETED
+Submit              : 2022-08-10T11:24:47
+Start               : 2022-08-10T11:24:56
+End                 : 2022-08-10T11:25:06
+Reserved Walltime   : 18:00:00
+Used Walltime       : 00:00:10
+Used CPU Time       : 00:00:06
+% User (Computation): 89.59%
+% System (I/O)      :  0.00%
+Mem Reserved        : 60G
+Max Mem Used        : 3.39M (3559424.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node09
+Max-Disk-Write Node : node09
+Max-Disk-Read Node  : node09
+End Slurm Epilogue Wed Aug 10 11:25:09 CDT 2022 1660148709
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Aug 10 11:25:09 CDT 2022 1660148709
+Name                : fsl_crop
+User                : claytons
+Partition           : small
+Nodes               : node12
+Cores               : 4
+State               : COMPLETED
+Submit              : 2022-08-10T11:24:47
+Start               : 2022-08-10T11:24:57
+End                 : 2022-08-10T11:25:07
+Reserved Walltime   : 18:00:00
+Used Walltime       : 00:00:10
+Used CPU Time       : 00:00:06
+% User (Computation): 88.58%
+% System (I/O)      :  0.00%
+Mem Reserved        : 60G
+Max Mem Used        : 1.27M (1327104.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node12
+Max-Disk-Write Node : node12
+Max-Disk-Read Node  : node12
+End Slurm Epilogue Wed Aug 10 11:25:09 CDT 2022 1660148709
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Aug 10 11:25:10 CDT 2022 1660148710
+Name                : fsl_crop
+User                : claytons
+Partition           : small
+Nodes               : node12
+Cores               : 4
+State               : COMPLETED
+Submit              : 2022-08-10T11:24:47
+Start               : 2022-08-10T11:24:57
+End                 : 2022-08-10T11:25:08
+Reserved Walltime   : 18:00:00
+Used Walltime       : 00:00:11
+Used CPU Time       : 00:00:06
+% User (Computation): 89.77%
+% System (I/O)      :  0.00%
+Mem Reserved        : 60G
+Max Mem Used        : 3.38M (3538944.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node12
+Max-Disk-Write Node : node12
+Max-Disk-Read Node  : node12
+End Slurm Epilogue Wed Aug 10 11:25:10 CDT 2022 1660148710
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Aug 10 11:24:57 CDT 2022 1660148697
+Job ID:		353
+Username:	claytons
+Partition:	small
+End Slurm Prologue Wed Aug 10 11:24:57 CDT 2022 1660148697
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Aug 10 11:24:57 CDT 2022 1660148697
+Job ID:		355
+Username:	claytons
+Partition:	small
+End Slurm Prologue Wed Aug 10 11:24:57 CDT 2022 1660148697
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Aug 10 11:24:57 CDT 2022 1660148697
+Job ID:		326
+Username:	claytons
+Partition:	small
+End Slurm Prologue Wed Aug 10 11:24:57 CDT 2022 1660148697
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Aug 10 11:24:57 CDT 2022 1660148697
+Job ID:		327
+Username:	claytons
+Partition:	small
+End Slurm Prologue Wed Aug 10 11:24:57 CDT 2022 1660148697
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Aug 10 11:24:58 CDT 2022 1660148698
+Job ID:		369
+Username:	claytons
+Partition:	small
+End Slurm Prologue Wed Aug 10 11:24:58 CDT 2022 1660148698
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Aug 10 11:24:58 CDT 2022 1660148698
+Job ID:		364
+Username:	claytons
+Partition:	small
+End Slurm Prologue Wed Aug 10 11:24:58 CDT 2022 1660148698
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Aug 10 11:24:58 CDT 2022 1660148698
+Job ID:		367
+Username:	claytons
+Partition:	small
+End Slurm Prologue Wed Aug 10 11:24:58 CDT 2022 1660148698
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Aug 10 11:24:58 CDT 2022 1660148698
+Job ID:		359
+Username:	claytons
+Partition:	small
+End Slurm Prologue Wed Aug 10 11:24:58 CDT 2022 1660148698
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Aug 10 11:25:07 CDT 2022 1660148707
+Name                : fsl_crop
+User                : claytons
+Partition           : small
+Nodes               : node14
+Cores               : 4
+State               : COMPLETED
+Submit              : 2022-08-10T11:24:47
+Start               : 2022-08-10T11:24:58
+End                 : 2022-08-10T11:25:05
+Reserved Walltime   : 18:00:00
+Used Walltime       : 00:00:07
+Used CPU Time       : 00:00:06
+% User (Computation): 89.24%
+% System (I/O)      :  0.00%
+Mem Reserved        : 60G
+Max Mem Used        : 1.27M (1327104.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node14
+Max-Disk-Write Node : node14
+Max-Disk-Read Node  : node14
+End Slurm Epilogue Wed Aug 10 11:25:07 CDT 2022 1660148707
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Aug 10 11:24:58 CDT 2022 1660148698
+Job ID:		368
+Username:	claytons
+Partition:	small
+End Slurm Prologue Wed Aug 10 11:24:58 CDT 2022 1660148698
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Aug 10 11:25:07 CDT 2022 1660148707
+Name                : fsl_crop
+User                : claytons
+Partition           : small
+Nodes               : node13
+Cores               : 4
+State               : COMPLETED
+Submit              : 2022-08-10T11:24:47
+Start               : 2022-08-10T11:24:58
+End                 : 2022-08-10T11:25:05
+Reserved Walltime   : 18:00:00
+Used Walltime       : 00:00:07
+Used CPU Time       : 00:00:06
+% User (Computation): 88.13%
+% System (I/O)      :  0.00%
+Mem Reserved        : 60G
+Max Mem Used        : 1.27M (1327104.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node13
+Max-Disk-Write Node : node13
+Max-Disk-Read Node  : node13
+End Slurm Epilogue Wed Aug 10 11:25:08 CDT 2022 1660148708
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Aug 10 11:25:08 CDT 2022 1660148708
+Name                : fsl_crop
+User                : claytons
+Partition           : small
+Nodes               : node13
+Cores               : 4
+State               : COMPLETED
+Submit              : 2022-08-10T11:24:47
+Start               : 2022-08-10T11:24:58
+End                 : 2022-08-10T11:25:06
+Reserved Walltime   : 18:00:00
+Used Walltime       : 00:00:08
+Used CPU Time       : 00:00:06
+% User (Computation): 88.06%
+% System (I/O)      :  0.00%
+Mem Reserved        : 60G
+Max Mem Used        : 3.50M (3670016.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node13
+Max-Disk-Write Node : node13
+Max-Disk-Read Node  : node13
+End Slurm Epilogue Wed Aug 10 11:25:08 CDT 2022 1660148708
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Aug 10 11:25:08 CDT 2022 1660148708
+Name                : fsl_crop
+User                : claytons
+Partition           : small
+Nodes               : node14
+Cores               : 4
+State               : COMPLETED
+Submit              : 2022-08-10T11:24:47
+Start               : 2022-08-10T11:24:58
+End                 : 2022-08-10T11:25:06
+Reserved Walltime   : 18:00:00
+Used Walltime       : 00:00:08
+Used CPU Time       : 00:00:06
+% User (Computation): 89.00%
+% System (I/O)      :  0.00%
+Mem Reserved        : 60G
+Max Mem Used        : 3.54M (3710976.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node14
+Max-Disk-Write Node : node14
+Max-Disk-Read Node  : node14
+End Slurm Epilogue Wed Aug 10 11:25:08 CDT 2022 1660148708
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Aug 10 11:25:08 CDT 2022 1660148708
+Name                : fsl_crop
+User                : claytons
+Partition           : small
+Nodes               : node13
+Cores               : 4
+State               : COMPLETED
+Submit              : 2022-08-10T11:24:47
+Start               : 2022-08-10T11:24:58
+End                 : 2022-08-10T11:25:06
+Reserved Walltime   : 18:00:00
+Used Walltime       : 00:00:08
+Used CPU Time       : 00:00:06
+% User (Computation): 87.65%
+% System (I/O)      :  0.00%
+Mem Reserved        : 60G
+Max Mem Used        : 1.26M (1323008.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node13
+Max-Disk-Write Node : node13
+Max-Disk-Read Node  : node13
+End Slurm Epilogue Wed Aug 10 11:25:08 CDT 2022 1660148708
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Aug 10 11:25:08 CDT 2022 1660148708
+Name                : fsl_crop
+User                : claytons
+Partition           : small
+Nodes               : node14
+Cores               : 4
+State               : COMPLETED
+Submit              : 2022-08-10T11:24:47
+Start               : 2022-08-10T11:24:58
+End                 : 2022-08-10T11:25:06
+Reserved Walltime   : 18:00:00
+Used Walltime       : 00:00:08
+Used CPU Time       : 00:00:06
+% User (Computation): 88.65%
+% System (I/O)      :  0.00%
+Mem Reserved        : 60G
+Max Mem Used        : 1.27M (1327104.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node14
+Max-Disk-Write Node : node14
+Max-Disk-Read Node  : node14
+End Slurm Epilogue Wed Aug 10 11:25:08 CDT 2022 1660148708
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Aug 10 11:25:08 CDT 2022 1660148708
+Name                : fsl_crop
+User                : claytons
+Partition           : small
+Nodes               : node09
+Cores               : 4
+State               : COMPLETED
+Submit              : 2022-08-10T11:24:47
+Start               : 2022-08-10T11:24:56
+End                 : 2022-08-10T11:25:06
+Reserved Walltime   : 18:00:00
+Used Walltime       : 00:00:10
+Used CPU Time       : 00:00:06
+% User (Computation): 88.79%
+% System (I/O)      :  0.00%
+Mem Reserved        : 60G
+Max Mem Used        : 1.27M (1327104.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node09
+Max-Disk-Write Node : node09
+Max-Disk-Read Node  : node09
+End Slurm Epilogue Wed Aug 10 11:25:08 CDT 2022 1660148708
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Aug 10 11:25:08 CDT 2022 1660148708
+Name                : fsl_crop
+User                : claytons
+Partition           : small
+Nodes               : node09
+Cores               : 4
+State               : COMPLETED
+Submit              : 2022-08-10T11:24:47
+Start               : 2022-08-10T11:24:56
+End                 : 2022-08-10T11:25:06
+Reserved Walltime   : 18:00:00
+Used Walltime       : 00:00:10
+Used CPU Time       : 00:00:06
+% User (Computation): 89.59%
+% System (I/O)      :  0.00%
+Mem Reserved        : 60G
+Max Mem Used        : 3.39M (3559424.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node09
+Max-Disk-Write Node : node09
+Max-Disk-Read Node  : node09
+End Slurm Epilogue Wed Aug 10 11:25:09 CDT 2022 1660148709
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Aug 10 11:25:09 CDT 2022 1660148709
+Name                : fsl_crop
+User                : claytons
+Partition           : small
+Nodes               : node12
+Cores               : 4
+State               : COMPLETED
+Submit              : 2022-08-10T11:24:47
+Start               : 2022-08-10T11:24:57
+End                 : 2022-08-10T11:25:07
+Reserved Walltime   : 18:00:00
+Used Walltime       : 00:00:10
+Used CPU Time       : 00:00:06
+% User (Computation): 88.58%
+% System (I/O)      :  0.00%
+Mem Reserved        : 60G
+Max Mem Used        : 1.27M (1327104.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node12
+Max-Disk-Write Node : node12
+Max-Disk-Read Node  : node12
+End Slurm Epilogue Wed Aug 10 11:25:09 CDT 2022 1660148709
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Aug 10 11:25:10 CDT 2022 1660148710
+Name                : fsl_crop
+User                : claytons
+Partition           : small
+Nodes               : node12
+Cores               : 4
+State               : COMPLETED
+Submit              : 2022-08-10T11:24:47
+Start               : 2022-08-10T11:24:57
+End                 : 2022-08-10T11:25:08
+Reserved Walltime   : 18:00:00
+Used Walltime       : 00:00:11
+Used CPU Time       : 00:00:06
+% User (Computation): 89.77%
+% System (I/O)      :  0.00%
+Mem Reserved        : 60G
+Max Mem Used        : 3.38M (3538944.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node12
+Max-Disk-Write Node : node12
+Max-Disk-Read Node  : node12
+End Slurm Epilogue Wed Aug 10 11:25:10 CDT 2022 1660148710
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Aug 10 11:25:13 CDT 2022 1660148713
+Name                : fsl_crop
+User                : claytons
+Partition           : small
+Nodes               : node17
+Cores               : 4
+State               : COMPLETED
+Submit              : 2022-08-10T11:24:47
+Start               : 2022-08-10T11:25:04
+End                 : 2022-08-10T11:25:11
+Reserved Walltime   : 18:00:00
+Used Walltime       : 00:00:07
+Used CPU Time       : 00:00:06
+% User (Computation): 89.86%
+% System (I/O)      :  0.00%
+Mem Reserved        : 60G
+Max Mem Used        : 1.27M (1327104.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node17
+Max-Disk-Write Node : node17
+Max-Disk-Read Node  : node17
+End Slurm Epilogue Wed Aug 10 11:25:13 CDT 2022 1660148713
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Aug 10 11:25:13 CDT 2022 1660148713
+Name                : fsl_crop
+User                : claytons
+Partition           : small
+Nodes               : node17
+Cores               : 4
+State               : COMPLETED
+Submit              : 2022-08-10T11:24:47
+Start               : 2022-08-10T11:25:04
+End                 : 2022-08-10T11:25:11
+Reserved Walltime   : 18:00:00
+Used Walltime       : 00:00:07
+Used CPU Time       : 00:00:06
+% User (Computation): 89.93%
+% System (I/O)      :  0.00%
+Mem Reserved        : 60G
+Max Mem Used        : 1.27M (1327104.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node17
+Max-Disk-Write Node : node17
+Max-Disk-Read Node  : node17
+End Slurm Epilogue Wed Aug 10 11:25:13 CDT 2022 1660148713
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Aug 10 11:25:16 CDT 2022 1660148716
+Name                : fsl_crop
+User                : claytons
+Partition           : small
+Nodes               : node17
+Cores               : 4
+State               : COMPLETED
+Submit              : 2022-08-10T11:24:48
+Start               : 2022-08-10T11:25:07
+End                 : 2022-08-10T11:25:14
+Reserved Walltime   : 18:00:00
+Used Walltime       : 00:00:07
+Used CPU Time       : 00:00:06
+% User (Computation): 89.09%
+% System (I/O)      :  0.00%
+Mem Reserved        : 60G
+Max Mem Used        : 1.27M (1327104.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node17
+Max-Disk-Write Node : node17
+Max-Disk-Read Node  : node17
+End Slurm Epilogue Wed Aug 10 11:25:16 CDT 2022 1660148716
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Aug 10 11:25:16 CDT 2022 1660148716
+Name                : fsl_crop
+User                : claytons
+Partition           : small
+Nodes               : node19
+Cores               : 4
+State               : COMPLETED
+Submit              : 2022-08-10T11:24:48
+Start               : 2022-08-10T11:25:07
+End                 : 2022-08-10T11:25:14
+Reserved Walltime   : 18:00:00
+Used Walltime       : 00:00:07
+Used CPU Time       : 00:00:06
+% User (Computation): 89.57%
+% System (I/O)      :  0.00%
+Mem Reserved        : 60G
+Max Mem Used        : 1.26M (1323008.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node19
+Max-Disk-Write Node : node19
+Max-Disk-Read Node  : node19
+End Slurm Epilogue Wed Aug 10 11:25:16 CDT 2022 1660148716
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Aug 10 11:25:16 CDT 2022 1660148716
+Name                : fsl_crop
+User                : claytons
+Partition           : small
+Nodes               : node19
+Cores               : 4
+State               : COMPLETED
+Submit              : 2022-08-10T11:24:48
+Start               : 2022-08-10T11:25:07
+End                 : 2022-08-10T11:25:14
+Reserved Walltime   : 18:00:00
+Used Walltime       : 00:00:07
+Used CPU Time       : 00:00:06
+% User (Computation): 89.57%
+% System (I/O)      :  0.00%
+Mem Reserved        : 60G
+Max Mem Used        : 1.26M (1323008.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node19
+Max-Disk-Write Node : node19
+Max-Disk-Read Node  : node19
+End Slurm Epilogue Wed Aug 10 11:25:16 CDT 2022 1660148716
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Aug 10 11:25:16 CDT 2022 1660148716
+Name                : fsl_crop
+User                : claytons
+Partition           : small
+Nodes               : node17
+Cores               : 4
+State               : COMPLETED
+Submit              : 2022-08-10T11:24:47
+Start               : 2022-08-10T11:25:07
+End                 : 2022-08-10T11:25:14
+Reserved Walltime   : 18:00:00
+Used Walltime       : 00:00:07
+Used CPU Time       : 00:00:06
+% User (Computation): 89.12%
+% System (I/O)      :  0.00%
+Mem Reserved        : 60G
+Max Mem Used        : 1.27M (1331200.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node17
+Max-Disk-Write Node : node17
+Max-Disk-Read Node  : node17
+End Slurm Epilogue Wed Aug 10 11:25:16 CDT 2022 1660148716
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Aug 10 11:25:16 CDT 2022 1660148716
+Name                : fsl_crop
+User                : claytons
+Partition           : small
+Nodes               : node19
+Cores               : 4
+State               : COMPLETED
+Submit              : 2022-08-10T11:24:47
+Start               : 2022-08-10T11:25:07
+End                 : 2022-08-10T11:25:14
+Reserved Walltime   : 18:00:00
+Used Walltime       : 00:00:07
+Used CPU Time       : 00:00:06
+% User (Computation): 89.82%
+% System (I/O)      :  0.00%
+Mem Reserved        : 60G
+Max Mem Used        : 1.27M (1331200.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node19
+Max-Disk-Write Node : node19
+Max-Disk-Read Node  : node19
+End Slurm Epilogue Wed Aug 10 11:25:16 CDT 2022 1660148716
+--------------------------------------------------------------

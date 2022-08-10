@@ -7,12 +7,7 @@ do
         ext="${f#*.}"
         fname="${f%.$ext}"
         echo "Cropping: $(basename ${f})"
-	let a=$(fslnvols $f)-2)
+	let a=$(fslnvols $f)-2
         sbatch /home/claytons/LCBDtools/scripts/MRI/sbatch/fsl_crop_sbatch.sh $f "${fname}_cropped.${ext}" 1 $a
+	#echo $a
 done
-
-img=$1 
-
-
-
-fslroi
