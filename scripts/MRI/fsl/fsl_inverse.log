@@ -1,0 +1,35 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Mon Aug 15 21:04:18 CDT 2022 1660615458
+Job ID:		12122
+Username:	claytons
+Partition:	small
+End Slurm Prologue Mon Aug 15 21:04:18 CDT 2022 1660615458
+--------------------------------------------------------------
+/home/claytons/LCBDtools/scripts/MRI/fsl
+node32.cluster
+Mon Aug 15 21:04:18 CDT 2022
+--------------------------------------------------------------
+Begin Slurm Epilogue Mon Aug 15 21:04:20 CDT 2022 1660615460
+Name                : fsl_inverse_mask
+User                : claytons
+Partition           : small
+Nodes               : node32
+Cores               : 4
+State               : COMPLETED
+Submit              : 2022-08-15T21:04:17
+Start               : 2022-08-15T21:04:18
+End                 : 2022-08-15T21:04:18
+Reserved Walltime   : 01:00:00
+Used Walltime       : --
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 10G
+Max Mem Used        : 1.26M (1318912.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node32
+Max-Disk-Write Node : node32
+Max-Disk-Read Node  : node32
+End Slurm Epilogue Mon Aug 15 21:04:20 CDT 2022 1660615460
+--------------------------------------------------------------

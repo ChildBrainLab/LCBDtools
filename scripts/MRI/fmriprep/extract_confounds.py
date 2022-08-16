@@ -16,6 +16,7 @@ import numpy as np
 bids_folder = sys.argv[1]
 
 COIs = [
+    "framewise_displacement",
     "trans_x",
     "trans_y",
     "trans_z",
@@ -29,17 +30,19 @@ cons = glob(bids_folder+"/derivatives/fmriprep/sub-*/**/func/*confounds_timeseri
 for fname in cons:
     df = pd.read_csv(fname, delimiter="\t", usecols=COIs)
     for col in COIs:
-        series = df[col]
+        series = df[col].astype(float)
+        if col == "framewise_displacement":
+            series[0] = float(0.0)
 
         new_fname = fname.replace("timeseries", col).replace("tsv", "txt")
 
-        if not os.path.exists(new_fname):
+        # if not os.path.exists(new_fname):
 
-            f = open(new_fname, 'w')
+        f = open(new_fname, 'w')
 
-            for i, val in enumerate(series):
-                if i > 0:
-                    f.write('\n')
-                f.write(str(val))
+        for i, val in enumerate(series):
+            if i > 0:
+                f.write('\n')
+            f.write(str(val))
 
-            f.close()
+        f.close()

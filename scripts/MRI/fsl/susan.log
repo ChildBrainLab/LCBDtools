@@ -1,0 +1,35 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Mon Aug 15 21:04:55 CDT 2022 1660615495
+Job ID:		12123
+Username:	claytons
+Partition:	small
+End Slurm Prologue Mon Aug 15 21:04:55 CDT 2022 1660615495
+--------------------------------------------------------------
+/home/claytons/LCBDtools/scripts/MRI/fsl
+node32.cluster
+Mon Aug 15 21:04:55 CDT 2022
+--------------------------------------------------------------
+Begin Slurm Epilogue Mon Aug 15 22:09:30 CDT 2022 1660619370
+Name                : fsl_susan
+User                : claytons
+Partition           : small
+Nodes               : node32
+Cores               : 4
+State               : COMPLETED
+Submit              : 2022-08-15T21:04:54
+Start               : 2022-08-15T21:04:55
+End                 : 2022-08-15T22:09:28
+Reserved Walltime   : 1-00:00:00
+Used Walltime       :   01:04:33
+Used CPU Time       :   01:04:20
+% User (Computation): 99.95%
+% System (I/O)      :  0.05%
+Mem Reserved        : 60G
+Max Mem Used        : 4.63G (4970975232.0)
+Max Disk Write      : 1.78G (1914846576.64)
+Max Disk Read       : 651.92M (683587665.92)
+Max-Mem-Used Node   : node32
+Max-Disk-Write Node : node32
+Max-Disk-Read Node  : node32
+End Slurm Epilogue Mon Aug 15 22:09:30 CDT 2022 1660619370
+--------------------------------------------------------------
