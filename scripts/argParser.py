@@ -190,6 +190,13 @@ def main(query):
             type=float,
             help="(Default: 7.81250) In Hz, data acaquisition rate")    
 
+    # Miscellaneous
+    # ==========================
+    if 'force' in query:
+        add_bool_arg(parser, 'force', default=False, help="(Default: \
+        False) If True, has tendency to overwrite existing files. \
+        WARNING: Take care when using. You will lose data.")
+
     # Preprocessing Setup
     # ==========================
     # if 'moving_average' in query:

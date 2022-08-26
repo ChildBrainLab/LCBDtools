@@ -25,7 +25,8 @@ args = argParser.main([
     "task",
     "FD_thresh",
     "FD_perc",
-    "run_length"
+    "run_length",
+    "force"
     ])
 
 def check_FD(ses, fd_thresh, perc=0.30):
@@ -43,7 +44,14 @@ def check_FD(ses, fd_thresh, perc=0.30):
     """
     conf = glob(
         join(bids_folder, "derivatives", "fmriprep", ses, "**/*confounds*.tsv"),
-        recursive=True)[0]
+        recursive=True)
+
+    if len(conf) > 0:
+        conf = conf[0]
+    else:
+        print("No confounds.tsv found.")
+        print("Skipping: ", ses)
+        return False
 
     df = pd.read_csv(conf, delimiter="\t", usecols=["framewise_displacement"])
     # skim 1 because first FD always N/A
@@ -83,6 +91,7 @@ bids_folder = args.data_folder
 fd_thresh = float(args.fd_thresh)
 min_length = float(args.run_length)
 task = str(args.task)
+force = bool(args.force)
 
 # open ~/fsl_subs.txt for writing
 f = open("/home/"+str(os.environ.get("USER"))+"/fsl_subs.txt", 'w')
@@ -115,6 +124,15 @@ for (ses, length) in zip(valid_ses_folders, length_of_FDs):
         sessions.append(ses)
 
 for ses in sessions:
+    feats = glob(bids_folder+"/derivatives/fmriprep/"+ses+"/*first_level*.feat")
+    if len(feats) > 0:
+        if force is True:
+            for feat in feats:
+                shutil.rmtree(feats)
+        else:
+            print("Existing feat dir found.")
+            print("Skipping: ", ses)
+            continue
     smoothgz = glob(bids_folder+"/derivatives/fmriprep/"+ses+"/*smoothed*.gz")[0]
     smoothgz = smoothgz.replace(bids_folder+"/derivatives/fmriprep/", "")
     f.write(smoothgz)
