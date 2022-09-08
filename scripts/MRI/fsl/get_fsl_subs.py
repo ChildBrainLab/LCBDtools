@@ -22,7 +22,7 @@ import argParser
 
 args = argParser.main([
     "data_folder",
-    "task",
+#    "task",
     "FD_thresh",
     "FD_perc",
     "run_length",
@@ -90,7 +90,7 @@ def get_FD_len(ses):
 bids_folder = args.data_folder
 fd_thresh = float(args.fd_thresh)
 min_length = float(args.run_length)
-task = str(args.task)
+#task = str(args.task)
 force = bool(args.force)
 
 # open ~/fsl_subs.txt for writing
@@ -102,7 +102,7 @@ total_fp_folds = len(fp_ses_folders)
 
 # select for only fprep sessions where a valid fprep gz output is present
 fp_ses_folders = [ses for ses in fp_ses_folders if \
-    len(glob(ses+"/*{}*preproc_bold.nii.gz".format(task))) > 0]
+    len(glob(ses+"/*preproc_bold.nii.gz")) > 0]
 valid_fp_folds = len(fp_ses_folders)
 
 # remove pre-fmriprep part of path
@@ -125,6 +125,7 @@ for (ses, length) in zip(valid_ses_folders, length_of_FDs):
 
 for ses in sessions:
     feats = glob(bids_folder+"/derivatives/fmriprep/"+ses+"/*first_level*.feat")
+    
     if len(feats) > 0:
         if force is True:
             for feat in feats:
@@ -133,7 +134,14 @@ for ses in sessions:
             print("Existing feat dir found.")
             print("Skipping: ", ses)
             continue
-    smoothgz = glob(bids_folder+"/derivatives/fmriprep/"+ses+"/*smoothed*.gz")[0]
+    
+    smoothgz = glob(bids_folder+"/derivatives/fmriprep/"+ses+"/*preproc_bold.nii.gz")
+    if len(smoothgz) > 0:
+        smoothgz = smoothgz[0]
+    else:
+        print("No susan-smoothed data found for session.")
+        print("Skipping:", ses)
+        continue
     smoothgz = smoothgz.replace(bids_folder+"/derivatives/fmriprep/", "")
     f.write(smoothgz)
     f.write('\n')

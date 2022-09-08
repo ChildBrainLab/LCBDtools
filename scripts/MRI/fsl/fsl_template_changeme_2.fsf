@@ -15,7 +15,7 @@ set fmri(level) 1
 # 7 : Full first-level analysis
 # 1 : Pre-processing
 # 2 : Statistics
-set fmri(analysis) 2
+set fmri(analysis) 7
 
 # Use relative filenames
 set fmri(relative_yn) 0
@@ -30,16 +30,16 @@ set fmri(featwatcher_yn) 1
 set fmri(sscleanup_yn) 0
 
 # Output directory
-set fmri(outputdir) "/scratch/claytons/MRI_data_clean/derivatives/fmriprep/sub-SUBJECT/ses-SESSION/func/first_level_susan"
+set fmri(outputdir) "/scratch/claytons/MRI_data_clean/derivatives/fmriprep/sub-SUBJECT/ses-SESSION/func/featroundtwo"
 
 # TR(s)
-set fmri(tr) 0.800000 
+set fmri(tr) 0.800000
 
 # Total volumes
 set fmri(npts) VOLUMES
 
 # Delete volumes
-set fmri(ndelete) 0
+set fmri(ndelete) 5
 
 # Perfusion tag/control order
 set fmri(tagfirst) 1
@@ -53,7 +53,7 @@ set fmri(multiple) 1
 set fmri(inputtype) 2
 
 # Carry out pre-stats processing?
-set fmri(filtering_yn) 0
+set fmri(filtering_yn) 1
 
 # Brain/background threshold, %
 set fmri(brain_thresh) 10
@@ -70,7 +70,7 @@ set fmri(noisear) 0.34
 # Motion correction
 # 0 : None
 # 1 : MCFLIRT
-set fmri(mc) 1
+set fmri(mc) 0
 
 # Spin-history (currently obsolete)
 set fmri(sh_yn) 0
@@ -109,10 +109,10 @@ set fmri(st_file) ""
 set fmri(bet_yn) 1
 
 # Spatial smoothing FWHM (mm)
-set fmri(smooth) 5
+set fmri(smooth) 7.0
 
 # Intensity normalization
-set fmri(norm_yn) 0
+set fmri(norm_yn) 1
 
 # Perfusion subtraction
 set fmri(perfsub_yn) 0
@@ -169,7 +169,7 @@ set fmri(nftests_real) 0
 set fmri(constcol) 0
 
 # Carry out post-stats steps?
-set fmri(poststats_yn) 0
+set fmri(poststats_yn) 1
 
 # Pre-threshold masking?
 set fmri(threshmask) ""
@@ -245,7 +245,8 @@ set fmri(regstandard_yn) 0
 set fmri(alternateReference_yn) 0
 
 # Standard image
-set fmri(regstandard) "/export/fsl/fsl-6.0.5/data/standard/MNI152_T1_2mm_brain"
+#set fmri(regstandard) "/export/fsl/fsl-6.0.5/data/standard/MNI152_T1_2mm_brain"
+set fmri(regstandard) "/scratch/claytons/tlbx/templateflow/tpl-MNIPediatricAsym/cohort-2/tpl-MNIPediatricAsym_cohort-2_res-2_T1w"
 
 # Search space for registration to standard space
 # 0   : No search
@@ -260,7 +261,7 @@ set fmri(regstandard_dof) 12
 set fmri(regstandard_nonlinear_yn) 0
 
 # Control nonlinear warp field resolution
-set fmri(regstandard_nonlinear_warpres) 10 
+set fmri(regstandard_nonlinear_warpres) 10
 
 # High pass filter cutoff
 set fmri(paradigm_hp) 60
@@ -273,8 +274,7 @@ set fmri(totalVoxels) VOXELS
 set fmri(ncopeinputs) 0
 
 # 4D AVW data or FEAT directory (1)
-set feat_files(1) "/scratch/claytons/MRI_data_clean/derivatives/fmriprep/sub-SUBJECT/ses-SESSION/func/sub-SUBJECT_ses-SESSION_task-TASK_dir-PA_run-RUN_space-MNIPediatricAsym_cohort-2_res-2_desc-preproc_bold_smoothed_7mm"
-
+set feat_files(1) "/scratch/claytons/MRI_data_clean/derivatives/fmriprep/sub-SUBJECT/ses-SESSION/func/sub-SUBJECT_ses-SESSION_task-TASK_dir-PA_run-RUN_space-MNIPediatricAsym_cohort-2_res-2_desc-preproc_bold"
 
 # Add confound EVs text file
 set fmri(confoundevs) 0

@@ -1,16 +1,17 @@
 #!/bin/bash
 
-#SBATCH --job-name fmriprep
+#SBATCH --job-name unzip
 #SBATCH --mail-type=END,FAIL 
 #SBATCH --mail-user=claytons@wustl.edu
 #SBATCH --nodes 1
 #SBATCH --ntasks 1
-#SBATCH --cpus-per-task 8
+#SBATCH --cpus-per-task 4
 #SBATCH --mem 60G
 #SBATCH --time 18:00:00
-#SBATCH --output fmriprep.log
+#SBATCH --output unzip.log
 
 pwd; hostname; date
 
-bash /home/claytons/LCBDtools/scripts/MRI/fmriprep/fmriprep_ss_singularity.sh $1 $2
+gzimage=$1
 
+gzip -d $gzimage

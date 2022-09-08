@@ -37,7 +37,7 @@ for sub_line in tqdm(fsl_subs):
     #print(subject, session, task, run)
 
     with open(
-        str(os.path.dirname(os.path.realpath(sys.argv[0])))+"/fsl_template_changeme_chpc.fsf", 'r')\
+        str(os.path.dirname(os.path.realpath(sys.argv[0])))+"/fsl_template_changeme_2.fsf", 'r')\
             as template:
         with open(
             "/scratch/claytons/MRI_data_clean/derivatives/fmriprep/{}/feat_script.fsf".format(
