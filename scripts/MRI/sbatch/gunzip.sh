@@ -14,4 +14,4 @@ pwd; hostname; date
 
 gzimage=$1
 
-gzip -d $gzimage
+gzip -d -k $gzimage
