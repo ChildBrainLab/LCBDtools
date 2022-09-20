@@ -58,6 +58,12 @@ class TimeSeries:
         nans, x = np.isnan(self.time), lambda z: z.nonzero()[0]
         self.time[nans] = np.interp(x(nans), x(~nans), self.time[~nans])
 
+    def fix_inf(self, val=0):
+        from numpy import inf
+        self.signal[self.signal == inf] = val
+        self.signal[self.signal == -inf] = val
+        self.signal = np.nan_to_num(self.signal, neginf=0)
+
     def center(self, difference=1):
         """
         Substracts 'difference' from signal
@@ -82,9 +88,9 @@ class TimeSeries:
 
     def standardize(self):
         """
-        Normalizes rating (i.e. subtract mean) and scale variance to 1
+        Normalizes signal (i.e. subtract mean) and scale variance to 1
         """
-        self.rating = (self.rating - np.mean(self.rating)) / np.std(self.rating)
+        self.signal = (self.signal - np.mean(self.signal)) / np.std(self.signal)
 
 
     def lag_correct(self):

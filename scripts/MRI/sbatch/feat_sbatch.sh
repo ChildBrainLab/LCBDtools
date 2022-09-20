@@ -15,4 +15,4 @@ pwd; hostname; date
 module load fsl
 
 export OPENBLAS_NUM_THREADS=1
-feat /scratch/claytons/MRI_data_clean/derivatives/fmriprep/$1/feat_script_zeroed.fsf 
+feat /scratch/claytons/MRI_data_clean/derivatives/fmriprep/$1/feat_script.fsf 

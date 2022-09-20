@@ -16,4 +16,4 @@ module load fsl
 
 export OPENBLAS_NUM_THREADS=1
 
-randomise -i $1 -o $2 -1 -T -n 5000
+randomise -i $1 -o $2 -1 -n 5000 -m $3 -T

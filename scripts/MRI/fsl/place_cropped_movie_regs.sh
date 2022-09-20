@@ -30,7 +30,7 @@ do
 		# for each file in ratings-containing folder
 		# if it matches the movie name
 		# copy the head -n $a version of it to func
-		for rating in `/bin/ls -d /scratch/claytons/chpctransfer/* | grep "$movie"`
+		for rating in `/bin/ls -d /scratch/claytons/chpctransfer/* | grep "$movie" | grep ".txt"`
 		do
 
 			# copy the rating

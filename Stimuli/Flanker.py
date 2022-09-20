@@ -58,7 +58,10 @@ class TaskReader:
 
         try:
             # read all required / expected metadata
-            self.participant = str(int(WS['participant'][0]))
+            try:
+                self.participant = str(int(WS['participant'][0]))
+            except:
+                self.participant = str("None")
             self.session = int(WS['session'][0])
             self.date = datetime.strptime(
                 str(WS['date'][0]),
