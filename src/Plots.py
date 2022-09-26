@@ -337,3 +337,23 @@ def roc_curve(
         plt.close()
     else:
         plt.show()
+
+def plot_haxby(anat, activation, title):
+    import nibabel
+
+    z = 25
+
+    fig = plt.figure(figsize=(4, 5.4))
+    fig.subplots_adjust(bottom=0., top=1., left=0., right=1.)
+    plt.axis('off')
+
+    # plt.title('SVM vectors')
+
+    plt.imshow(
+        anat[:, 4:58, z].T, cmap=plt.cm.gray,
+        interpolation='nearest', origin='lower')
+
+    plt.imshow(
+        activation[:, 4:58, z].T, cmap=plt.cm.hot,
+        interpolation='nearest', origin='lower')
+    
