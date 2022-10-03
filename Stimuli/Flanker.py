@@ -111,17 +111,20 @@ class TaskReader:
                 "stim_start_time": float(row['stimuli_{}.started'.format(
                     row['stimuli_file'].split('_')[1].strip(
                         'block'))]),
-                "stim_stop_time": float(row['stimuli_{}.stopped'.format(
-                    # special case because sometimes we have null ones of these
+                #"stim_stop_time": float(row['stimuli_{}.stopped'.format(
+                #    # special case because sometimes we have null ones of these
+                #    row['stimuli_file'].split('_')[1].strip(
+                #        'block'))]) if (\
+                #        not pd.isna(row['stimuli_{}.stopped'.format(
+                #            row['stimuli_file'].split('_')[1].strip('block'))])\
+                #        or (not row['stimuli_{}.stopped'.format(
+                #                row['stimuli_file'].split('_')[1].strip('block'))] == "None"))\
+                #            else float(row['stimuli_{}.started'.format(
+                #                row['stimuli_file'].split('_')[1].strip(
+                #                'block'))])+float(1.01),
+                "sitm_stop_time": float(row['stimuli_{}.started'.format(
                     row['stimuli_file'].split('_')[1].strip(
-                        'block'))]) if (\
-                        not pd.isna(row['stimuli_{}.stopped'.format(
-                            row['stimuli_file'].split('_')[1].strip('block'))])\
-                        or (not row['stimuli_{}.stopped'.format(
-                                row['stimuli_file'].split('_')[1].strip('block'))] == ""))\
-                            else float(row['stimuli_{}.started'.format(
-                                row['stimuli_file'].split('_')[1].strip(
-                                'block'))])+float(1.01),
+                        'block'))]) + float(1.01),
                 "response": str(row['key_resp_{}.keys'.format(
                     row['stimuli_file'].split('_')[1].strip(
                         'block'))]) if \
