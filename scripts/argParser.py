@@ -79,6 +79,14 @@ def main(query):
             type=str,
             help="Path of task file relative to task folder")
 
+    if 'output_dir' in query:
+        parser.add_argument(
+            '--output_dir',
+            dest='output_dir',
+            type=str,
+            default=None,
+            help="(Default: None) Folder to write output directories to")
+
     # Metadata
     # ==========================
     if 'participant_num_len' in query:
@@ -190,12 +198,33 @@ def main(query):
             type=float,
             help="(Default: 7.81250) In Hz, data acaquisition rate")    
 
+    if 'covariates' in query:
+        parser.add_argument(
+            '--covariates',
+            dest='covariates',
+            default=None,
+            type=str,
+            help="(Default: None) Path to covariates file")
+
+    if "bad_channels" in query:
+        parser.add_argument(
+            '--bad_channels',
+            dest='bad_channels',
+            default=None,
+            type=str,
+            help="(Default: None) Path to .json file containing bad channel list")
+
     # Miscellaneous
     # ==========================
     if 'force' in query:
         add_bool_arg(parser, 'force', default=False, help="(Default: \
         False) If True, has tendency to overwrite existing files. \
         WARNING: Take care when using. You will lose data.")
+
+    if 'verbose' in query:
+        add_bool_arg(parser, 'verbose', default=False, help="(Default: \
+        False) If True, has tendency to print statements throughout \
+        procedures and warnings.")
 
     # Preprocessing Setup
     # ==========================

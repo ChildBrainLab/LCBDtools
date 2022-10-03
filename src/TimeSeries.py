@@ -127,35 +127,63 @@ class TimeSeries:
 
         self.signal = np.array(new_signal)
         self.time = np.array(new_time)
+        self.sampleRate = sample_rate
 
-    # def resample(
-    #     self,
-    #     sample_rate=1,
-    #     new_unit=None):
-    #     """
-    #     Resamples self.signal and self.time with numpy (tail padding)
-    #
-    #     :param sample_rate: (default 1) new sample rate (in Hz) to which data
-    #         are resampled
-    #     :type sample_rate: float
-    #     :param new_unit: (default None) if not None, reassigns self.unit
-    #     :type new_unit: str
-    #     """
-    #     new_time = np.linspace(
-    #         0,
-    #         math.floor(self.time[-1]),
-    #         num=math.floor(self.time[-1]*sample_rate))
-    #
-    #     new_signal = np.interp(
-    #         new_time,
-    #         xp=self.time,
-    #         fp=self.signal)
-    #
-    #     self.time = new_time
-    #     self.signal = new_signal
-    #     self.sampleRate = sample_rate
-    #     if new_unit is not None:
-    #         self.unit = new_unit
+    def decimate(
+        self,
+        sample_rate=1,
+        new_unit=None):
+        """
+        Downsamples the signal after applying an anti-aliasing filter.
+
+        :param sample_rate: (default 1) new sample rate (in Hz) to which data
+            are resampled
+        :type sample_rate: float
+        :param new_unit: (default None) if not None, reassigns self.unit
+        :type new_unit: str
+        """
+        from scipy.signal import decimate
+        from math import floor
+
+        new_signal = decimate(
+            self.signal,
+            floor(self.sampleRate / sample_rate))
+        new_time = np.linspace(
+            0,
+            len(new_signal) * sample_rate,
+            num=len(new_signal))
+        self.signal = np.array(new_signal)
+        self.time = np.array(new_time)
+        self.sampleRate = sample_rate
+
+    def interpol_resample(
+        self,
+        sample_rate=1,
+        new_unit=None):
+        """
+        Resamples self.signal and self.time with numpy (tail padding)
+
+        :param sample_rate: (default 1) new sample rate (in Hz) to which data
+            are resampled
+        :type sample_rate: float
+        :param new_unit: (default None) if not None, reassigns self.unit
+        :type new_unit: str
+        """
+        new_time = np.linspace(
+            0,
+            math.floor(self.time[-1]),
+            num=math.floor(self.time[-1]*sample_rate))
+
+        new_signal = np.interp(
+            new_time,
+            xp=self.time,
+            fp=self.signal)
+    
+        self.time = new_time
+        self.signal = new_signal
+        self.sampleRate = sample_rate
+        if new_unit is not None:
+            self.unit = new_unit
 
     def get_moving_average(self, x, w=10, mode='same'):
         """
@@ -273,3 +301,12 @@ class TimeSeries:
         from scipy.signal import periodogram
 
         self.freqs, self.PSD = periodogram(x, self.sampleRate)
+
+    def write_txt(self, path):
+        """
+        Write signal to file
+
+        :param path: path to save file to
+        :type path: str
+        """
+        np.savetxt(path, self.signal)
