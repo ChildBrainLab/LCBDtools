@@ -13,6 +13,7 @@ export SINGULARITYENV_TEMPLATEFLOW_HOME="/templateflow"
 
 singularity run --cleanenv \
 	--no-home \
+	--home $1 \
 	-B $1:/data \
 	-B $FREESURFER_HOME \
 	-B $TEMPLATEFLOWHOME:/templateflow \
@@ -24,7 +25,7 @@ singularity run --cleanenv \
 	--fs-license-file $FREESURFER_HOME/.license \
 	--skip_bids_validation \
 	--use-aroma \
-	--nthreads 16 \
+	--nthreads 8 \
 	--low-mem \
-	--mem-mb 30000 \
+	--mem-mb 60000 \
 	--output-spaces MNIPediatricAsym:cohort-2:res-2 \
