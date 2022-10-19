@@ -29,7 +29,7 @@ if os.path.isdir(CNDA_ses):
         A new MRI session has been successfully downloaded to the lab server.
         </h2>
 
-        <a href="file:///Z:\{'/'.join(CNDA_ses.split('/')[3:])}">{CNDA_ses}</a>
+        <a href="file:///Z:\{'/'.join(CNDA_ses.split('/')[4:])}">{CNDA_ses}</a>
         
         <p>
         Please confirm its status and organization are correct.

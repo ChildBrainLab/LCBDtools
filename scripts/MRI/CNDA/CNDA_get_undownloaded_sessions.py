@@ -12,13 +12,28 @@ f = open(f"/home/usr/{USER}/.lcbd_creds", 'r')
 pw = f.readline().strip()
 f.close()
 
-CNDAqueue = "/data/perlman/moochie/study_data/CARE/CNDA_download_queue.txt"
+CNDAqueue = "/data/perlman/moochie/study_data/CARE/CNDA_downloads/CNDA_download_queue.txt"
 
 if os.path.isfile(CNDAqueue):
     os.remove(CNDAqueue)
 
-downloaded_sessions = [os.path.basename(path) for path in \
-    glob("/data/perlman/moochie/study_data/CARE/CNDA_downloads/NP1166/CARE_*/*")]
+
+try:
+    """
+    df = pd.read_csv(
+        "/data/perlman/moochie/study_data/CARE/CNDA_downloads/download_report.csv",
+        header=1)
+
+    downloaded_sessions = list(set(df['session_label']))
+    """
+    f = open("/data/perlman/moochie/study_data/CARE/CNDA_downloads/CNDA_downloaded.txt", 'r')
+    downloaded_sessions = [str(line) for line in f.readlines()]
+    f.close()
+
+except:
+    downloaded_sessions = []
+
+
 
 sheets = ["V0", "V1", "V2"]
 
@@ -31,11 +46,12 @@ decrypted_workbook = io.BytesIO()
 for sheet in sheets:
     
     with open(
-        "/data/perlman/moochie/study_data/CARE/study_info/Logs/CARE_dataTracker_20210810.xlsx",    
+        "/data/perlman/moochie/study_data/CARE/study_info/Logs/CARE_dataTracker.xlsx",    
         'rb') as file:
         office_file = msoffcrypto.OfficeFile(file)
         office_file.load_key(password=pw)
         office_file.decrypt(decrypted_workbook)
+    file.close()
 
     df = pd.read_excel(decrypted_workbook, sheet_name=sheet)
 

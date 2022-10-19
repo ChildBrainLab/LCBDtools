@@ -14,4 +14,4 @@ Xnatdownload\
 	--quality usable\
 	--rs DICOM\
 
-	
+grep -qxF $1 /data/perlman/moochie/study_data/CARE/CNDA_downloads/CNDA_downloaded.txt || echo $1 >> /data/perlman/moochie/study_data/CARE/CNDA_downloads/CNDA_downloaded.txt
