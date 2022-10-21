@@ -27,7 +27,7 @@ try:
     downloaded_sessions = list(set(df['session_label']))
     """
     f = open("/data/perlman/moochie/study_data/CARE/CNDA_downloads/CNDA_downloaded.txt", 'r')
-    downloaded_sessions = [str(line) for line in f.readlines()]
+    downloaded_sessions = [str(line).strip() for line in f.readlines()]
     f.close()
 
 except:

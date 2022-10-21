@@ -41,6 +41,14 @@ body = f"""
     Then, click the 'Edit' button on the right-hand toolbar, and mark the 'usability' of each scan, according to the notes in the Data Tracker. You can view a preview of MPRAGE structural scans by clicking the 'details' icon to the left of the scan acquisition number. 
     </p>
 
+    <h2>
+    Pay close attention! There should only be one 'usable' scan of each type. I.e. there should not be 2 MPRAGES marked usable in one session.
+    </h2>
+
+    <p>
+    If, for some reason, a visit was collected over the course of 2 sessions (i.e. MPRAGE in one session, and BOLD run in a session 1 day later), paste both of them into the 'CNDA LAbel' column of the Data Tracker, separated by a single comma.
+    </p>
+
     <p>
     Once any usability attributes have been marked, submit the changes in CNDA, and then paste this CNDA session label into the appropriate sheet and row of the CARE Data Tracker:
     </p>
@@ -61,7 +69,7 @@ msg = MIMEText(body, 'html')
 # you == the recipient's email address
 msg['Subject'] = f'A Session Has Been Uploaded to CNDA: {CNDA_ses}'
 msg['From'] = email_address
-msg['To'] = "claytons@wustl.edu"
+msg['To'] = "claytons@wustl.edu,lcbd@wustl.edu"
 
 # Send the message
 with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
