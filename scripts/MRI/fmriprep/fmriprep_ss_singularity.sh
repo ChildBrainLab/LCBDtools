@@ -11,14 +11,14 @@ export FREESURFER_HOME="/export/freesurfer/freesurfer-7.2.0/"
 export TEMPLATEFLOWHOME="/scratch/claytons/tlbx/templateflow"
 export SINGULARITYENV_TEMPLATEFLOW_HOME="/templateflow"
 
-singularity run --cleanenv \
+unset PYTHONPATH; singularity run --cleanenv \
 	--no-home \
 	--home $1 \
 	-B $1:/data \
 	-B $FREESURFER_HOME \
 	-B $TEMPLATEFLOWHOME:/templateflow \
 	-B /scratch/claytons/tmp/fmriprep_work:/work \
-	/scratch/claytons/tlbx/singularity/fmriprep_21.0.2.sif \
+	/scratch/claytons/tlbx/singularity/fmriprep-22.0.2.simg \
 	/data /data/derivatives/fmriprep \
 	participant --participant-label $2 \
 	-w /work \
