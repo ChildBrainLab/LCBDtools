@@ -17,6 +17,8 @@ source /data/perlman/moochie/resources/server_access/NIRSenv/bin/activate
 
 user=$(whoami)
 
+python3 -m ipykernel install --user --name=NIRSenv
+
 if ! tmux new-session -d -s jupyter-server; then 
 	
 	echo "Failed to start jupyter server."
@@ -46,12 +48,12 @@ if [[ $(jupyter notebook list | grep ::) ]]; then
 
 	echo "Tmux session started on port $1."
 	echo ""
-	echo "Connect on your local machine by running the following command (while on VPN or WUSTL internet):"
+	echo "From your local machine, run the following command (while on VPN or WUSTL internet) to connect to the server:"
 	echo "ssh -N -f -L 8888:localhost:$1 $user@dynosparky.neuroimage.wustl.edu" 
 	echo ""
 	echo "and then open a web browser and go to the address, 'localhost:8888'"
 	echo ""
-	echo "If you are connecting from a new computer, you will need to copy the access token."
+	echo "If you are connecting from a new computer, you will need to copy the access token from the URL listed above."
 	echo "Copy the string of the https://localhost...... address following 'token=' ."
 	echo "This is what you will paste in the 'password' entry when connecting."
 
