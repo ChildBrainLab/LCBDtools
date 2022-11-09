@@ -5,9 +5,9 @@
 source /data/perlman/moochie/resources/server_access/MRIenv/bin/activate
 export XNAT_HOST=https://cnda.wustl.edu
 
-#if [ -f "$1" ]; then
-#	rm $1
-#fi
+if [ -f "$1" ]; then
+	rm $1
+fi
 
 sub_prefix="+ Subject: "
 ses_prefix="* Session: "
