@@ -1,4 +1,4 @@
-# Welcoem to LCBDtools
+# Welcome to LCBDtools
 
 [Read the Docs](https://lcbdpreprocessing.readthedocs.io/en/latest/)
 
