@@ -26,6 +26,6 @@ unset PYTHONPATH; singularity run --cleanenv \
 	--skip_bids_validation \
 	--use-aroma \
 	--nthreads 8 \
-	--low-mem \
 	--mem-mb 60000 \
 	--output-spaces MNIPediatricAsym:cohort-2:res-2 \
+	#--low-mem \

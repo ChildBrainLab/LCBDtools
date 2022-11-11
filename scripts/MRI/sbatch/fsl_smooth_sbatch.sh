@@ -14,7 +14,7 @@ pwd; hostname; date
 
 module load fsl
 
-FSLOUTPUTTYPE=NIFTI_GZ
+FSLOUTPUTTYPE=NIFTI
 export FSLOUTPUTTYPE
 
-fslmaths $1 -s $2 $3
+fslmaths $1 -s 7 $2

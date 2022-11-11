@@ -3,7 +3,7 @@
 Writes .txt files for use in either FSL or MATLAB of relevant columns from
 confounds.tsv files output during FMRIPREP
 
-usage: python3 extract_confounds.py <path/to/bids/dataset> optional: <float threshold for FD spike regressors>
+usage: python3 extract_confounds.py <path/to/bids/dataset>
 """
 
 import sys
@@ -37,19 +37,6 @@ for fname in cons:
         series = df[col].astype(float)
         if col == "framewise_displacement":
             series[0] = float(0.0)
-
-            ### spike threshold regressors
-            if spike_thresh is not None:
-                
-                j = 0
-
-                for i, val in enumerate(series):
-                    if val > spike_thresh:
-                        spike_array = np.zeros(series.shape)
-                        spike_array[i] = 1
-
-                        spike_fname = fname.replace("timeseries", "fd_spike_{}".format(j)).replace("tsv", "txt")
-
 
         new_fname = fname.replace("timeseries", col).replace("tsv", "txt")
 
