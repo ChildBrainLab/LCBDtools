@@ -53,7 +53,10 @@ for sheet in sheets:
         office_file.decrypt(decrypted_workbook)
     file.close()
 
-    df = pd.read_excel(decrypted_workbook, sheet_name=sheet)
+    df = pd.read_excel(
+        decrypted_workbook,
+        sheet_name=sheet,
+        engine='openpyxl')
 
     #df = pd.read_excel(
     #    "/data/perlman/moochie/study_data/CARE/study_info/Logs/CARE_dataTracker_20210810.xlsx",

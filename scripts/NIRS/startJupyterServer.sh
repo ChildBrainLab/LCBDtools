@@ -19,7 +19,7 @@ user=$(whoami)
 
 python3 -m ipykernel install --user --name=NIRSenv
 
-if ! tmux new-session -d -s jupyter-server; then 
+if ! tmux new-session -d -s jupyter-server-$1; then 
 	
 	echo "Failed to start jupyter server."
 	echo "You likely already have a jupyter server running. You can attach it to view the server info with 'tmux attach -t jupyter-server'."

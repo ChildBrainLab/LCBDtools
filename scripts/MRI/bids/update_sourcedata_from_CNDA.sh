@@ -43,7 +43,7 @@ done
 
 # get all in BIDS sourcedata dir
 touch $bidsdatafile
-for ses in /data/perlman/moochie/analysis/${study}/MRI_data_clean_2/sourcedata/*/*
+for ses in /data/perlman/moochie/analysis/${study}/MRI_data_clean/sourcedata/*/*
 do
 	# pretend they are named with sub- and ses- convention
 	echo sub-$(basename $(dirname $ses))/ses-$(basename $ses) >> $bidsdatafile
@@ -65,28 +65,28 @@ do
 
 	# if subject folder doesn't exist in sourcedata, make it
 	# but strip sub- from subject folder
-	if [ ! -d "/data/perlman/moochie/analysis/CARE/MRI_data_clean_2/sourcedata/$bidssub/" ]
+	if [ ! -d "/data/perlman/moochie/analysis/CARE/MRI_data_clean/sourcedata/$bidssub/" ]
 	then
-		mkdir "/data/perlman/moochie/analysis/CARE/MRI_data_clean_2/sourcedata/$bidssub"
+		mkdir "/data/perlman/moochie/analysis/CARE/MRI_data_clean/sourcedata/$bidssub"
 	fi
 
 	# make session directory in subject folder, with any 'v' or 'V' character stripped
-	mkdir "/data/perlman/moochie/analysis/CARE/MRI_data_clean_2/sourcedata/$bidssub/$bidsses"
+	mkdir "/data/perlman/moochie/analysis/CARE/MRI_data_clean/sourcedata/$bidssub/$bidsses"
 
 	# for every scan (acquisition)
 	#for acq in `ls /data/perlman/moochie/study_data/CARE/CNDA_downloads/NP1166/${ses}`
 	#do
 
 		# make the directory for it
-		#mkdir "/data/perlman/moochie/analysis/CARE/MRI_data_clean_2/sourcedata/$bidssub/$bidsses/${acq}"
+		#mkdir "/data/perlman/moochie/analysis/CARE/MRI_data_clean/sourcedata/$bidssub/$bidsses/${acq}"
 	
 		# sym link all the things in acq/DICOM here
-	#	ln -s -t /data/perlman/moochie/analysis/CARE/MRI_data_clean_2/sourcedata/$bidssub/$bidsses/ /data/perlman/moochie/study_data/CARE/CNDA_downloads/NP1166/${ses}/${acq}/DICOM/*
+	#	ln -s -t /data/perlman/moochie/analysis/CARE/MRI_data_clean/sourcedata/$bidssub/$bidsses/ /data/perlman/moochie/study_data/CARE/CNDA_downloads/NP1166/${ses}/${acq}/DICOM/*
 	
 	#done
 
 	# link all things in any acquisition/DICOM folder to the session directory
-	ln -s -t /data/perlman/moochie/analysis/CARE/MRI_data_clean_2/sourcedata/$bidssub/$bidsses/ /data/perlman/moochie/study_data/CARE/CNDA_downloads/NP1166/${ses}/*/DICOM/*
+	ln -s -t /data/perlman/moochie/analysis/CARE/MRI_data_clean/sourcedata/$bidssub/$bidsses/ /data/perlman/moochie/study_data/CARE/CNDA_downloads/NP1166/${ses}/*/DICOM/*
 
 	# symbolic link everything the session directory
 	# ln -s /data/perlman/moochie/study_data/${study}/MRI_data/${ses}/!(*ignore*)/ /data/perlman/moochie/analysis/${study}/MRI_data_clean_2/sourcedata/$(dirname $ses)/$(basename $ses | tr -d v | tr -d V)/

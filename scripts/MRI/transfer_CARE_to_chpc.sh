@@ -1,1 +1,0 @@
-rsync -r /data/perlman/moochie/analysis/CARE/MRI_data_clean/ claytons@login3.chpc.wustl.edu:/scratch/claytons/MRI_data_clean -aav --exclude "*derivatives" --exclude "*sourcedata" --exclude "*work" --include "*"
