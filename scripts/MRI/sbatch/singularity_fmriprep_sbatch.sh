@@ -2,7 +2,7 @@
 
 #SBATCH --job-name fmriprep
 #SBATCH --mail-type=END,FAIL 
-#SBATCH --mail-user=claytons@wustl.edu
+#SBATCH --mail-user=khalilt@wustl.edu
 #SBATCH --nodes 1
 #SBATCH --ntasks 1
 #SBATCH --cpus-per-task 8
