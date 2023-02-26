@@ -20,7 +20,7 @@ class ftp:
 
 	def iterate_subjects(self, subjects, debug):
 		for subject in subjects:	# For each subject
-			for age in ['-C', '-P']:
+			for age in ['-C', '-P']: # For parent and child
 				subject_atlas = self.new_atlas(subject + age) # Create an atlas of all potential files
 				self.iterate_atlas(subject_atlas, debug)
 
@@ -31,18 +31,29 @@ class ftp:
 			if source[-1:] is '/': # If the item is a folder
 				if os.path.exists(source): # Check if folder exists
 					for filename in os.listdir(source):# For each file:
-						self.transfer(source + filename, destination, atlas.subject, debug) # Call file transfer
+						self.transfer(source + filename, destination, atlas, debug) # Call file transfer
 				elif debug:
 					print(f"Folder {source} doesn't exits")
 			else: # If the item is a file
 				if os.path.exists(source): # If file to be transfered exists
-					self.transfer(source, destination, atlas.subject, debug) # Call file transfer
+					self.transfer(source, destination, atlas, debug) # Call file transfer
 				elif debug:
 					print(f"File {source} doesn't exist")
 
-	def transfer(self, source, destination, subject, debug):
+	def transfer(self, source, destination, atlas, debug):
+		subject = atlas.subject
+
 		filename = source.split('/').pop() # Grab filename
-		new_filename = self.rename(filename, subject) # Lowercase filename
+		lowercase_filename = self.rename(filename, subject) # Lowercase filename
+		new_filename = lowercase_filename
+
+		for keyword, replacement in atlas.replacements.items():# Check for a replacement keyword
+			if keyword in new_filename: # If keyword found
+				new_filename = replacement.join(new_filename.split(keyword)) #
+
+		if os.path.exists(destination + lowercase_filename): # Check if file already transfered but with inaccurate name
+			os.rename(destination + lowercase_filename, destination + new_filename)
+			return
 
 		if os.path.exists(destination + new_filename): # Check if file already transfered
 			return
@@ -55,7 +66,7 @@ class ftp:
 			shutil.copy(source, destination + filename)# Transfer file
 			os.rename(destination + filename, destination + new_filename)# Rename
 
-	def rename(self, filename, subject): # Function to lower case filename except for subject ID
+	def rename(self, filename, subject, atlas = None): # Function to lower case filename except for subject ID
 		return subject.join([split.lower() for split in filename.split(subject)])
 
 class pcat_ftp(ftp):
@@ -95,9 +106,9 @@ class pcat_atlas:
 		self.subject = subject
 		self.map = { # List of all files/folders to transfer
 			f'audio_data/{subject[:4]}/':f'audio_data/interview/{subject[:4]}/',
-			f'NIRS_data/{subject[:4]}/{subject[:4]}_DB_DOS/{subject}_fNIRS_DB-DOS/':f'fnirs_data/dbdos/{subject[:4]}/{subject}/',
+			f'NIRS_data/{subject[:4]}/{subject[:4]}_DB-DOS/{subject}_fNIRS_DB-DOS/':f'fnirs_data/dbdos/{subject[:4]}/{subject}/',
 			f'NIRS_data/{subject[:4]}/{subject[:4]}_Flanker/':f'fnirs_data/flanker/{subject[:4]}/',
-			f'task_data/{subject[:4]}/{subject[:4]}_DB_DOS/':f'task_data/dbdos/{subject[:4]}/',
+			f'task_data/{subject[:4]}/{subject[:4]}_DB-DOS/':f'task_data/dbdos/{subject[:4]}/',
 			f'task_data/{subject[:4]}/{subject[:4]}_Flanker/':f'task_data/flanker/{subject[:4]}/',
 			f'task_data/{subject[:4]}/{subject[:4]}_Jumble/':f'task_data/jumble/{subject[:4]}/',
 			f'task_data/{subject[:4]}/{subject[:4]}_Posner/':f'task_data/posner/{subject[:4]}/',
@@ -113,5 +124,8 @@ class pcat_atlas:
 			f'eyetracker_data/{subject[:4]}/{subject}_TSST/':f'eyetracker_data/tsst/{subject[:4]}/{subject}/',
 			f'eyetracker_data/{subject[:4]}/{subject}_Jumble/':f'eyetracker_data/jumble/{subject[:4]}/',
 			f'KBIT_data/{subject[:4]}_KBIT.pdf':f'kbit_data/',
-			f'questionnaire_data/':f'questionnaire_data'
+			f'questionnaire_data/':f'questionnaire_data/'
+		}
+		self.replacements = {
+			'db-dos':'dbdos'
 		}

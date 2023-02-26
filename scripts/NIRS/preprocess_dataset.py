@@ -21,7 +21,7 @@ import mne_nirs
 # in future releases
 import sys
 sys.path.append('../../..')
-from LCBDtools.scripts import argParser
+from LCBDtools.src import argParser
 from LCBDtools.src import Plots
 
 args = argParser.main([
@@ -254,7 +254,7 @@ for i, ses in enumerate(session_dirs):
 
         # convert to optical density
         raw_od = mne.preprocessing.nirs.optical_density(pp)
-    
+
         # scalp coupling index
         sci = mne.preprocessing.nirs.scalp_coupling_index(raw_od)
         raw_od.info['bads'] = list(compress(raw_od.ch_names, sci < 0.5))
@@ -278,7 +278,7 @@ for i, ses in enumerate(session_dirs):
             0.05, 0.7, h_trans_bandwidth=0.2, l_trans_bandwidth=0.02)
 
         pp = haemo_bp.copy()
-    
+
     except:
         print("Something went wrong during preprocessing.")
         print("Skipping:", ses)
@@ -364,7 +364,7 @@ for i, ses in enumerate(session_dirs):
 
             for j, evt in enumerate(event_dict.keys()):
                 times = [t[0]/pp.info['sfreq'] for t in events if t[2] == event_dict[evt]]
-        
+
                 for k, time in enumerate(times):
                     crop = pp.copy().crop(
                         tmin=time+tmin,
