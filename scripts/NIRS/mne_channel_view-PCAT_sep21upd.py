@@ -21,7 +21,7 @@ import mne_nirs
 # in future releases
 import sys
 sys.path.append('../../../')
-from LCBDtools.scripts import argParser
+from LCBDtools.src import argParser
 from LCBDtools.src import Plots
 
 def create_boxcar(raw, event_id=None, stim_dur=1):
@@ -95,7 +95,7 @@ in_subs = [
 #     "1137", lower extreme on KBIT
 #     "1124", # took off cap midway through, they did the first couple blocks
     "1133",
-#     "1138", <20% on practice 
+#     "1138", <20% on practice
     "1144",
     "1143",
 #     "1141", <20% on practice
@@ -141,7 +141,7 @@ PSU_insubs = [
 #     "1222", # failed practice
     "1223",
 #     "1234", # failed practice
-#     "1229", # failed practice 
+#     "1229", # failed practice
 #     "1231", # failed practice
     "1238",
     "1226",

@@ -21,7 +21,7 @@ import mne_nirs
 # in future releases
 import sys
 sys.path.append('../../../')
-from LCBDtools.scripts import argParser
+from LCBDtools.src import argParser
 from LCBDtools.src import Plots
 
 def create_boxcar(raw, event_id=None, stim_dur=1):

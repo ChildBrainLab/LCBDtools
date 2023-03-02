@@ -21,7 +21,7 @@ unset PYTHONPATH; singularity run --cleanenv \
 	/scratch/claytons/tlbx/singularity/fmriprep-22.0.2.simg \
 	/data /data/derivatives/fmriprep \
 	participant --participant-label $2 \
-	-w /work \
+	-w /work/"${$2}" \
 	--fs-license-file $FREESURFER_HOME/.license \
 	--skip_bids_validation \
 	--use-aroma \
