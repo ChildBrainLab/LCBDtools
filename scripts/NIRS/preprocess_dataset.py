@@ -1,7 +1,6 @@
 # General dependencies
-import os, shutil
+import os, shutil, matplotlib
 from os.path import join
-from tqdm import tqdm
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -88,23 +87,24 @@ if ex_subs is None:
 ##############################
 
 # get all matching session dirs with subject in top level of glob
-session_dirs = [d for d in glob(nirs_dir+"/*/*{}*".format(task))]
+session_dirs = glob(nirs_dir+"*/*/*/")
+nirs_dir_len = len(nirs_dir)
+session_dirs = [d[nirs_dir_len:] for d in session_dirs]
+
 
 # use exclusion / inclusion switch
 if len(in_subs) > 0:
-    session_dirs = [d for d in session_dirs if \
-        os.path.basename(os.path.dirname(d.strip(nirs_dir))) in in_subs]
+    session_dirs = [d for d in session_dirs if d[:5] in in_subs]
 elif len(ex_subs) > 0:
-    session_dirs = [d for d in session_dirs if \
-        os.path.basename(os.path.dirname(d.strip(nirs_dir))) not in ex_subs]
+    session_dirs = [d for d in session_dirs if d[:5] not in ex_subs]
 
 # subjects are top level folders in the study_dir that have
 # session folders with this run
-subjects = [d.strip(nirs_dir).split('/')[0] for d in session_dirs]
+subjects = [d.split('/')[0] for d in session_dirs]
 
 # assum participant_num_len from first item, if not set
 if participant_num_len is None:
-    participant_num_len = len(subjects[0])
+    participant_num_len = len(subjects)
 
 if verbose is True:
     print("Session dirs:", session_dirs)
@@ -112,7 +112,6 @@ if verbose is True:
 ### PROCESS EACH SESSION WITH MNE ###
 #####################################
 for i, ses in enumerate(session_dirs):
-
     # meta data
     ################################
     subject = subjects[i]

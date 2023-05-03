@@ -71,7 +71,7 @@ else:
     msg['Subject'] = f'Error: A Session Has Failed to Download from CNDA: {CNDA_ses}'
 
 msg['From'] = email_address
-msg['To'] = "claytons@wustl.edu,lcbd@wustl.edu"
+msg['To'] = "dennys@wustl.edu,lcbd@wustl.edu"
 
 # Send the message
 with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:

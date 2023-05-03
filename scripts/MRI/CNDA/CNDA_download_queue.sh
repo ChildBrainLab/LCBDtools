@@ -58,8 +58,11 @@ cat /data/perlman/moochie/study_data/CARE/CNDA_downloads/CNDA_download_queue.txt
 		else
 			mv $tses/$sub/$(basename $dlses) $tses/$sub/$visit
 		fi
+		
+		# Convert UIH dcm to nii
+		`dcm2niix $sub`
 
-		# send email that session was downloaded
+		# Send email that session was downloaded
 		/usr/bin/python3.7 /data/perlman/moochie/github/LCBDtools/scripts/MRI/CNDA/email_downloaded_session.py $tses/$sub/$visit
 	
 	done
