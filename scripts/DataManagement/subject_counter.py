@@ -7,7 +7,7 @@ class counter:
         if path != None:
             self.data_path = path
         else:
-            self.data_path = '../../../../analysis/CARE/NIRS_data_clean_2/'
+            self.data_path = '../../../../analysis/CARE/CNDA_downloads'
 
     def count(self):
         self.subject_count = {}

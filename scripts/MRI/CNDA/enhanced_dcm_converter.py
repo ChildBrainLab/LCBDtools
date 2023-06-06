@@ -5,9 +5,7 @@ from glob import glob
 
 subject = sys.argv[1]
 
-# Find or generate a log
-
-path = '../../../../../study_data/CARE/CNDA_downloads/NP1166/'
+path = '/data/perlman/moochie/study_data/CARE/CNDA_downloads/NP1166/'
 
 update_date = datetime.strptime('03/08/2023', '%m/%d/%Y')
 
@@ -17,8 +15,6 @@ def bash(command):
 
 os.chdir(path)
 directory = os.listdir('.')
-
-log = open('log.txt', 'a')
 
 if subject:
 	directory = [subject]
@@ -30,12 +26,10 @@ for subject_folder in directory:
 			for file in files:
 				if file[-4:] == '.dcm':
 					output, error = bash('dcm2niix {:s}'.format(root))
-					print(output, file = log)
+					print(output)
 					if error:
-						print('{:s} failed to convert! {:s}'.format(file, error), file = log)
+						print('{:s} failed to convert! {:s}'.format(file, error))
 					else:
-						print(output, file = log)
+						print(output)
 						break
-log.close()
-
 #/usr/bin/python3.7 /data/perlman/moochie/github/LCBDtools/scripts/MRI/CNDA/enhanced_dcm_converter.py $sub
