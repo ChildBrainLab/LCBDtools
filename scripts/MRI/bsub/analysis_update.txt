@@ -1,0 +1,1 @@
+for subject in `find MRI_data/derivatives/fmriprep/ -maxdepth 1 -type d -name 'sub-*'` ; do if [ ! -d /storage1/fs1/perlmansusan/Active/moochie/user_data/khalilt/CARE2024/`basename $subject` ] ; then mkdir /storage1/fs1/perlmansusan/Active/moochie/user_data/khalilt/CARE2024_ME/`basename $subject` ; fi ; done

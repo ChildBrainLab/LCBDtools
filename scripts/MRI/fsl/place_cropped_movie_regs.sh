@@ -3,10 +3,12 @@
 # usage: bash placeblablabla.sh /path/to/bids/dir
 
 bidsdir=$1
+ratingdir=/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/
 
-ml fsl
+#ml fsl
 
-for sub in `/bin/ls -d $bidsdir/derivatives/fmriprep/sub*/ses-0/func/* | grep preproc_bold.nii.gz`
+#for sub in `/bin/ls -d $bidsdir/derivatives/fmriprep/sub*/ses-0/func/* | grep preproc_bold.nii.gz`
+for sub in `find $bidsdir/derivatives/fmriprep/ -name '*preproc_bold.nii'`
 do
 	# the case that there are ratings in this functional folder
 	if [[ $(/bin/ls -d $(dirname $sub) | grep AHKJ | grep rating | grep .txt) ]]
@@ -30,7 +32,7 @@ do
 		# for each file in ratings-containing folder
 		# if it matches the movie name
 		# copy the head -n $a version of it to func
-		for rating in `/bin/ls -d /scratch/claytons/chpctransfer/* | grep "$movie" | grep ".txt"`
+		for rating in `find $ratingdir -maxdepth 1 -name "*movie$movie*.txt"`
 		do
 
 			# copy the rating

@@ -1,0 +1,219 @@
+{
+    "descriptions": [
+      {
+        "datatype": "anat",
+        "suffix": "T1w",
+        "criteria": {
+          "SeriesDescription": "T1 MPRAGE Cor"
+        },
+        "sidecar_changes": {
+          "ProtocolName": "T1"
+        }
+      },
+      {
+        "datatype": "dwi",
+        "suffix":"dir-AP_dwi",
+        "criteria": {
+          "SeriesDescription": "dMRI_dir98_AP"
+        }
+      },
+      {
+        "datatype": "dwi",
+        "suffix":"dir-AP_sbref",
+        "criteria": {
+          "SeriesDescription": "dMRI_dir98_AP_SBRef"
+        }
+      },
+      {
+        "datatype": "dwi",
+        "suffix":"dir-PA_dwi",
+        "criteria": {
+          "SeriesDescription": "dMRI_dir98_PA"
+        }
+      },
+      {
+        "datatype": "dwi",
+        "suffix":"dir-PA_sbref",
+        "criteria": {
+          "SeriesDescription": "dMRI_dir98_PA_SBRef"
+        }
+      },
+      {
+        "datatype": "func",
+        "suffix": "task-movieA_dir-PA_sbref_echo-2",
+        "criteria": {
+          "SeriesDescription": "movie_versionA_PA_SBRef",
+          "EchoNumber": 2
+        }
+      },
+      {
+        "datatype": "func",
+        "suffix": "task-movieA_dir-PA_sbref_echo-3",
+        "criteria": {
+          "SeriesDescription": "movie_versionA_PA_SBRef",
+          "EchoNumber": 3
+        }
+      },
+      {
+        "id":"bold_echo_1",
+        "datatype": "func",
+        "suffix": "task-movieA_echo-1_bold",
+        "criteria": {
+          "SeriesDescription": "movie_versionA_PA",
+          "EchoNumber": 1
+        },
+        "sidecar_changes": {
+          "TaskName": "movieA"
+        }
+      },
+      {
+        "id":"bold_echo_2",
+        "datatype": "func",
+        "suffix": "task-movieA_echo-2_bold",
+        "criteria": {
+          "SeriesDescription": "movie_versionA_PA",
+          "EchoNumber": 2
+        },
+        "sidecar_changes": {
+          "TaskName": "movieA"
+        }
+      },
+      {
+        "id":"bold_echo_3",
+        "datatype": "func",
+        "suffix": "task-movieA_echo-3_bold",
+        "criteria": {
+          "SeriesDescription": "movie_versionA_PA",
+          "EchoNumber": 3
+        },
+        "sidecar_changes": {
+          "TaskName": "movieA"
+        }
+      },
+      {
+        "datatype": "func",
+        "suffix": "task-movieB_dir-PA_sbref_echo-2",
+        "criteria": {
+          "SeriesDescription": "movie_versionB_PA_SBRef",
+          "EchoNumber": 2
+        }
+      },
+      {
+        "datatype": "func",
+        "suffix": "task-movieB_dir-PA_sbref_echo-3",
+        "criteria": {
+          "SeriesDescription": "movie_versionB_PA_SBRef",
+          "EchoNumber": 3
+        }
+      },
+      {
+        "id":"bold_echo_1",
+        "datatype": "func",
+        "suffix": "task-movieB_echo-1_bold",
+        "criteria": {
+          "SeriesDescription": "movie_versionB_PA",
+          "EchoNumber": 1
+        },
+        "sidecar_changes": {
+          "TaskName": "movieB"
+        }
+      },
+      {
+        "id":"bold_echo_2",
+        "datatype": "func",
+        "suffix": "task-movieB_echo-2_bold",
+        "criteria": {
+          "SeriesDescription": "movie_versionB_PA",
+          "EchoNumber": 2
+        },
+        "sidecar_changes": {
+          "TaskName": "movieB"
+        }
+      },
+      {
+        "id":"bold_echo_3",
+        "datatype": "func",
+        "suffix": "task-movieB_echo-3_bold",
+        "criteria": {
+          "SeriesDescription": "movie_versionB_PA",
+          "EchoNumber": 3
+        },
+        "sidecar_changes": {
+          "TaskName": "movieB"
+        }
+      },
+      {
+        "datatype": "func",
+        "suffix": "task-movieC_dir-PA_sbref_echo-2",
+        "criteria": {
+          "SeriesDescription": "movie_versionC_PA_SBRef",
+          "EchoNumber": 2
+        }
+      },
+      {
+        "datatype": "func",
+        "suffix": "task-movieC_dir-PA_sbref_echo-3",
+        "criteria": {
+          "SeriesDescription": "movie_versionC_PA_SBRef",
+          "EchoNumber": 3
+        }
+      },
+      {
+        "id":"bold_echo_1",
+        "datatype": "func",
+        "suffix": "task-movieC_echo-1_bold",
+        "criteria": {
+          "SeriesDescription": "movie_versionC_PA",
+          "EchoNumber": 1
+        },
+        "sidecar_changes": {
+          "TaskName": "movieC"
+        }
+      },
+      {
+        "id":"bold_echo_2",
+        "datatype": "func",
+        "suffix": "task-movieC_echo-2_bold",
+        "criteria": {
+          "SeriesDescription": "movie_versionC_PA",
+          "EchoNumber": 2
+        },
+        "sidecar_changes": {
+          "TaskName": "movieC"
+        }
+      },
+      {
+        "id":"bold_echo_3",
+        "datatype": "func",
+        "suffix": "task-movieC_echo-3_bold",
+        "criteria": {
+          "SeriesDescription": "movie_versionC_PA",
+          "EchoNumber": 3
+        },
+        "sidecar_changes": {
+          "TaskName": "movieC"
+        }
+      },
+      {
+        "datatype": "fmap",
+        "suffix": "dir-AP_epi",
+        "criteria": {
+          "ProtocolName": "movie_fmap_1"
+        },
+        "sidecar_changes": {
+          "IntendedFor": ["bold_echo_1"]
+        }
+      },
+      {
+        "datatype": "fmap",
+        "suffix": "dir-PA_epi",
+        "criteria": {
+          "ProtocolName": "movie_fmap_2"
+        },
+        "sidecar_changes": {
+          "IntendedFor": ["bold_echo_1"]
+        }
+      }
+      
+    ]
+  }

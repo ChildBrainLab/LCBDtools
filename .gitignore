@@ -3,3 +3,4 @@
 *checkpoint*
 *.log
 *notebooks/.*
+scripts/MRI/CNDA/.xnat_auth

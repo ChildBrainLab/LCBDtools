@@ -23,7 +23,7 @@ docker run --rm -u $( id -u)\
 	-w /work \
 	--longitudinal \
 	--skip_bids_validation \
-       	--use-aroma \
+    --use-aroma \
 	--nthreads 16 \
 	--low-mem \
 	--mem-mb 15000 \

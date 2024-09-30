@@ -1,0 +1,5 @@
+#!/bin/bash
+
+export LSF_DOCKER_VOLUMES="/storage1/fs1/perlmansusan/Active:/storage1/fs1/perlmansusan/Active /scratch1/fs1/perlmansusan:/scratch1/fs1/perlmansusan $HOME:$HOME"
+
+bsub -G compute-perlmansusan -J $USER-sandbox -a 'docker(continuumio/anaconda3:latest)' -Is /bin/bash 

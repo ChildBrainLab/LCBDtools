@@ -9,10 +9,16 @@ class ftp:
 	and restructuring files folders for a given study. To create a new FTP for a
 	given study, you will need to create a new atlas defining source and destination of each file/folder
 	"""
-	def __init__(self, debug = True, copy = True): # Initializing a generic file transfer protocol
+	def __init__(self, debug = True, copy = True, undo = False): # Initializing a generic file transfer protocol
 		self.debug = debug
 		self.copy = copy
+		self.undo = undo
 		self.lower_case = False
+
+		if self.copy == False:
+			response = input('Copy apart of this file transfer protocol is set to False so the script will delete old files after transfer, would you like to continue? (y/n)\n')
+			if 'n' in response.lower():
+				return
 
 		self.work_dir = os.getcwd()
 		self.old_dir = None
@@ -23,50 +29,51 @@ class ftp:
 		print('Generic FTP protocal initialized. Working directory, new directory and atlas need to be defined before running FTP.')
 
 	def transfer(self, source, destination, atlas):
-		if self.copy == False:
-			response = input("Instance is set to delete files/folders after copying to new directory, would you still like to continue? (y/n)")
-			if 'n' in response.lower().strip():
-				return
 
 		subject = atlas.subject
 
 		filename = source.split('/').pop() # Grab filename
 
-		if self.lower_case: # Lower case filename if requested
-			lowercase_filename = self.rename(filename, subject) # Lowercase filename
-			new_filename = lowercase_filename
+		if os.path.isfile(source) == True:
+			if self.lower_case: # Lower case filename if requested
+				lowercase_filename = self.rename(filename, subject) # Lowercase filename
+				new_filename = lowercase_filename
+			else:
+				new_filename = filename
+
+			split = new_filename.split('.')
+			if len(split) > 1:
+				filetype = split.pop()
+			else:
+				filetype = '' 
+			new_filename = split[0]
+
+			for keyword, replacement in atlas.replacements.items():# Check for a replacement keyword
+				if keyword in new_filename: # If keyword found
+					new_filename = replacement.join(new_filename.split(keyword)) #
+			new_filename = new_filename + '.' + filetype
 		else:
 			new_filename = filename
-
-		for keyword, replacement in atlas.replacements.items():# Check for a replacement keyword
-			if keyword in new_filename: # If keyword found
-				new_filename = replacement.join(new_filename.split(keyword)) #
-
-
-		if os.path.exists(destination + new_filename): # Check if file already transfered
-			if os.path.exists(source) and self.copy == False: # Check if source exists and remove requested
-				if os.path.isdir(source):
-					shutil.rmtree(source)
-				else:
-					os.remove(source)
-			return
 
 		if self.debug:
 			print(f'Transfering {source} --> {destination + new_filename}') # If debugging report the file to be transfered
 		else:
-			if os.path.exists(destination) == False: # Create parent folders if needed
-				os.makedirs(destination)
-			if os.path.isdir(source) == True:
-				shutil.copytree(source, destination + new_filename)
-				if self.copy == False:
-					shutil.rmtree(source)
-			else:
-				shutil.copy(source, destination + filename)# Transfer file
-				if filename != new_filename:
-					os.rename(destination + filename, destination + new_filename)# Rename
-				if self.copy == False:
-					os.remove(source)
-
+			try:
+				if os.path.exists(destination) == False: # Create parent folders if needed
+					os.makedirs(destination)
+				if os.path.isdir(source) == True:
+					shutil.copytree(source, destination + new_filename)
+					if self.copy == False:
+						shutil.rmtree(source)
+				else:
+					shutil.copy(source, destination + new_filename)# Transfer file
+				#if filename != new_filename:
+				#	os.rename(destination + filename, destination + new_filename)# Rename
+					if self.copy == False:
+						os.remove(source)
+			except:
+				print(f'Transfer failed: {source}') 
+	   
 	def bash(self, command):
 		process = subprocess.Popen(command.split(), stdout =subprocess.PIPE)
 		return process.communicate()
@@ -132,17 +139,18 @@ class aws(ftp):
 				if '.git' not in path:
 					client.upload_file(source + path, bucket, destination + path)
 
-class pcat_restructure_ftp(ftp):
+class pcat_ftp(ftp):
 	"""
 	P-CAT Child FTP Protocol - Utilized to transfer files over to the new restructured directory
 	"""
-	def __init__(self, debug = False, copy = True):
+	def __init__(self, debug = False, copy = True, undo = False):
 		self.debug = debug
 		self.copy = copy
+		self.undo = undo
 		self.lower_case = False
 
-		#self.work_dir = '../../../../study_data/P-CAT/R56/' # Working directory
-		self.work_dir = '../../../../study_data/P-CAT/R56/restructured_data/PSU_data/' # Working directory
+		self.work_dir = '../../../../study_data/P-CAT/R56/PCAT_MS1/data/psychopy/' # Working directory
+		#self.work_dir = '../../../../study_data/P-CAT/R56/restructured_data/PSU_data/' # Working directory
 		#self.work_dir = '../../../../analysis/P-CAT/NIRS_Data_Clean_WU_PSU/'
 		self.old_dir = ''
 		self.new_dir = 'restructured_data/'
@@ -166,12 +174,10 @@ class pcat_restructure_ftp(ftp):
 
 	def orient_analysis(self):
 		self.old_dir = ''
-		self.new_dir = '../../../../../analysis/P-CAT/NIRS_Data_Clean_WU_PSU/'
+		self.new_dir = '../../../../../../analysis/P-CAT/NIRS_Data_Clean_WU_PSU/'
 		self.new_atlas = lambda subject : pcat_analysis_atlas(subject)
 
-		subjects = []
-		new_subjects = os.listdir('task_data/dbdos') # Grab all subjects in task_data
-		subjects = self.add_subjects(subjects, new_subjects)
+		subjects = ['1258','1187','1194','1177','1193','1180','1184','1263','1179','1173','1104','1190','1109','1103','1174','1189','1256','1112','1266','1176','1195','1186','1265','1182','1188','1175','1102','1243','1172','1178','1185']
 		self.iterate_subjects(subjects)
 
 	def iterate_subjects(self, subjects):
@@ -218,9 +224,13 @@ class pcat_analysis_atlas:
 		self.subject = subject
 		self.map = { # List of all files/folders to transfer
 			#f'{subject[:4]}/{subject}/':f'{subject[:4]}/{subject[:4]}_DB-DOS/{subject}_fNIRS_DB-DOS/',
-			f'task_data/dbdos/{subject[:4]}/':f'{subject[:4]}/{subject[:4]}_DB-DOS/{subject}_fNIRS_DB-DOS/'
+			#f'task_data/dbdos/{subject[:4]}/':f'{subject[:4]}/{subject[:4]}_DB-DOS/{subject}_fNIRS_DB-DOS/'
+			#f'{subject[:4]}/{subject[:4]}_DB-DOS/{subject}_fNIRS_DB-DOS/':f'{subject[:4]}/{subject[:4]}_DB-DOS/{subject}_fNIRS_DB-DOS/'
+			f'{subject[:4]}/':f'{subject[:4]}/{subject[:4]}_DB-DOS/{subject}_fNIRS_DB-DOS/'
 		}
-		self.replacements = {}
+		self.replacements = {'nirs': 'NIRS',
+							'DB-DOS': 'db-dos',
+							'dbdos' : 'db-dos'}
 
 class care_ftp(ftp):
 	def __init__(self, debug = False, copy = True):
@@ -239,8 +249,7 @@ class care_ftp(ftp):
 
 		print('CARE FTP protocal initialized. Looking for new fNIRS dat')
 
-		if hot_init:
-			self.orient()
+		self.orient()
 
 	def orient(self):
 		subjects = [subject for subject in os.listdir('study_data/CARE/NIRS_data/') if subject != 'P002']
@@ -257,4 +266,4 @@ class care_nirs_atlas:
 		self.map = {
 			f'CARE/NIRS_data/{self.subject}/':f'CARE/NIRS_data_clean_2/{self.subject}/'
 		}
-		self.replacements = {} # Initialize an empty replacement to keep the filename the same
+		self.replacements = {'.V':'V'} # Initialize an empty replacement to keep the filename the same

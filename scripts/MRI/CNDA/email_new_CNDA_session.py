@@ -69,7 +69,7 @@ msg = MIMEText(body, 'html')
 # you == the recipient's email address
 msg['Subject'] = f'A Session Has Been Uploaded to CNDA: {CNDA_ses}'
 msg['From'] = email_address
-msg['To'] = "claytons@wustl.edu,lcbd@wustl.edu"
+msg['To'] = "dennys@wustl.edu,lcbd@wustl.edu"
 
 # Send the message
 with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:

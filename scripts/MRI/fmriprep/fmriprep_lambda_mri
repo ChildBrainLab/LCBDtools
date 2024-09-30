@@ -1,0 +1,90 @@
+import boto3, os, time
+
+region = 'us-east-2'
+
+launch_template = {
+    'LaunchTemplateName': os.getenv('launch_template'),
+    'Version': '$Default'
+}
+
+unique_user_id = os.getenv('unique_user_id') 
+freesurfer_license = os.getenv('freesurfer_license')
+input_dir = os.getenv("input_dir")
+output_dir = os.getenv("output_dir")
+iam_profile = {'Name': 'fmriprep-EC2S3-{}'.format(unique_user_id)}
+security_group= ['bidskit-EC2SG-{}'.format(unique_user_id),] 
+
+shutdown_behavior = 'stop' # terminate or stop (so you can examine the instances state after finishing the job)
+
+# Declare S3 and EC2 resources
+s3 = boto3.resource("s3")
+ec2 = boto3.resource('ec2', region_name=region)
+
+# Bash script for running the job
+init_script_template = """#!/bin/bash
+sudo yum -y update
+
+sudo yum install -y docker
+
+# create corresponding local file structure
+
+cd ~
+
+mkdir input
+mkdir output
+mkdir scratch
+mkdir freesurfer
+
+aws s3 cp {0}/ ~/freesurfer/license.txt
+aws s3 cp --recursive {1} ./input --exclude '*/sub-*' --include '*sub-{3}*'
+
+sudo service docker start
+
+sudo docker run -v ~/input:/data:ro \
+    -v ~/output:/out \
+    -v ~/scratch/:/scratch \
+    -v ~/freesurfer:/freesurfer \
+    poldracklab/fmriprep:latest /data /out/out participant --participant-label {3} \
+    -w /scratch \
+    --fs-license-file /freesurfer/license.txt \
+    --skip_bids_validation \
+    --use-aroma \
+    --output-spaces MNIPediatricAsym:cohort-2:res-2 \
+    --n_cpus 16
+
+aws s3 cp --recursive ./output/out/ {2}
+
+cp /var/log/cloud-init-output.log ~/{3}.log
+
+aws s3 cp ~/{3}.log {2}
+
+shutdown -h +1
+"""
+
+
+def lambda_handler(event, context):
+    for subject_id in [os.getenv('subject')]:
+        init_script = init_script_template.format(freesurfer_license,
+               input_dir,
+               output_dir,
+               subject_id
+               )
+
+        print('Running script:')
+
+        instance = ec2.create_instances(
+            MinCount=1, 
+            MaxCount=1,
+            LaunchTemplate = launch_template,
+            InstanceInitiatedShutdownBehavior=shutdown_behavior, 
+            UserData=init_script, 
+            IamInstanceProfile=iam_profile,
+
+            TagSpecifications=[{
+                'ResourceType': 'instance',
+                'Tags': [{'Key': 'Name', 'Value': subject_id},]
+             }],
+        )
+        print("New instance created for subject {}.".format(subject_id))
+        time.sleep(1.0)
+    return

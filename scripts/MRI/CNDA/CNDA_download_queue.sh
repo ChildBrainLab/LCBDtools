@@ -1,8 +1,8 @@
 #!/bin/bash
 
-source /data/perlman/moochie/resources/server_access/MRIenv/bin/activate
+#source /data/perlman/moochie/resources/server_access/MRIenv/bin/activate
 
-/usr/bin/python3.7 /data/perlman/moochie/github/LCBDtools/scripts/MRI/CNDA/CNDA_get_undownloaded_sessions.py
+python /data/perlman/moochie/github/LCBDtools/scripts/MRI/CNDA/CNDA_get_undownloaded_sessions.py
 
 cat /data/perlman/moochie/study_data/CARE/CNDA_downloads/CNDA_download_queue.txt | while read line; do
 
@@ -27,7 +27,7 @@ cat /data/perlman/moochie/study_data/CARE/CNDA_downloads/CNDA_download_queue.txt
 		# if glob is null, just knowingly send email with error path
 		# and then continue	
 		if [ -z "$dlses" ]; then
-			/usr/bin/python3.7 /data/perlman/moochie/github/LCBDtools/scripts/MRI/CNDA/email_doanloaded_session.py /data/perlman/moochie/study_data/CARE/CNDA_downloads/NP1166/$CNDAses
+			python /data/perlman/moochie/github/LCBDtools/scripts/MRI/CNDA/email_downloaded_session.py /data/perlman/moochie/study_data/CARE/CNDA_downloads/NP1166/$CNDAses
 			continue
 		fi
 
@@ -60,10 +60,10 @@ cat /data/perlman/moochie/study_data/CARE/CNDA_downloads/CNDA_download_queue.txt
 		fi
 		
 		# Convert UIH dcm to nii
-		/usr/bin/python3.7 /data/perlman/moochie/github/LCBDtools/scripts/MRI/CNDA/enhanced_dcm_converter.py $sub
+		python /data/perlman/moochie/github/LCBDtools/scripts/MRI/CNDA/enhanced_dcm_converter.py $sub
 
 		# Send email that session was downloaded
-		/usr/bin/python3.7 /data/perlman/moochie/github/LCBDtools/scripts/MRI/CNDA/email_downloaded_session.py $tses/$sub/$visit
+		python /data/perlman/moochie/github/LCBDtools/scripts/MRI/CNDA/email_downloaded_session.py $tses/$sub/$visit
 	
 	done
 done

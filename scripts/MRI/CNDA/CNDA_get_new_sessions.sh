@@ -2,7 +2,7 @@
 
 # usage: bash CNDA_get_new_sessions.sh 
 
-source /data/perlman/moochie/resources/server_access/MRIenv/bin/activate
+#source /data/perlman/moochie/resources/server_access/MRIenv/bin/activate
 
 # clean up any existing transfer files if needed
 #if [[ -f "/data/perlman/moochie/study_data/CARE/CNDA_sessions_new.txt" ]]; then

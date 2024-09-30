@@ -4,8 +4,10 @@ from glob import glob
 
 
 subject = sys.argv[1]
+if subject[:3] != 'sub':
+	subject = sys.arg[2]
 
-path = '/data/perlman/moochie/study_data/CARE/CNDA_downloads/NP1166/'
+path = '/mnt/moochie/analysis/CARE/BIDS_data/'
 
 update_date = datetime.strptime('03/08/2023', '%m/%d/%Y')
 

@@ -30,8 +30,8 @@ COIs = [
 ]
 
 cons = glob(bids_folder+"/derivatives/fmriprep/sub-*/**/func/*confounds_timeseries.tsv")
-
 for fname in cons:
+    print(fname)
     df = pd.read_csv(fname, delimiter="\t", usecols=COIs)
     for col in COIs:
         series = df[col].astype(float)
