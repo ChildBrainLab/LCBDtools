@@ -817,13 +817,16 @@ for parent in tqdm([sub for sub in sorted(epoch_df.keys()) if "p" in sub]):
                 pc_wcts = []
                 
                 # load in their epoched data for this subject / channel / block
-                print(epoch_df[parent])
-                if block_num not in epoch_df[parent][ch].keys():
-                    continue
-                p_epoch = epoch_df[parent][ch][block_num].load_data()
-                if block_num not in epoch_df[child][ch].keys():
-                    continue
-                c_epoch = epoch_df[child][ch][block_num].load_data()
+                print(epoch_df[parent][ch])
+                print(block_num)
+                if block_num < len(epoch_df[parent][ch]):
+                    p_epoch = epoch_df[parent][ch][block_num].load_data()
+                else:
+                    print(f"Skipping {parent} {block_num} {ch}")
+                if block_num < len(epoch_df[child][ch]):
+                    c_epoch = epoch_df[child][ch][block_num].load_data()
+                else:
+                    print(f"Skipping {child} {block_num} {ch}")
                 
                 # for each iteration of this block (max 4)
                 for block_it in np.arange(0, np.min([

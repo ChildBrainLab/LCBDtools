@@ -32,7 +32,7 @@ do
 		# for each file in ratings-containing folder
 		# if it matches the movie name
 		# copy the head -n $a version of it to func
-		for rating in `find $ratingdir -maxdepth 1 -name "*movie$movie*.txt"`
+		for rating in `find $ratingdir -maxdepth 1 -name "*AHKJ*movie$movie*.txt"`
 		do
 
 			# copy the rating
