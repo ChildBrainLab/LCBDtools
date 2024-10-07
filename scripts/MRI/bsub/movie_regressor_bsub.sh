@@ -14,8 +14,14 @@
 LCBDtools=/storage1/fs1/perlmansusan/Active/moochie/github/LCBDtools/
 #HOME=/home/$USER
 
-OUTPUT_DIR=/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/ME_tedana_data/
+OUTPUT_DIR=/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/ME_XCP_kirk_data/
 bash $LCBDtools/scripts/MRI/fsl/place_cropped_movie_regs.sh $OUTPUT_DIR
 
-OUTPUT_DIR=/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/MRI_data/
+OUTPUT_DIR=/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/ME_XCP_kirk_data_2/
+bash $LCBDtools/scripts/MRI/fsl/place_cropped_movie_regs.sh $OUTPUT_DIR
+
+OUTPUT_DIR=/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/ME_XCP_khalil_data/
+bash $LCBDtools/scripts/MRI/fsl/place_cropped_movie_regs.sh $OUTPUT_DIR
+
+OUTPUT_DIR=/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/MRI_data/derivatives/fmriprep/
 bash $LCBDtools/scripts/MRI/fsl/place_cropped_movie_regs.sh $OUTPUT_DIR

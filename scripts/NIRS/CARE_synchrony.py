@@ -765,7 +765,7 @@ perm_df = {}
 
 print("Starting Synchrony ")
 # for every parent subject
-for parent in tqdm([sub for sub in sorted(epoch_df.keys()) if "p" in sub]):
+for parent in tqdm([sub for sub in sorted(epoch_df.keys())[:3] if "p" in sub]):
     print(parent)
 
     sync_df[parent] = {}
@@ -866,12 +866,6 @@ for parent in tqdm([sub for sub in sorted(epoch_df.keys()) if "p" in sub]):
 
 # skip if you're going to load the already-saved ones. for real. don't overwrite this with an empty data file. 
 # SAVE SYNCHRONY VALUES
-
-json_object = json.dumps(sync_df, indent=4)
-
-with open("/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/Test_Analysis/full_ses-0_wct_full_permuted_values_pipeline.json", 'w') as outfile:
-    json.dump(sync_df, outfile)
-    
 channels = epoch_df[parent].keys()
 
 cols = ["Parent", "Child", "Block"]
@@ -894,10 +888,11 @@ for parent in sync_df.keys():
             for key, val in sync_df[parent][child][block].items():
                 dic[key] = val
             
-#             print(dic)
-            df = df.append(dic, ignore_index=True)
+            print(dic)
+            df = pd.concat([df, pd.DataFrame(dic.items())]) #, ignore_index=True)
+
         
-#print(df)
+print(df)
 df.to_csv("/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/Test_Analysis/wct_full_ses-0_permuted_values_pipeline.csv")
 
 

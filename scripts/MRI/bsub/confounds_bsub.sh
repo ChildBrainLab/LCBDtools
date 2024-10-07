@@ -21,5 +21,5 @@ python3 $LCBDtools/scripts/MRI/fmriprep/extract_confounds.py $OUTPUT_DIR
 OUTPUT_DIR=/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/ME_XCP_khalil_data/
 python3 $LCBDtools/scripts/MRI/fmriprep/extract_confounds.py $OUTPUT_DIR
 
-OUTPUT_DIR=/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/MRI_data/
+OUTPUT_DIR=/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/MRI_data/derivatives/fmriprep/
 python3 $LCBDtools/scripts/MRI/fmriprep/extract_confounds.py $OUTPUT_DIR

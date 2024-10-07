@@ -29,7 +29,7 @@ COIs = [
     "rot_z",
 ]
 
-cons = glob(bids_folder+"/derivatives/fmriprep/sub-*/**/func/*confounds_timeseries.tsv")
+cons = glob(bids_folder+"/sub-*/**/func/*confounds_timeseries.tsv")
 for fname in cons:
     print(fname)
     df = pd.read_csv(fname, delimiter="\t", usecols=COIs)
