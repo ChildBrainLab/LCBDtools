@@ -18,14 +18,33 @@ do
 	# the case the rating is not present
 	else
 		# get task name
-		sentence=$(basename $sub)
-		for word in ${sentence//_/ }; do
-			if [[ "task-movie" == *"$word"* ]]
+		#sentence=$(basename $sub)
+		#for word in ${sentence//_/ }; do
+		#	if [[ "task-movie" == *"$word"* ]]
+		#	then
+		#		movie=$(echo $word | sed 's/task-//')
+		#	fi
+		#done
+		
+		IFS='_' read -ra array <<< $(basename $sub)
+		for element in "${array[@]}"
+		do
+  			if [[ "task-movieA" == $element ]]
 			then
-				movie=$(echo $word | sed 's/task-//')
+				movie='A'
+			fi
+			if [[ 'task-movieB' == $element ]]
+			then
+				movie='B'
+			fi
+			if [[ 'task-movieC' == $element ]]
+			then
+				movie='C'
 			fi
 		done
-		
+		echo $sub
+		echo $movie
+
 		# get the number of volumes in the 4D smoothed file
 		a=$(fslnvols $sub)
 		
