@@ -3,8 +3,8 @@
 #BSUB -q general
 #BSUB -m general
 #BSUB -a 'docker(continuumio/anaconda3)'
-#BSUB -n 60
-#BSUB -R "select[mem>50000]"
+#BSUB -n 200
+#BSUB -R "select[mem>70000]"
 
 conda init 
 source /home/dennys/.bashrc

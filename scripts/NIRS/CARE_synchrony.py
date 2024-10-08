@@ -765,7 +765,7 @@ perm_df = {}
 
 print("Starting Synchrony ")
 # for every parent subject
-for parent in tqdm([sub for sub in sorted(epoch_df.keys())[:3] if "p" in sub]):
+for parent in tqdm([sub for sub in sorted(epoch_df.keys()) if "p" in sub]):
     print(parent)
 
     sync_df[parent] = {}
@@ -888,11 +888,10 @@ for parent in sync_df.keys():
             for key, val in sync_df[parent][child][block].items():
                 dic[key] = val
             
-            print(dic)
-            df = pd.concat([df, pd.DataFrame(dic.items())]) #, ignore_index=True)
+            dic = {k: [v] for k, v in dic.items()}
+            df = pd.concat([df, pd.DataFrame(dic, columns=cols)], ignore_index=True)
 
         
-print(df)
 df.to_csv("/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/Test_Analysis/wct_full_ses-0_permuted_values_pipeline.csv")
 
 
