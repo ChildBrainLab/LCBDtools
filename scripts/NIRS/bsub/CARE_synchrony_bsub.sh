@@ -3,7 +3,7 @@
 #BSUB -q general
 #BSUB -m general
 #BSUB -a 'docker(continuumio/anaconda3)'
-#BSUB -n 200
+#BSUB -n 100
 #BSUB -R "select[mem>70000]"
 
 conda init 

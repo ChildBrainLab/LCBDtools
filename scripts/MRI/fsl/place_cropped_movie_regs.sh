@@ -42,8 +42,6 @@ do
 				movie='C'
 			fi
 		done
-		echo $sub
-		echo $movie
 
 		# get the number of volumes in the 4D smoothed file
 		a=$(fslnvols $sub)
@@ -56,7 +54,7 @@ do
 
 			# copy the rating
 			# there should probably be three now
-			echo "Copying $(basename $rating):"
+			echo "Copying $(basename $rating): length $a"
 			head -n $a $rating > $(dirname $sub)/$(basename $rating)
 			echo "Done"
 
