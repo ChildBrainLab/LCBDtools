@@ -11,26 +11,22 @@ class convolver:
 
     def __init__(self, freq = None):
 
-        self.bids_dir = '/Volumes/perlmansusan/Active/moochie/analysis/P-CAT/flanker_nirs/'
+        self.bids_dir = '/storage1/fs1/perlmansusan/Active/moochie/analysis/P-CAT/flanker_nirs/'
         self.ouput_directory = ''
 
         self.ex_subs = []
-
-        self.ROIs = {
-            'Left Frontal': ['S3_D2 hbo', 'S4_D2 hbo'],
-            'Right Frontal': ['S5_D3 hbo',  'S6_D3 hbo'],
-            'Left Temporal': ['S1_D1 hbo', 'S2_D1 hbo', 'S2_D2 hbo'],
-            'Right Temporal': ['S7_D3 hbo', 'S7_D4 hbo', 'S8_D4 hbo']
-        }
-
-        self.filter = HRF(freq).filter
+        
 
     def load(self, bids_dir = None):
+        if bids_dir != None:
+            self.bids_dir = bids_dir
+
         # make a list where all of the scans will get loaded into
         self.task_scans = []
 
         # Load in master file with scan order info
         subject_dirs = glob(f'{self.bids_dir}*/')[:3]
+        print(subject_dirs)
 
         for dir_ind, directory in enumerate(subject_dirs):
             for excluded in self.ex_subs:
@@ -49,9 +45,15 @@ class convolver:
             fnirs_participant = mne.io.read_raw_nirx(subject_dir)
             self.task_scans.append(fnirs_participant)
 
+        scan = self.task_scans[0]
+        scan.load_data()
+        freq = scan.info['sfreq']
+        self.filter = HRF(freq).filter
+
 
     def convolve_hrf(self, raw_nirx):
         raw_nirx.load_data()
+        raw_sfreq = raw_nirx.info['sfreq']
         raw_signal = raw_nirx.get_data('all')
         convolution = lambda nirx_raw : signal.fftconvolve(nirx_raw, self.filter, mode = 'same')
 
@@ -82,6 +84,8 @@ class HRF():
     def __init__(self, freq, verbose = False):
         self.filter = [-0.1, 0.8, 0.7, -0.25, -0.20, -0.125, -0.05, -0.01, -0.001]
 
+        self.freq = freq
+
         def expand(filter):
             new_filter = []
             for ind, data in enumerate(filter):
@@ -97,10 +101,14 @@ class HRF():
         plt.title('HRF Averages')
         plt.show()
 
-        self.filter = expand(self.filter)
-        self.filter = expand(self.filter)
-        self.filter = expand(self.filter)
-        self.filter = smooth(self.filter)
+        # Calculate number of samples per hemodynamic response function
+        # Number of seconds  per HRF (12 seconds/HRF) times samples per second
+        hrf_samples = round(12 * self.freq, 2)
+
+        while len(self.filter) < hrf_samples:
+            # How can we slow this down to not double?
+            self.filter = expand(self.filter) 
+            print("Expanding filter")
 
         plt.plot(self.filter)
         plt.title('Synthetic HRF Convolution Filter')
