@@ -8,13 +8,13 @@ ratingdir=/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/
 #ml fsl
 
 #for sub in `/bin/ls -d $bidsdir/derivatives/fmriprep/sub*/ses-0/func/* | grep preproc_bold.nii.gz`
-for sub in `find $bidsdir -name '*preproc_bold.nii'`
+for sub in `find $bidsdir -name '*preproc_bold.nii' | sort -r`
 do
 	# the case that there are ratings in this functional folder
 	if [[ $(/bin/ls -d $(dirname $sub) | grep AHKJ | grep rating | grep .txt) ]]
 	then
 		# do nothing
-		:
+		echo "Skipping $sub"
 	# the case the rating is not present
 	else
 		# get task name
