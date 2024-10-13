@@ -16,6 +16,8 @@ mkdir /tmp/$TMP_DIR/output
 
 echo $FSL_DEPS
 
+python /storage1/fs1/perlmansusan/Active/moochie/github/LCBDtools/scripts/MRI/tedana/tedana_custom_confounds.py 
+
 /usr/local/miniconda/bin/xcp_d /fmriprep /tmp/$TMP_DIR/output participant \
     --participant-label $SUBJECT \
     -w /tmp/$TMP_DIR/scratch \

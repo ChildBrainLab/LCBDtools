@@ -833,13 +833,14 @@ for parent in tqdm([sub for sub in sorted(epoch_df.keys()) if "p" in sub]):
                     len(p_epoch),
                     len(c_epoch)])):
                     
+                    print(ch)
                     # try to do the WCT with these epochs
                     try:
                         WCT, aWCT, coi, freqs, sig95 = mne_wavelet_coherence_transform(
                             p_epoch[block_it],
                             c_epoch[block_it],
-                            plot=True if "S5_D3" in ch else False, # save plots but only for some random channel because otherwise it's an insane amount
-                            fig_fname=f"/storage1/fs1/perlmansusan/moochie/analysis/CARE/sync_figs/{parent}_{child}_{ch.replace(' ', '_')}_{block_num}_{block_it}.png")
+                            plot=True if "S5_D3 hbo" in ch else False, # save plots but only for some random channel because otherwise it's an insane amount
+                            fig_fname=f"/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/sync_figs/{parent}_{child}_{ch.replace(' ', '_')}_{block_num}_{block_it}.png")
 
                         # make values outside COI = np.nan
                         nanWCT = WCT
@@ -851,12 +852,12 @@ for parent in tqdm([sub for sub in sorted(epoch_df.keys()) if "p" in sub]):
                         WCT[(5>(1/freqs))|((1/freqs)>105), :] = np.nan
                         
                         # between periods of 5s and 105s (.02 -.2 Hz; flip for sec) which is based on Ngyuen et al. 2021
-                       
+                        
 
                         # average inside cone of influence
                         # and within values from freq range determined above
                         pc_wcts.append(np.nanmean(nanWCT))
-    #                     print(np.nanmean(nanWCT))
+#                     print(np.nanmean(nanWCT))
     
                     # if anything with the WCT fails, say so
                     except:
@@ -866,8 +867,8 @@ for parent in tqdm([sub for sub in sorted(epoch_df.keys()) if "p" in sub]):
 
 # skip if you're going to load the already-saved ones. for real. don't overwrite this with an empty data file. 
 # SAVE SYNCHRONY VALUES
-channels = epoch_df[parent].keys()
 
+channels = epoch_df[parent].keys()
 cols = ["Parent", "Child", "Block"]
 for ch in channels:
     cols.append(ch)
@@ -892,9 +893,9 @@ for parent in sync_df.keys():
             df = pd.concat([df, pd.DataFrame(dic, columns=cols)], ignore_index=True)
 
         
-df.to_csv("/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/Test_Analysis/wct_full_ses-0_permuted_values_pipeline.csv")
+df.to_csv("/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/Test_Analysis/wct_full_ses-0_permuted_values_pipeline_2.csv")
 
 
 json_object = json.dumps(perm_df, indent=4)
-with open("/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/Test_Analysis/permuted_subjects_ses-0_pipeline.json", 'w') as outfile:
+with open("/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/Test_Analysis/permuted_subjects_ses-0_pipeline_2.json", 'w') as outfile:
     json.dump(perm_df, outfile)

@@ -45,6 +45,8 @@ do
 
 		# get the number of volumes in the 4D smoothed file
 		a=$(fslnvols $sub)
+
+		echo "Length of scan $a"
 		
 		# for each file in ratings-containing folder
 		# if it matches the movie name
