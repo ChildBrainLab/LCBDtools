@@ -1,4 +1,5 @@
 import os
+from glob import glob
 
 
 def check_subjects(bids_folder = None, trad_fmriprep_folder = None, ME_fmriprep_folder = None, tedana_folder = None, xcp_folder = None):
@@ -33,6 +34,7 @@ def check_subjects(bids_folder = None, trad_fmriprep_folder = None, ME_fmriprep_
     print('\n\nAvailable subjects to run traditional fMRIPrep on...')
     for subject in sorted(bids_subjects):
         if subject[:4] != 'sub-': continue
+        if len(glob(f'/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/MRI_data/derivatives/fmriprep/{subject}/**/*MNI152NLin6Asym*.nii')) > 0: continue
         if subject in trad_fmriprep_subjects or subject in exclude: continue
         print(subject.split('-')[1])
 

@@ -11,7 +11,7 @@ export PATH=$FSLDIR/bin:$PATH
 export FSLMULTIFILEQUIT=TRUE
 export FSLOUTPUTTYPE=NIFTI_GZ
 
-directory=/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/ME_XCP_khalil_data/
+directory=/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/MRI_data/derivatives/fmriprep/
 
 for subject in `find $directory -type d -name  'sub-*' | shuf`
 do
@@ -21,7 +21,7 @@ do
     do
         echo $session
         session_id=basename $session
-        for subject_file in `find $session/ -name  '*denoised_bold.nii'` #'*desc-preproc_bold.nii'`
+        for subject_file in `find $session/ -name  '*bold.nii'` #'*desc-preproc_bold.nii'`
         do
             echo $subject_files
             output_file=${subject_file/'.nii'/'_6mm_smoothed.nii'}

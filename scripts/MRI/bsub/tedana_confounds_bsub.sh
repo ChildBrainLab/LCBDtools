@@ -10,5 +10,8 @@ conda init
 source /home/dennys/.bashrc
 conda activate lcbd-env
 
-python3 /storage1/fs1/perlmansusan/Active/moochie/github/LCBDtools/scripts/MRI/tedana_custom_confounds.py 
+python3 /storage1/fs1/perlmansusan/Active/moochie/github/LCBDtools/scripts/MRI/tedana_data_summary.py
 
+python3 /storage1/fs1/perlmansusan/Active/moochie/github/LCBDtools/scripts/MRI/tedana_motion_summary.py
+
+python3 /storage1/fs1/perlmansusan/Active/moochie/github/LCBDtools/scripts/MRI/tedana_custom_confounds.py 

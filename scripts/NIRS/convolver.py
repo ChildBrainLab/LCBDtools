@@ -1,4 +1,4 @@
-import mne
+import mne, random
 import numpy as np
 from glob import glob
 from matplotlib import pyplot as plt
@@ -95,7 +95,7 @@ class HRF():
             return new_filter
 
         def smooth(filter, a = 2):
-            return gaussian_filter(self.filter, sigma=a)
+            return gaussian_filter(filter, sigma=a)
 
         plt.plot(self.filter)
         plt.title('HRF Averages')
@@ -103,27 +103,106 @@ class HRF():
 
         # Calculate number of samples per hemodynamic response function
         # Number of seconds  per HRF (12 seconds/HRF) times samples per second
-        hrf_samples = round(12 * self.freq, 2)
+        hrf_samples = 64 #round(12 * self.freq, 2)
 
-        while len(self.filter) < hrf_samples:
-            # How can we slow this down to not double?
-            self.filter = expand(self.filter) 
-            print("Expanding filter")
+        print("Expanding filter")
+        self.filter = self.interpolate(self.filter, hrf_samples) 
+ 
+        self.filter = smooth(self.filter)
 
         plt.plot(self.filter)
         plt.title('Synthetic HRF Convolution Filter')
-        plt.show()
+        plt.savefig('synthetic_hrf.jpeg')
 
         self.filter = np.array(self.filter)
-        self.scalar = np.array([0.5])
-        self.filter = np.convolve(self.filter, self.scalar, mode = 'same')
+        #self.scalar = np.array([0.5])
+        #self.filter = np.convolve(self.filter, self.scalar, mode = 'same')
 
         plt.plot(self.filter)
         plt.title('Synthetic HRF Convolution Filter - Scaled')
-        plt.show()
+        plt.savefig('scaled-synthetic_hrf.jpeg')
 
+    def interpolate(self, filter, size):
+        old_size = len(filter)
+        indices = self.bin_index(filter)
+        
+        count = 0
+        while len(filter) < size:
+            # If we've fully interpolated, reset
+            if indices == []:
+                indices = self.bin_index(filter)
+            print(indices)
+            current_indice = indices[0]
 
+            # Interpolate and add value
+            if len(indices) > 1:
+                for next_index in sorted(indices):
+                    if next_index > current_indice:
+                        break
 
+                interpolation = (filter[current_indice] + filter[next_index])/2
+            else:
+                interpolation = filter[current_indice]
+
+            filter.insert(current_indice, interpolation)
+
+            del indices[0]
+
+            indices = [index + 1 if index > current_indice else index for index in indices]
+
+            count += 1# Increment count
+        print(f"Filter size increased from {old_size} to {len(filter)}")
+        return filter
+            
+    def bin_index(self, filter, indices = None, position = None, direction = -1):
+
+        # Define empty list basecase
+        if len(filter) == 0:
+            return []
+
+        if indices == None:
+            indices = [index for index in range(len(filter))]
+            position = int(len(filter)/2)
+        discovered_indices = [position]
+
+        # Define base cases for last position in filter recursion
+        if len(filter) == 1:
+            return discovered_indices
+        
+        # Figure out recursion logic using random number generator
+        if direction == 'random':
+            direction = random.uniform(0, 1)
+            if direction <=0.5:
+                direction = -1
+            else:
+                direction = 1
+            
+        # Calulcate metrics for next recusion
+        half_size = int(len(filter)/2)
+        quarter_size = int(len(filter)/4)
+
+        first_position = position + (direction*quarter_size) # Find position in original filter
+        if first_position == position:
+            first_position += direction
+
+        second_position = position - (direction*quarter_size)
+        if second_position == position:
+            second_position -= direction
+        print(f"Position: {position} | first - {first_position} - second - {second_position}")
+        
+        if direction == 1:
+            first_indices = self.bin_index(filter[half_size:], indices[half_size:], first_position)
+            second_indices = self.bin_index(filter[:(half_size - direction)], indices[:(half_size - direction)], second_position)
+        if direction == -1:    
+            first_indices = self.bin_index(filter[:half_size], indices[:half_size], first_position)
+            second_indices = self.bin_index(filter[(half_size - direction):], indices[(half_size - direction):], second_position)
+        # zip the indice together
+        for ind in range(min(len(first_indices), len(second_indices))):
+            discovered_indices += [first_indices[0], second_indices[0]]
+            del first_indices[0], second_indices[0]
+        discovered_indices += first_indices
+        discovered_indices += second_indices
+        return discovered_indices
 
         
 """

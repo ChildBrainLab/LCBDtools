@@ -8,7 +8,7 @@ ratingdir=/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/
 #ml fsl
 
 #for sub in `/bin/ls -d $bidsdir/derivatives/fmriprep/sub*/ses-0/func/* | grep preproc_bold.nii.gz`
-for sub in `find $bidsdir -name '*preproc_bold.nii' | sort -r`
+for sub in `find $bidsdir -name '*preproc_bold.nii' | sort`
 do
 	# the case that there are ratings in this functional folder
 	if [[ $(/bin/ls -d $(dirname $sub) | grep AHKJ | grep rating | grep .txt) ]]
@@ -18,9 +18,7 @@ do
 	# the case the rating is not present
 	else
 		# get task name
-		#sentence=$(basename $sub)
-		#for word in ${sentence//_/ }; do
-		#	if [[ "task-movie" == *"$word"* ]]
+		#sentence=$(basename $sub)	#	if [[ "task-movie" == *"$word"* ]]
 		#	then
 		#		movie=$(echo $word | sed 's/task-//')
 		#	fi
@@ -46,6 +44,7 @@ do
 		# get the number of volumes in the 4D smoothed file
 		a=$(fslnvols $sub)
 
+		echo "Name $sub"
 		echo "Length of scan $a"
 		
 		# for each file in ratings-containing folder
