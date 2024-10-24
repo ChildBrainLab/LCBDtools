@@ -2,7 +2,7 @@ import csv
 
 studys = ['CARE', 'P-CAT']
 
-filenames = ['wct_full_permuted_values_new_V2.csv', 'wct_full_permuted_values.csv', 'wct_full_permuted_values_new.csv', 'wct_full_permuted_values_new_1.csv']
+filenames = ['wct_full_permuted_values_new_V2.csv', 'wct_full_permuted_values.csv', 'wct_full_permuted_values_new.csv', 'wct_full_permuted_values_new_1.csv', 'wct_full_ses-0_permuted_values_pipeline.csv']
 
 
 def unstack_file(filename, folder, study, unstack = True, DOI = True, ROI = True):
@@ -19,7 +19,6 @@ def unstack_file(filename, folder, study, unstack = True, DOI = True, ROI = True
 		'Whole Brain': ['S3_D2 hbo', 'S4_D2 hbo', 'S1_D1 hbo', 'S2_D1 hbo', 'S2_D2 hbo', 'S5_D3 hbo', 'S6_D3 hbo', 'S7_D3 hbo', 'S7_D4 hbo', 'S8_D4 hbo']
 		}
 
-	channel_start = 3
 	try:
 		with open(folder + filename, 'r') as csv_file:
 			csv_contents = csv.reader(csv_file)
@@ -30,6 +29,14 @@ def unstack_file(filename, folder, study, unstack = True, DOI = True, ROI = True
 		
 	# LCBD NIRS typical header = ['', 'Parent', 'Child', 'Block', 'S1_D1 hbo', 'S2_D1 hbo', 'S2_D2 hbo', 'S3_D2 hbo', 'S4_D2 hbo', 'S5_D3 hbo', 'S6_D3 hbo', 'S7_D3 hbo', 'S7_D4 hbo', 'S8_D4 hbo']
 	header = data.pop(0)
+	if header[3] == 'Block':
+		block_column = 3
+		id_column = 1
+		channel_start = 4
+	else:
+		block_column = 2
+		id_column = 0
+		channel_start = 3
 
 	current_subject = None
 	total_blocks = 0
@@ -46,15 +53,15 @@ def unstack_file(filename, folder, study, unstack = True, DOI = True, ROI = True
 			datum.insert(0, 0)
 
 		dyad = False
-		parent = datum[1]
-		child = datum[2]
+		parent = datum[id_column]
+		child = datum[id_column + 1]
 
 		if parent[:-1] == child[:-1]: # Check if real dyad
 			dyad = True
 		if dyad == DOI: # Check if dyad status matches what we want to save
 			if f"{parent}-{child}" not in stacked_data.keys():# Check if new subject
 				stacked_data[f"{parent}-{child}"] = {} # Append new list if new
-			block = int(datum[3][-1])
+			block = int(datum[block_column][-1])
 			if block > total_blocks:
 				total_blocks = block
 			
@@ -67,7 +74,10 @@ def unstack_file(filename, folder, study, unstack = True, DOI = True, ROI = True
 				for region, channels_ind in ROIs.items():
 					average = 0
 					for channel_ind in channels_ind:
-						average += float(datum[channel_ind])
+						if datum[channel_ind] != '':
+							average += float(datum[channel_ind])
+						else:
+							print(f"Skipping {parent} {block} {region}")
 					stacked_data[f"{parent}-{child}"][block] += [average/len(channels_ind)]
 			
 				
@@ -111,7 +121,7 @@ def unstack_file(filename, folder, study, unstack = True, DOI = True, ROI = True
 	print(f"{new_filename} successfully created...")
 
 for study in studys:
-	folder = f'/data/perlman/moochie/analysis/{study}/Test_Analysis/'
+	folder = f'/storage1/fs1/perlmansusan/Active/moochie/analysis/{study}/Test_Analysis/'
 	for filename in filenames:
 		for unstack in [False, True]:
 			for DOI in [False, True]: # Dyads of interest (i.e,. false dyads or true dyads)

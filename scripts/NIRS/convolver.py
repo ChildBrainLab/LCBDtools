@@ -1,5 +1,7 @@
-import mne, random
+import mne, random, statistics
 import numpy as np
+from mne_nirs.preprocessing import peak_power, scalp_coupling_index_windowed
+from mne_nirs.visualisation import plot_timechannel_quality_metric
 from glob import glob
 from matplotlib import pyplot as plt
 from scipy.ndimage import gaussian_filter
@@ -53,16 +55,10 @@ class convolver:
 
     def convolve_hrf(self, raw_nirx):
         raw_nirx.load_data()
-        raw_sfreq = raw_nirx.info['sfreq']
-        raw_signal = raw_nirx.get_data('all')
         convolution = lambda nirx_raw : signal.fftconvolve(nirx_raw, self.filter, mode = 'same')
-
-        convolved_nirx = raw_nirx.apply_function(convolution)
-        convolved_signal = convolved_nirx.get_data('all')
-
-        self.compare(raw_signal[0,:300], 'Raw Signal', convolved_signal[0, :300], 'Convolved Signal')
+        return raw_nirx.apply_function(convolution)
     
-    def compare(self, first_signal, first_title, second_signal, second_title):
+    def plot(self, first_signal, first_title, second_signal, second_title):
         x = [number for number in range(first_signal.shape[0])]
 
         figure, axis = plt.subplots(2, 1)
@@ -73,11 +69,43 @@ class convolver:
         axis[1].plot(x, second_signal)
         axis[1].set_title(second_title)
 
-        plt.show()
-    
+        plt.savefig('signal_conversion.jpeg')
+
+    def compare(self, raw_nirx, convolved_nirx):
+
+        raw_od = mne.preprocessing.nirs.optical_density(raw_nirx)
+        raw_sci = mne.preprocessing.nirs.scalp_coupling_index(raw_od)
+
+        convolved_od = mne.preprocessing.nirs.optical_density(convolved_nirx)
+        convolved_sci = mne.preprocessing.nirs.scalp_coupling_index(convolved_od)
+
+        figure, axis = plt.subplots(2, 1)
+
+        axis[0].hist(raw_sci)
+        axis[0].set_title('Raw Scalp Coupling Index')
+
+        axis[1].hist(convolved_sci)
+        axis[1].set_title('Convolved Scalp Coupling Index')
+
+        plt.savefig('convolution_sci.jpeg')
+
+        raw_od, scores, times = peak_power(raw_od, time_window=10)
+        figure = plot_timechannel_quality_metric(raw_od, scores, times, threshold=0.1)
+        plt.savefig('raw_powerpeak.jpeg')
+
+        convolved_od, scores, times = peak_power(convolved_od, time_window=10)
+        figure = plot_timechannel_quality_metric(convolved_od, scores, times, threshold=0.1)
+        plt.savefig('convolution_powerpeak.jpeg')
+
     def test(self):
         self.load()
-        self.convolve_hrf(self.task_scans[0])
+
+        copy_nirx = self.task_scans[2].copy()
+        copy_nirx.load_data()
+        convolved_nirx = self.convolve_hrf(self.task_scans[2])
+        self.compare(copy_nirx, convolved_nirx)
+
+
 
 class HRF():
 
@@ -103,106 +131,37 @@ class HRF():
 
         # Calculate number of samples per hemodynamic response function
         # Number of seconds  per HRF (12 seconds/HRF) times samples per second
-        hrf_samples = 64 #round(12 * self.freq, 2)
+        hrf_samples = round(12 * self.freq, 2)
 
         print("Expanding filter")
-        self.filter = self.interpolate(self.filter, hrf_samples) 
+        while len(self.filter) < hrf_samples:
+            self.filter = expand(self.filter) 
+
+        plt.plot(self.filter)
+        plt.title('Synthetic HRF Convolution Filter')
+        plt.savefig('synthetic_hrf_0.jpeg')
+
+        window = 2
+        while len(self.filter) > hrf_samples:
+            self.filter = [statistics.mean(self.filter[ind:ind+window]) for ind in range(len(self.filter) - window)]
  
+        plt.plot(self.filter)
+        plt.title('Synthetic HRF Convolution Filter')
+        plt.savefig('synthetic_hrf_1.jpeg')
+
         self.filter = smooth(self.filter)
 
         plt.plot(self.filter)
         plt.title('Synthetic HRF Convolution Filter')
-        plt.savefig('synthetic_hrf.jpeg')
+        plt.savefig('synthetic_hrf_2.jpeg')
 
         self.filter = np.array(self.filter)
-        #self.scalar = np.array([0.5])
-        #self.filter = np.convolve(self.filter, self.scalar, mode = 'same')
+        self.scalar = np.array([0.5])
+        self.filter = np.convolve(self.filter, self.scalar, mode = 'same')
 
         plt.plot(self.filter)
         plt.title('Synthetic HRF Convolution Filter - Scaled')
         plt.savefig('scaled-synthetic_hrf.jpeg')
-
-    def interpolate(self, filter, size):
-        old_size = len(filter)
-        indices = self.bin_index(filter)
-        
-        count = 0
-        while len(filter) < size:
-            # If we've fully interpolated, reset
-            if indices == []:
-                indices = self.bin_index(filter)
-            print(indices)
-            current_indice = indices[0]
-
-            # Interpolate and add value
-            if len(indices) > 1:
-                for next_index in sorted(indices):
-                    if next_index > current_indice:
-                        break
-
-                interpolation = (filter[current_indice] + filter[next_index])/2
-            else:
-                interpolation = filter[current_indice]
-
-            filter.insert(current_indice, interpolation)
-
-            del indices[0]
-
-            indices = [index + 1 if index > current_indice else index for index in indices]
-
-            count += 1# Increment count
-        print(f"Filter size increased from {old_size} to {len(filter)}")
-        return filter
-            
-    def bin_index(self, filter, indices = None, position = None, direction = -1):
-
-        # Define empty list basecase
-        if len(filter) == 0:
-            return []
-
-        if indices == None:
-            indices = [index for index in range(len(filter))]
-            position = int(len(filter)/2)
-        discovered_indices = [position]
-
-        # Define base cases for last position in filter recursion
-        if len(filter) == 1:
-            return discovered_indices
-        
-        # Figure out recursion logic using random number generator
-        if direction == 'random':
-            direction = random.uniform(0, 1)
-            if direction <=0.5:
-                direction = -1
-            else:
-                direction = 1
-            
-        # Calulcate metrics for next recusion
-        half_size = int(len(filter)/2)
-        quarter_size = int(len(filter)/4)
-
-        first_position = position + (direction*quarter_size) # Find position in original filter
-        if first_position == position:
-            first_position += direction
-
-        second_position = position - (direction*quarter_size)
-        if second_position == position:
-            second_position -= direction
-        print(f"Position: {position} | first - {first_position} - second - {second_position}")
-        
-        if direction == 1:
-            first_indices = self.bin_index(filter[half_size:], indices[half_size:], first_position)
-            second_indices = self.bin_index(filter[:(half_size - direction)], indices[:(half_size - direction)], second_position)
-        if direction == -1:    
-            first_indices = self.bin_index(filter[:half_size], indices[:half_size], first_position)
-            second_indices = self.bin_index(filter[(half_size - direction):], indices[(half_size - direction):], second_position)
-        # zip the indice together
-        for ind in range(min(len(first_indices), len(second_indices))):
-            discovered_indices += [first_indices[0], second_indices[0]]
-            del first_indices[0], second_indices[0]
-        discovered_indices += first_indices
-        discovered_indices += second_indices
-        return discovered_indices
 
         
 """

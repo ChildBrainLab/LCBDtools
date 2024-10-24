@@ -164,6 +164,7 @@ class CNDA:
 
                     # Run BIDSkit on scans
                     dcm2bids_command = f'dcm2bids -d {bids_folder}sourcedata/{self.subject_id}/{self.exp_ind}/ -p sub-{self.subject_id} -s {self.exp_ind} -c {dcm2bids_config} -o {bids_folder}'
+                    print(f'\n\n\ndcm2bids command - {dcm2bids_command}\n\n\n')
                     process = subprocess.Popen(dcm2bids_command, shell=True, stdout=subprocess.PIPE)
                     process.wait()
 

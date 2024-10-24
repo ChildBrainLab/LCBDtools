@@ -4,4 +4,6 @@
 *.log
 *notebooks/.*
 scripts/MRI/CNDA/.xnat_auth
+scripts/NIRS/._*
+scripts/NIRS/*.jpeg
 scripts/MRI/bsub/batch.txt
