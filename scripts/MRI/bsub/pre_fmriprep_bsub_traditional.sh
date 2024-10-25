@@ -10,9 +10,8 @@ export SUBJECT=$1
 export STORAGE_ALLOCATION=/storage1/fs1/perlmansusan/Active/
 export BIDS_DIR=${STORAGE_ALLOCATION}moochie/analysis/CARE/ME_MRI_data/
 export SCRATCH_DIR=${STORAGE_ALLOCATION}moochie/analysis/CARE/ME_scratch/
-#export OUTPUT_DIR=${STORAGE_ALLOCATION}moochie/analysis/CARE/MRI_data/derivatives/fmriprep/
+export OUTPUT_DIR=${STORAGE_ALLOCATION}moochie/analysis/CARE/MRI_data/derivatives/fmriprep/
 export LICENSE_DIR=${STORAGE_ALLOCATION}moochie/github/LCBDtools/scripts/MRI/fmriprep/
-export OUTPUT_DIR=${STORAGE_ALLOCATION}moochie/analysis/CARE/MRI_data/fmriprep/
 
 export LSF_DOCKER_VOLUMES="/storage1/fs1/perlmansusan/Active:/storage1/fs1/perlmansusan/Active /scratch1/fs1/perlmansusan:/scratch1/fs1/perlmansusan ${BIDS_DIR}:/input ${OUTPUT_DIR}:/output ${LICENSE_DIR}:/freesurfer /home/$USER:/home/$USER"
 

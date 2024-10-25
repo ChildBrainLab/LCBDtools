@@ -4,7 +4,7 @@
 #BSUB -m general
 #BSUB -a 'docker(nipreps/fmriprep:latest)'
 #BSUB -n 16
-#BSUB -R 'rusage[mem=26GB] select[mem>25000 && tmp>250]'
+#BSUB -R 'rusage[mem=30GB] select[mem>30000 && tmp>250]'
 
 cd /tmp/$JOBID.tmpdir
 

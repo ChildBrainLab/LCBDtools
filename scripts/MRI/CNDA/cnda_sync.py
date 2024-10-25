@@ -133,9 +133,6 @@ class CNDA:
                             
                             if scan_of_interest in scan_type:
                                 interesting = True
-                                
-                                #process = subprocess.Popen(f'dcm2niix {scan_folder}/', shell=True, stdout=subprocess.PIPE)
-                                #process.wait()
                                 break
                             
                         if interesting == True: # Check if the scan is usable
