@@ -103,3 +103,5 @@ export HOME="/scratch1/fs1/perlmansusan"
 # -------- Call to bsub to run the bsub file ------------ #
 
 bsub -J $SUBJECT-fmriprep-traditional -oo logs/fmriprep/$SUBJECT-fmriprep-traditional.log -g /$USER/preprocessing < fmriprep_bsub_traditional.sh
+
+
