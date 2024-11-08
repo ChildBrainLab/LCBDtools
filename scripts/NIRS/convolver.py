@@ -58,8 +58,8 @@ class convolver:
 
     def convolve_hrf(self, nirx_obj):
         nirx_obj.load_data()
-        convolution = lambda nirx : signal.fftconvolve(nirx, self.filter, mode = 'same')
-        return nirx_obj.apply_function(convolution)
+        hrf_convolution = lambda nirx : signal.fftconvolve(nirx, self.filter, mode = 'same')
+        return nirx_obj.apply_function(hrf_convolution)
     
     def plot(self, first_signal, first_title, second_signal, second_title):
         x = [number for number in range(first_signal.shape[0])]
@@ -74,32 +74,56 @@ class convolver:
 
         plt.savefig('signal_conversion.jpeg')
 
-    def compare(self, raw_nirx, convolved_nirx):
-        meters = [self.calc_heart_rate_presence, self.calc_skewness_and_kurtosis, self.calc_snr, self.calc_pp, self.calc_sci]
+    def compare(self, preproc_nirx, convolved_nirx):
+        self.plot_nirx(preproc_nirx, convolved_nirx)
+
+        meters = [self.calc_skewness_and_kurtosis, self.calc_snr, self.calc_heart_rate_presence, self.calc_pp, self.calc_sci]
         for meter in meters:
-            response = meter(raw_nirx, 'raw')
+            response = meter(preproc_nirx, 'preprocessed')
             response = meter(convolved_nirx, 'convolved')
+            #plt.close()
+
+    def plot_nirx(self, preproc_scan, convolved_scan, channel = 1):
+        preproc_scan.load_data()
+        convolved_scan.load_data()
+
+        preproc_data = preproc_scan.get_data([channel])
+        convovled_data = convolved_scan.get_data([channel])
+
+        plt.figure(figsize=(10, 6)) 
+
+        plt.plot(preproc_data[0, :500], color='blue', label='Preprocessed NIRS data')
+        plt.plot(convovled_data[0, :500], color='orange', label='Convolutioned NIRS data')
+        
+        plt.xlabel('Samples')
+        plt.ylabel('µmol/L')
+        plt.title(f'fNIRS channel data')
+
+        plt.legend(loc='best')
+
+        plt.savefig(f'plotted_channel_data.jpeg')
+        plt.close()
 
 
     def calc_pp(self, scan, state):
-        raw_nirx = scan.load_data()
+        preproc_nirx = scan.load_data()
 
-        raw_od = mne.preprocessing.nirs.optical_density(raw_nirx)
-        raw_od, scores, times = peak_power(raw_od, time_window=10)
+        preproc_od = mne.preprocessing.nirs.optical_density(preproc_nirx)
+        preproc_od, scores, times = peak_power(preproc_od, time_window=10)
 
-        figure = plot_timechannel_quality_metric(raw_od, scores, times, threshold=0.1)
+        figure = plot_timechannel_quality_metric(preproc_od, scores, times, threshold=0.1)
         plt.savefig(f'{state}_powerpeak.jpeg')
         return True
 
     def calc_sci(self, scan, state):
-        raw_nirx = scan.load_data()
+        preproc_nirx = scan.load_data()
 
-        raw_od = mne.preprocessing.nirs.optical_density(raw_nirx)
-        raw_sci = mne.preprocessing.nirs.scalp_coupling_index(raw_od)
+        preproc_od = mne.preprocessing.nirs.optical_density(preproc_nirx)
+        preproc_sci = mne.preprocessing.nirs.scalp_coupling_index(preproc_od)
 
         figure, axis = plt.subplots(1, 1)
 
-        axis[0].hist(raw_sci)
+        axis[0].hist(preproc_sci)
         axis[0].set_title(f'{state} Scalp Coupling Index')
         plt.savefig(f'{state}_powerpeak.jpeg')
         return True
@@ -115,14 +139,14 @@ class convolver:
         noise_band = (0.2, 1.0)  # Adjust as needed
 
         # Extract the signal in the desired band
-        raw_signal = raw.copy().filter(signal_band[0], signal_band[1], fir_design='firwin')
+        preproc_signal = raw.copy().filter(signal_band[0], signal_band[1], fir_design='firwin')
 
         # Extract the noise in the out-of-band frequency range
-        raw_noise = raw.copy().filter(noise_band[0], noise_band[1], fir_design='firwin')
+        preproc_noise = raw.copy().filter(noise_band[0], noise_band[1], fir_design='firwin')
 
         # 2. Calculate the Power Spectral Density (PSD) for signal and noise using compute_psd()
-        psd_signal = raw_signal.compute_psd(fmin=signal_band[0], fmax=signal_band[1])
-        psd_noise = raw_noise.compute_psd(fmin=noise_band[0], fmax=noise_band[1])
+        psd_signal = preproc_signal.compute_psd(fmin=signal_band[0], fmax=signal_band[1])
+        psd_noise = preproc_noise.compute_psd(fmin=noise_band[0], fmax=noise_band[1])
 
         # 3. Extract the power for each component
         signal_power = psd_signal.get_data().mean(axis=-1)  # Average power across frequencies for signal
@@ -155,17 +179,17 @@ class convolver:
 
         # 1. Bandpass filter the raw data to isolate the heart rate frequency range
         heart_rate_band = (0.5, 2.0)  # Typical heart rate frequency range
-        raw_filtered = raw.copy().filter(heart_rate_band[0], heart_rate_band[1], fir_design='firwin')
+        preproc_filtered = raw.copy().filter(heart_rate_band[0], heart_rate_band[1], fir_design='firwin')
 
         # 2. Compute the Power Spectral Density (PSD) using compute_psd()
-        psd = raw_filtered.compute_psd(fmin=heart_rate_band[0], fmax=heart_rate_band[1])
+        psd = preproc_filtered.compute_psd(fmin=heart_rate_band[0], fmax=heart_rate_band[1])
 
         # 3. Calculate the mean power across frequencies for each channel
         mean_psd = psd.get_data().mean(axis=-1)  # Average over frequency bins for each channel
 
         # 4. Identify the channel with the maximum power in the heart rate band
         max_power_channel_index = np.argmax(mean_psd)
-        max_power_channel_name = raw_filtered.ch_names[max_power_channel_index]
+        max_power_channel_name = preproc_filtered.ch_names[max_power_channel_index]
         max_power_value = mean_psd[max_power_channel_index]
 
         # Print results
@@ -188,11 +212,11 @@ class convolver:
         self.load()
 
         # Create a copy of the original scan
-        copy_nirx = self.task_scans[2].copy()
+        copy_nirx = self.task_scans[0].copy()
         copy_nirx.load_data()
 
         # Convolve the scan
-        convolved_nirx = self.convolve_hrf(self.task_scans[2])
+        convolved_nirx = self.convolve_hrf(self.task_scans[0])
 
         # Compare original to convolved scan
         print(f"Original: {copy_nirx}\nConvolved: {convolved_nirx}")
@@ -202,9 +226,15 @@ class convolver:
 
 class HRF():
 
-    def __init__(self, freq, verbose = False):
-        self.filter = [-0.004, -0.02, -0.05, 0.6, 0.6, 0, -0.1, -0.105, -0.09, -0.04, -0.01, -0.005, -0.001, -0.0005, -0.00001, -0.00001, -0.0000001]
+    def __init__(self, freq, filter_type = 'Preterm-Infant', verbose = False):
+        self.filters = {'normal' : [-0.004, -0.02, -0.05, 0.6, 0.6, 0, -0.1, -0.105, -0.09, -0.04, -0.01, -0.005, -0.001, -0.0005, -0.00001, -0.00001, -0.0000001],
+                        'undershootless': [ -0.0004, -0.0008, 0.6, 0.6, 0, -0.1, -0.105, -0.09, -0.04, -0.01, -0.005, -0.001, -0.0005, -0.00001, -0.00001, -0.0000001],
+                        'term-infant': [ -0.0004, -0.0008, 0.05, 0.1, 0.1, 0, -0.1, -0.105, -0.09, -0.04, -0.01, -0.005, -0.001, -0.0005, -0.00001, -0.00001, -0.0000001],
+                        'preterm-infant': [0, 0.08, 0.09, 0.1, 0.1, 0.09, 0.08, -0.001, -0.0005, -0.00001, -0.00005, -0.00001, -0.000005, -0.0000001]
+                    }
 
+        self.filter_type = filter_type
+        self.filter = self.filters[filter_type.lower()]
 
         self.freq = freq
 
@@ -220,8 +250,9 @@ class HRF():
             return gaussian_filter(filter, sigma=a)
 
         plt.plot(self.filter)
-        plt.title('HRF Averages')
-        plt.show()
+        plt.title(f'{self.filter_type} HRF Interval Averages') 
+        plt.savefig('synthetic_hrf_0.jpeg')
+        plt.close()
 
         # Calculate number of samples per hemodynamic response function
         # Number of seconds  per HRF (12 seconds/HRF) times samples per second
@@ -232,8 +263,9 @@ class HRF():
             self.filter = expand(self.filter) 
 
         plt.plot(self.filter)
-        plt.title('Synthetic HRF Convolution Filter')
-        plt.savefig('synthetic_hrf_0.jpeg')
+        plt.title('Expanded HRF')
+        plt.savefig('synthetic_hrf_1.jpeg')
+        plt.close()
 
         print('Compressing HRF with mean filter...')
         window = 2
@@ -241,25 +273,27 @@ class HRF():
             self.filter = [statistics.mean(self.filter[ind:ind+window]) for ind in range(len(self.filter) - window)]
  
         plt.plot(self.filter)
-        plt.title('Synthetic HRF Convolution Filter')
-        plt.savefig('synthetic_hrf_1.jpeg')
+        plt.title('Compressed HRF')
+        plt.savefig('synthetic_hrf_2.jpeg')
+        plt.close()
 
         print('Smoothing filter...')
-        self.filter = smooth(self.filter)
-        self.filter = smooth(self.filter)
+        self.filter = smooth(self.filter, a = 5)
 
         plt.plot(self.filter)
-        plt.title('Synthetic HRF Convolution Filter')
-        plt.savefig('synthetic_hrf_2.jpeg')
+        plt.title('Smoothed HRF')
+        plt.savefig('synthetic_hrf_3.jpeg')
+        plt.close()
 
         print('Scaling filter...')
         self.filter = np.array(self.filter)
-        self.scalar = np.array([0.5])
+        self.scalar = np.array([0.1])
         self.filter = np.convolve(self.filter, self.scalar, mode = 'same')
 
         plt.plot(self.filter)
-        plt.title('Synthetic HRF Convolution Filter - Scaled')
-        plt.savefig('scaled-synthetic_hrf.jpeg')
+        plt.title('Synthetic HRF')
+        plt.savefig('synthetic_hrf_4.jpeg')
+        plt.close()
 
         
 
@@ -291,7 +325,7 @@ def preprocess(scan):
     haemo_bp = haemo.copy().filter(
         0.05, 0.7, h_trans_bandwidth=0.2, l_trans_bandwidth=0.02)
 
-    return haemo
+    return haemo_bp
     #except:
     #    print(f"Scan failed to preprocess...\n{scan}")
 
