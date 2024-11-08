@@ -188,8 +188,6 @@ class CNDA:
                     # Run post processing
                     for process in self.lcbd_projects[active_project]['post-processing']:
                         process()
-            shutil.rmtree(f'{bids_folder}tmp_dcm2bids/')
-
 
     def unzip(self, filename, output_path):
         with ZipFile(filename) as zip_ref:
