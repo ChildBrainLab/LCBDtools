@@ -21,7 +21,7 @@ TEDANA_DIR=${STORAGE_ALLOCATION}moochie/analysis/CARE/ME_tedana_data/
 LICENSE_DIR=${STORAGE_ALLOCATION}moochie/github/LCBDtools/scripts/MRI/fmriprep/
 
 # Define our conda environment variables
-FMRIPREP_DIR=/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/ME_fMRIPrep_data/
+FMRIPREP_DIR=/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/ME_fMRIPrep_data/derivatives/fmriprep/
 TEDANA_TEMP_DIR=/tmp/$JOBFOLDER/
 TEDANA_DIR=/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/ME_tedana_data/
 
