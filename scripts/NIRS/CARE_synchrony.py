@@ -1,5 +1,5 @@
 #general dependencies (importing premade packages/libraries)
-import mne, random, os, json, sys, io, requests, shutil
+import mne, random, os, json, sys, io, requests, shutil, hrc
 import numpy as np
 import pandas as pd
 import pycwt as wavelet
@@ -16,6 +16,8 @@ from collections import OrderedDict
 from mpl_toolkits.mplot3d import Axes3D
 from platform import python_version
 python_version()
+
+convolver = hrc.convolver()
 
 sys.path.append('/storage1/fs1/perlmansusan/Active/moochie/github/')
 from LCBDtools.src import argParser
@@ -627,7 +629,11 @@ for dscan in scans:
 #         print("PSD")
 #         haemo_lp.plot_psd(average=True)
         
-        ppdscan.append(haemo)
+        # Convolve the scan
+        convolved_nirx = convolver.convolve_hrf(haemo)
+        
+
+    ppdscan.append(haemo)
         
     pps.append(ppdscan)
 
@@ -893,9 +899,9 @@ for parent in sync_df.keys():
             df = pd.concat([df, pd.DataFrame(dic, columns=cols)], ignore_index=True)
 
         
-df.to_csv("/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/Test_Analysis/wct_full_ses-0_permuted_values_pipeline_2.csv")
+df.to_csv("/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/Test_Analysis/wct_full_ses-0_permuted_values_pipeline_conv.csv")
 
 
 json_object = json.dumps(perm_df, indent=4)
-with open("/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/Test_Analysis/permuted_subjects_ses-0_pipeline_2.json", 'w') as outfile:
+with open("/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/Test_Analysis/permuted_subjects_ses-0_pipeline_conv.json", 'w') as outfile:
     json.dump(perm_df, outfile)
