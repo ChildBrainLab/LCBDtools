@@ -5,33 +5,30 @@ from stimuli import Motor
 from stimuli import DB_DOS
 
 class annotator:
-
 	def __init__(self):
-
-
-	def covariates(self, study, subject, nirs):
-	    # if covariates file is available, load its series for the subject
-	    if covariates is not None:
-	        idx = covariates[covariates['subject'] == str(subject)].index
-	        if len(idx) == 0:
-	            print("Subject not found in covariates file.")
-	            print("Skipping:", ses)
+		return
+	
+    def load_covariates(self, study, subject, nirs):
+		# if covariates file is available, load its series for the subject
+        if covariates != None:
+			idx = covariates[covariates['subject'] == str(subject)].index
+			if len(idx) == 0:
+				print("Subject not found in covariates file.")
+				print("Skipping:", ses)
+		        continue
+		    elif len(idx) > 1:
+				print("Subject is duplicated in covariates file.")
+				print("Skipping:", ses)
 	            continue
-
-	        elif len(idx) > 1:
-	            print("Subject is duplicated in covariates file.")
-	            print("Skipping:", ses)
-	            continue
-
-	        else:
-	            metaSeries = []
+		    else:
+		        metaSeries = []
 	            metaCols = []
 
 	            for col in [col for col in df.columns if "subject" != col]:
 	                metaSeries.append(df.iloc[idx[0]][col])
 	                metaCols.append(col)
-
-	def tasks(self, study, subject, nirs):
+					
+    def tasks(self, study, subject, nirs):
 	    # if task data is available, load it as an object
 		if task_dir is not None:
 	        task_fnames = glob(join(task_dir+"/{}/*{}*/*{}*.csv".format(
