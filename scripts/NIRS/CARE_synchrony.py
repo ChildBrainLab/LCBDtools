@@ -857,7 +857,7 @@ for parent in tqdm([sub for sub in sorted(epoch_df.keys()) if "p" in sub]):
                         # TASK RELATED FREQUENCIES ARE ARBITRARILY DETERMINED here
                         WCT[(5>(1/freqs))|((1/freqs)>105), :] = np.nan
                         
-                        # between periods of 5s and 105s (.02 -.2 Hz; flip for sec) which is based on Ngyuen et al. 2021
+                        # between periods of 5s and 105s (.0095 -.2 Hz; flip for sec) which is based on Ngyuen et al. 2021
                         
 
                         # average inside cone of influence
