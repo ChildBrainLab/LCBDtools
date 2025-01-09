@@ -137,6 +137,7 @@ class CNDA:
                             
                         if interesting == True: # Check if the scan is usable
                             for scan_ind, scan in enumerate(experiment.scans):
+                                print(experiment.scans[scan])
                                 scan_name =  str(scan_ind) + '_'.join(experiment.scans[scan].series_description.split(' '))
                                 if scan_name == scan_type:
                                     print(f'Scan found! - {scan_name} - {experiment.scans[scan]}')
