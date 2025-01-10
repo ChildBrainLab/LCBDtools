@@ -93,7 +93,7 @@ fmri_bold_image03_json  = {
     'acquisition_matrix': "[68, 68, 40]",
     'mri_field_of_view_pd': "213 x 208 x 213.0 mm",
     'patient_position': "Laying down face up",
-    'transformation_performed': "No",
+    'transformation_performed': "Yes",
     'image_num_dimensions': 4,
     'image_extent1': 68,
     'image_extent2': 68,
