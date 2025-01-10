@@ -201,7 +201,7 @@ fmap_image03_json  = {
     'scanner_manufacturer_pd': "Siemens",
     'scanner_type_pd': "Magnetom Prisma",
     'scanner_software_versions_pd': None,
-    'magnetic_field_strength': "3.0",
+    'magnetic_field_strength': "3",
     'mri_repetition_time_pd': 0.8,
     'mri_echo_time_pd': "0.8",
     'flip_angle': "7.0",
