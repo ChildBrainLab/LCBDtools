@@ -2,7 +2,7 @@ from glob import glob
 import mne_nirs, mne, os
 
 
-nirx_directories = glob("/storage1/fs1/perlmansusan/Active/moochie/study_data/P-CAT/R56/restructured_data/fnirs_data/*/*/*/")
+nirx_directories = glob("/storage1/fs1/perlmansusan/Active/moochie/study_data/P-CAT/R56/NIRS_data/*/*/")
 
 # Load the NIRx data directory (path should contain all files: .wl1, .wl2, .hdr, etc.)
 for nirx_dir in nirx_directories:
