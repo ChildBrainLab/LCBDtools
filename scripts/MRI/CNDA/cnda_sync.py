@@ -85,9 +85,21 @@ class CNDA:
                 zipper = list(zip([experiment.date for experiment in experiments], experiments))
                 zipper = sorted(zipper)
                 experiment_dates, experiments = zip(*zipper)
+
+                missed_sessions = {
+                    '0': ['52361'],
+                    '1': [],
+                    '2': []
+                    }
                 
                 for exp_ind, experiment in enumerate(experiments):
                     self.exp_ind = exp_ind
+
+                    # Increment scan id if missing a session
+                    for ses_ind in range(0, exp_ind + 1):
+                        if ses_ind < 3 and self.subject_id in missed_sessions[str(ses_ind)]:
+                            self.exp_ind += 1
+
                     self.experiment = experiment
 
                     print(f"Checking sub-{self.subject_id}/ses-{self.exp_ind}")
