@@ -1,20 +1,27 @@
-import shutil
+import shutil, os
 from datetime import date
+from datetime import datetime
 from pathlib import Path
 
 
-print("Backing up data!")
+print("Backing up data on moochie!")
 
 today = str(date.today())
-
 destination = 'E:/backup/'
-
 sourcebase = "Z:/Active/"
-sources = [f'{sourcebase}moochie/study_data/CARE/NIRS_data/',
-           f'{sourcebase}moochie/study_data/CARE/task_data/']
 
+# Generate backup sources 
+with open(f'{destination}backup_items.txt', 'r') as file:
+    sources = [f'{sourcebase}{line.split('\n')[0]}' for line in file.readlines()]
 
 # Count current backup count and remove excess
+max_count = 2
+folders = [f for f in os.listdir(destination) if os.path.isdir(os.path.join(destination, f))]
+sorted_folders = sorted(folders, key=lambda f: datetime.strptime(f, "%Y-%m-%d"))
+while len(sorted_folders) >= max_count:
+    excess_folder = sorted_folders.pop(0)
+    print(f'Number of backups exceeded, deleting old folder {excess_folder}...')
+    shutil.rmtree(f"{destination}{excess_folder}")
 
 # Create the new backup folder
 destination += today + '/'
