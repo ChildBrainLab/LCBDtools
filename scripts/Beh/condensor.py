@@ -11,8 +11,8 @@ class pcat:
     #
     # Correct response can be infered
     def __init__(self):
-        self.beh_folder = '../../../../study_data/P-CAT/R56/restructured_data/task_data/flanker/'
-        self.nirs_folder = '../../../../analysis/P-CAT/flanker_nirs/'
+        self.beh_folder = "/storage1/fs1/perlmansusan/Active/moochie/study_data/P-CAT/R56/restructured_data/PSU_data/task_data/flanker/"#'../../../../study_data/P-CAT/R56/restructured_data/task_data/flanker/'
+        self.nirs_folder = "/storage1/fs1/perlmansusan/Active/moochie/study_data/P-CAT/R56/restructured_data/PSU_data/fnirs_data/flanker/"# '../../../../analysis/P-CAT/flanker_nirs/'
         self.analysis_folder = '../../../../analysis/P-CAT/'
 
         self.ex_subs = []
@@ -41,10 +41,11 @@ class pcat:
         task_files = glob(f'{self.beh_folder}*/*.csv')
         current_block = None
         for task_filepath in task_files: # For each task and it's given nickname find subjects data
-            
+            print(f"Loading {task_filepath}...")
             subject = task_filepath.split(self.beh_folder)[1][:4]
             subject_files =  glob(f'{self.beh_folder}{subject}/*.csv')
-            
+            print(f"Found {subject_files}")
+
             if len(subject_files) > 1: # Make sure the file we have is the last file for the subject
                 last_date = [0, 0]
                 last_file = None
@@ -65,7 +66,7 @@ class pcat:
             
             if subject not in self.master.keys():
                 self.master[subject] = {}
-            for row_ind, row in enumerate(data[1:]): # Add in all data points to the list
+            for row_ind, row in enumerate(data): # Add in all data points to the list
                 # Grab pertinent data
                 if row[0] == None or row[0] == '': continue
                 stimuli = row[0].split('/')
@@ -139,9 +140,6 @@ class pcat:
                     continue
             else:
                 og_evt = og_evt[0]
-            
-            if subject == '1103':
-                print('Found 1103!')
 
             # open original evt
             f = open(og_evt, 'r')
@@ -151,6 +149,7 @@ class pcat:
             # first time marker is NIRS stim start 1
             NSstim1_t = line1.split('\t')[0]
             if NSstim1_t == None or NSstim1_t == '':
+                print(f"Time marker not found! Skipping {subject}...")
                 continue
             #output_lines = [line1]
             output_lines = []
@@ -162,6 +161,7 @@ class pcat:
             else:
                 continue
 
+            print(f"Timestamps: {timestamps}")
             for timestamp in timestamps:
                 converted_stims.append(( # Add stim to current stims
                     self.timeconvert_psychopy_to_nirstar(
