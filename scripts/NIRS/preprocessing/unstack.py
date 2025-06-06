@@ -1,9 +1,10 @@
 import csv
 
-studys = ['CARE', 'P-CAT']
+#studys = ['CARE', 'P-CAT']
+studys = ['P-CAT']
 
-filenames = ['wct_full_permuted_values_new_V2.csv', 'wct_full_permuted_values.csv', 'wct_full_permuted_values_new.csv', 'wct_full_permuted_values_new_1.csv', 'wct_full_ses-0_permuted_values_pipeline.csv']
-
+#filenames = ['wct_full_permuted_values_new_V2.csv', 'wct_full_permuted_values.csv', 'wct_full_permuted_values_new.csv', 'wct_full_permuted_values_new_1.csv', 'wct_full_ses-0_permuted_values_pipeline.csv']
+filenames = ['wct_full_ses-0_permuted_values_deconv.csv', "wct_full_ses-0_permuted_values_traditional.csv"]
 
 def unstack_file(filename, folder, study, unstack = True, DOI = True, ROI = True):
 	ROI = True
@@ -102,7 +103,7 @@ def unstack_file(filename, folder, study, unstack = True, DOI = True, ROI = True
 	if unstack == True:
 		for block in range(1, total_blocks + 1):
 			for channel_name in header[channel_start:]:
-			    new_header.append(f'Block_{block}-{channel_name}')
+				new_header.append(f'Block_{block}-{channel_name}')
 	else:
 		new_header += ['Block']	
 		new_header += header[channel_start:]
@@ -121,7 +122,8 @@ def unstack_file(filename, folder, study, unstack = True, DOI = True, ROI = True
 	print(f"{new_filename} successfully created...")
 
 for study in studys:
-	folder = f'/storage1/fs1/perlmansusan/Active/moochie/analysis/{study}/Test_Analysis/'
+	folder = f"/storage1/fs1/perlmansusan/Active/moochie/github/LCBDtools/scripts/NIRS/hrfunc/sync/"
+	#folder = f'/storage1/fs1/perlmansusan/Active/moochie/analysis/{study}/Test_Analysis/'
 	for filename in filenames:
 		for unstack in [False, True]:
 			for DOI in [False, True]: # Dyads of interest (i.e,. false dyads or true dyads)
