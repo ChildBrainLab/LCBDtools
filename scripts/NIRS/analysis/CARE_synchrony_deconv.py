@@ -1,5 +1,5 @@
 #general dependencies (importing premade packages/libraries)
-import mne, random, os, json, sys, io, requests, shutil, hrconv
+import mne, random, os, json, sys, io, requests, shutil
 import numpy as np
 import pandas as pd
 import pycwt as wavelet
@@ -16,8 +16,6 @@ from collections import OrderedDict
 from mpl_toolkits.mplot3d import Axes3D
 from platform import python_version
 python_version()
-
-convolver = hrc.convolver()
 
 sys.path.append('/storage1/fs1/perlmansusan/Active/moochie/github/')
 from LCBDtools.src import argParser

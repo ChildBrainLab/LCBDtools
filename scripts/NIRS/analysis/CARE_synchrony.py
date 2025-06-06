@@ -1,5 +1,5 @@
-#general dependencies (importing premade packages/libraries)
-import mne, random, os, json, sys, io, requests, shutil, hrc
+# general dependencies (importing premade packages/libraries)
+import mne, random, os, json, sys, io, requests, shutil
 import numpy as np
 import pandas as pd
 import pycwt as wavelet
@@ -17,8 +17,6 @@ from mpl_toolkits.mplot3d import Axes3D
 from platform import python_version
 python_version()
 
-convolver = hrc.convolver()
-
 sys.path.append('/storage1/fs1/perlmansusan/Active/moochie/github/')
 from LCBDtools.src import argParser
 from LCBDtools.src import Plots
@@ -32,10 +30,13 @@ sample_rate = 7.81250
 n_blocks = 3
 
 nirs_session_dirs = [os.path.split(d)[0] for d in glob(
-    nirs_dir+"**/*_probeInfo.mat",
+    #nirs_dir+"**/*_probeInfo.mat",
+    nirs_dir+"**/V2/**/*_probeInfo.mat",
     recursive=True) \
     if d.strip(nirs_dir).strip("/")[:participant_num_len] not in ex_subs and \
         "V" in (os.path.basename(os.path.dirname(os.path.dirname(d))))]
+
+# nirs_session_dirs = nirs_session_dirs[:6]
 
 def timeconvert_psychopy_to_nirstar(
     sample_rate,
@@ -206,7 +207,7 @@ ROIs = {
     'Right Ventrolateral Prefrontal': ['S7_D3 hbo', 'S7_D4 hbo', 'S8_D4 hbo']}
 
 # make a list of all matching session paths (in this case for V0, assuming there should be more sessions?)
-session_dirs = [d for d in glob(study_dir+"/*/V0/*") \
+session_dirs = [d for d in glob(study_dir+"/*/V2/*") \
     if os.path.basename(os.path.split(os.path.split(d)[1])[1]) not in ex_subs]
 
 subjects = list(set([os.path.basename(d)[:participant_num_len] for d in session_dirs]))
@@ -630,12 +631,13 @@ for dscan in scans:
 #         haemo_lp.plot_psd(average=True)
         
 
-    ppdscan.append(haemo)
+        ppdscan.append(haemo)
         
     pps.append(ppdscan)
 
 
 print(f"Length of PPS - {len(pps)}")
+
 #Creating a dictionary variable to store bad channels for later
 bad_channels_dict = {}
 
@@ -643,8 +645,6 @@ for dscan in pps:
     for scan in dscan:
         bad_channels_dict[scan.info['subject_info']['his_id']] = scan.info['bads']
         
-
-
 # make a dictionary where all of the epoch'd data will go
 epoch_df = {}
 dropped = []
@@ -895,10 +895,11 @@ for parent in sync_df.keys():
             dic = {k: [v] for k, v in dic.items()}
             df = pd.concat([df, pd.DataFrame(dic, columns=cols)], ignore_index=True)
 
-        
-df.to_csv("/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/Test_Analysis/wct_full_ses-0_permuted_values_pipeline_deconv.csv")
+## Save the DataFrame as CSV      
+df.to_csv("/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/Test_Analysis/wct_full_ses-2_permuted_values_pipeline.csv", index=False)
+#df.to_csv("/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/Test_Analysis/wct_full_ses-1_permuted_values_pipeline_test6subjects.csv")
 
-
-json_object = json.dumps(perm_df, indent=4)
-with open("/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/Test_Analysis/permuted_subjects_ses-0_pipeline_deconv.json", 'w') as outfile:
-    json.dump(perm_df, outfile)
+## or save as a json file
+# json_object = json.dumps(perm_df, indent=4)
+# with open("/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/Test_Analysis/permuted_subjects_ses-1_pipeline_deconv.json", 'w') as outfile:
+#     json.dump(perm_df, outfile)
