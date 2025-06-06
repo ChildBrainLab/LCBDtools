@@ -1,4 +1,4 @@
-import sys, os, random, nilearn, scipy, csv
+import sys, os, random, nilearn, csv, scipy
 from glob import glob
 import nibabel as nib
 from nilearn import datasets
@@ -13,20 +13,20 @@ input_dir = '/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/fMRI_data/d
 deviation_dir = '/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/ROI_deviation/'
 
 # Region of interest structure for storing intermediary data
-ROI_temp = {'masks': [], 'subject deviation': {},}
+ROI_temp = {'masks': []}
 
 ROIs = { # Define regions of interest (ROI)
-    'bed nucleus of the stria terminalis': {'masks': [], 'subject deviation': {},},
-    'paraventricular nucleus': {'masks': [], 'subject deviation': {},},
-    'dorsomedial prefrontal': {'masks': [], 'subject deviation': {},},
-    'temporoparietal junction': {'masks': [], 'subject deviation': {},},
-    'ventromedial prefrontal': {'masks': [], 'subject deviation': {},},
-    'orbitofrontal_cortex': {'masks': [], 'subject deviation': {},},
-    'ventrolateral prefrontal': {'masks': [], 'subject deviation': {},},
-    'anterior cingulate': {'masks': [], 'subject deviation': {},},
-    'anterior insula': {'masks': [], 'subject deviation': {},},
-    'amygdala': {'masks': [], 'subject deviation': {},},
-    'hippocampus': {'masks': [], 'subject deviation': {},}
+    'bed nucleus of the stria terminalis': {'masks': []},
+    'paraventricular nucleus': {'masks': []},
+    'dorsomedial prefrontal': {'masks': []},
+    'temporoparietal junction': {'masks': []},
+    'ventromedial prefrontal': {'masks': []},
+    'orbitofrontal_cortex': {'masks': []},
+    'ventrolateral prefrontal': {'masks': []},
+    'anterior cingulate': {'masks': []},
+    'anterior insula': {'masks': []},
+    'amygdala': {'masks': []},
+    'hippocampus': {'masks': []}
 }
 
 # Load Harvard-Oxford cortical atlas
@@ -42,6 +42,7 @@ cortex_atlas = {
     'anterior cingulate': [28, 29], # Cingulate gyrus (anterior division), paracingulate gyrus
     'anterior insula': [2, 6, 41] # Insular cortex, inferior frontal gyrus (pars opercularis), frontal opercular cortex
 }
+print(f"Cortex Atlas: {cortex_atlas.items()}")
 
 for key, values in cortex_atlas.items():
     for value in values:
@@ -61,6 +62,7 @@ for key, values in sub_atlas.items():
     for value in values:
         mask = math_img(f'img == {value}', img = sub_img)
         ROIs[key]['masks'].append(mask) 
+    print(f"Updated ROI: {ROIs[key]}")
 
 # Load custom BNST (Avery et al., 2014) and PVN (Zhang et al., 2017) masks
 ROIs['bed nucleus of the stria terminalis']['masks'].append(nib.load('/storage1/fs1/perlmansusan/Active/moochie/github/LCBDtools/scripts/MRI/analysis/custom_bnst_mask.nii'))
@@ -75,105 +77,130 @@ movies = {
 
 session = '0'
 
-overwrite = True
-
-
 # Define variable to store subject-subject correlations
 csv_r_contents = []
 csv_p_contents = []
 
+print(f"ROIs")
+for key, value in ROIs.items():
+    print(f"{key}: {value}")
+
+_overwrite = True
 # Iterate through movies
-for movie in movies.keys(): # For each movie
-    # Grab subject pool that saw this movie
+for movie in movies: # For each movie
+
+    roi_list = list(ROIs.keys())
+    random.shuffle(roi_list)
+
+        # Grab subject pool that saw this movie
     subject_files = glob(f"{input_dir}sub-*/ses-{session}/func/sub-*_ses-0_task-movie{movie}_space-MNI152NLin2009cAsym_res-2_desc-preproc_bold_7mm_smoothed.nii") # Grab all subjects for movie
     subjects = [subject.split('/')[-4].split('sub-')[-1] for subject in subject_files] # Grab the subject ID from the file path
     subjects = [subject for subject in subjects if subject[-5:] != '_copy'] # Remove empty strings
 
+    dev_corr_matrix = np.zeros((len(ROIs.keys()), len(subjects), 2)) # Store subject-subject correlations for each ROI
     sub_dev_corr = {roi : {} for roi in ROIs.keys()} # Store subject-subject correlations for each ROI
-    dev_corr_matrix = np.zeros((len(ROIs.keys()), len(subjects), len(subjects), 2)) # Store subject-subject correlations for each ROI
-    
 
-    for roi_ind, roi in enumerate(ROIs.keys()): # Iterate through ROIs
-        print(f"Correlating subjects for movie {movie}-{roi}")
+    for roi in roi_list: # Iterate through ROIs
+        print(f"movie{movie}-{roi}")
         roi_name = '-'.join(roi.split(' '))
+        
+        # Grab the ROI movies pre-calculated average and standard deviation
+        if os.path.exists(f"{output_dir}movie{movie}_{roi_name}_average_timecourse.npy") == False and os.path.exists(f"{output_dir}movie{movie}_{roi_name}_std_timecourse.npy") == False:
+            print(f"movie{movie}-{roi_name} average and standard deviation not calculated yet")
+            continue
 
-        # Permute through all subject combos
-        for first_ind, first_subject in enumerate(subjects):
-            if first_subject not in sub_dev_corr[roi].keys():
-                sub_dev_corr[roi][first_subject] = {}
+        roi_avg = np.load(f"{output_dir}{subject}/movie{movie}_{roi_name}_group_median_timecourse.npy")
+        roi_std = np.load(f"{output_dir}{subject}/movie{movie}_{roi_name}_group_std_timecourse.npy")
 
-            # Grab subject deviation
-            first_dev_file = f"{deviation_dir}sub-{first_subject}/ses-{session}/sub-{first_subject}_ses-{session}_roi-{roi_name}_deviation.npy"
+        masks = ROIs[roi]['masks'] # Grab the ROI mask
 
-            first_dev = np.load(first_dev_file) # Load their deviation
+        subject_files = glob(f"{input_dir}sub-*/ses-0/func/sub-*_ses-0_task-movie{movie}_space-MNI152NLin2009cAsym_res-2_desc-preproc_bold_7mm_smoothed.nii") # Grab all subjects for movie
+        random.shuffle(subject_files)
 
-            for second_ind, second_subject in enumerate(subjects):
-                if second_subject not in sub_dev_corr[roi][first_subject].keys():
-                    sub_dev_corr[roi][first_subject][second_subject] = {}
+        for subject_file in subject_files:
+            # Grab subject directory
+            subject_dir = subject_file.split('/')[-4]
+            subject = subject_dir
 
-                if first_subject == second_subject: # Skip if same subject
-                    dev_corr_matrix[roi_ind, first_ind, second_ind, 0] = np.nan
-                    dev_corr_matrix[roi_ind, first_ind, second_ind, 1] = np.nan
-                    sub_dev_corr[roi][first_subject][second_subject] = (np.nan, np.nan)
+            # Create name for mask
+            roi_dev_filename = f"{deviation_dir}{subject_dir}/ses-0/{subject_dir}_ses-0_roi-{roi_name}_deviation.npy"
+
+            roi_avg = np.load(f"{output_dir}movie{movie}_{roi_name}_average_timecourse.npy")
+            roi_std = np.load(f"{output_dir}movie{movie}_{roi_name}_std_timecourse.npy")
+
+            # Check if file exists and remove if needed
+            if os.path.exists(roi_dev_filename) and _overwrite == False:
+                print(f"Already calculated, skipping {roi_dev_filename}...")
+                continue
+            elif os.path.exists(roi_dev_filename) and _overwrite == True:
+                print(f"Recalculating {roi_dev_filename}...")
+                os.remove(roi_dev_filename)
+
+            # Load their data
+            image = nib.load(subject_file)
+
+            mask_rois = []
+            for mask in masks:# Iterate through masks
+                print(f"Calculating {subject_file} correspondend from ROI {roi_name}...")
+
+                # Skip if average already calculated
+                if os.path.exists(roi_dev_filename) and _overwrite == False:
+                    print(f"Already calculated, skipping {roi_dev_filename}...")
                     continue
+                elif os.path.exists(roi_dev_filename) and _overwrite == True:
+                    os.remove(roi_dev_filename)
 
-                second_dev_file = f"{deviation_dir}sub-{second_subject}/ses-{session}/sub-{second_subject}_ses-{session}_roi-{roi_name}_deviation.npy"
+                # Resample mask to the subjects space
+                resampled_mask = nilearn.image.resample_to_img(mask, image, interpolation = 'nearest')
+
+                # Apply mask to get (n_timepoints x n_voxels)
+                masked_data = nilearn.masking.apply_mask(image, resampled_mask)
+
+                # Append to mask - use median to instead of mean to remove outliers like CSF and motion
+                mask_rois.append(np.median(masked_data, axis=1))
+
+            # Calculate ROI average
+            mask_rois = np.vstack(mask_rois)
+            subject_roi = np.nanmean(mask_rois, axis = 0)
+            subject_abs = np.abs(subject_roi - roi_avg[:len(subject_roi)])
             
-                second_dev = np.load(second_dev_file) # Load their deviation
+            # Shorten the group ROI to be the size of the subjects scan
+            short_roi_std = roi_avg[:subject_roi.shape[0]]
 
-                shortest_len = min(len(first_dev), len(second_dev)) # Grab the shortest length
-                first_dev = first_dev[:shortest_len] # Trim the first subject
-                second_dev = second_dev[:shortest_len] # Trim the second subject
-                
-                results = scipy.stats.spearmanr(first_dev, second_dev) # Correlate first subject with second subject
-                r_value = results.statistic # Grab r value
-                p_value = results.pvalue # Grab p value
-                print(f"{first_subject} vs {second_subject}: {r_value} ({p_value})")
+            results = scipy.stats.spearmanr(subject_abs, short_roi_std) # Correlate first subject with second subject
+            r_value = results.statistic # Grab r value
+            p_value = results.pvalue # Grab p value
+            print(f"{roi} vs {subject}: {r_value} ({p_value})")
 
-                # store r value
-                sub_dev_corr[roi][first_subject][second_subject] = (r_value, p_value)
-                dev_corr_matrix[roi_ind, first_ind, second_ind, 0] = r_value
-                dev_corr_matrix[roi_ind, first_ind, second_ind, 1] = p_value
+            # store r value
+            sub_dev_corr[roi][subject] = (r_value, p_value)
 
-    # Save the subject-subject correlation for this movie
-    np.save(f"{deviation_dir}movie{movie}_subject-subject_correlation.npy", dev_corr_matrix)
-
+            
     # Save csv of subject-subject correlation for this movie
     for roi_ind, roi in enumerate(ROIs.keys()): # Iterate through ROIs
-        for first_ind, first_subject in enumerate(subjects):
-            for second_ind, second_subject in enumerate(subjects):
-                csv_r_contents.append([first_subject, second_subject, movie] + [sub_dev_corr[roi][first_subject][second_subject][0] for roi in ROIs.keys()])
-                csv_p_contents.append([first_subject, second_subject, movie] + [sub_dev_corr[roi][first_subject][second_subject][1] for roi in ROIs.keys()])
+        for sub_ind, subject in enumerate(subjects):
+            csv_r_contents.append([subject, roi, movie] + [sub_dev_corr[roi][subject][0] for roi in ROIs.keys()])
+            csv_p_contents.append([subject, roi, movie] + [sub_dev_corr[roi][subject][1] for roi in ROIs.keys()])
 
-header = ['First Subject', 'Second Subject', 'Movie'] + [roi for roi in ROIs.keys()]
-with open(f"{deviation_dir}subject-subject_correlation.csv", 'w') as f:
+header = ['Subject', 'ROI' 'Movie'] + [roi for roi in ROIs.keys()]
+with open(f"{deviation_dir}subject-ROI_correlation.csv", 'w') as f:
     writer = csv.writer(f)
     writer.writerow(header)
     writer.writerows(csv_r_contents)
 
-header = ['First Subject', 'Second Subject', 'Movie'] + [roi for roi in ROIs.keys()]
-with open(f"{deviation_dir}subject-subject_correlation_p-values.csv", 'w') as f:
+header = ['Subject', 'ROI', 'Movie'] + [roi for roi in ROIs.keys()]
+with open(f"{deviation_dir}subject-ROI_correlation_p-values.csv", 'w') as f:
     writer = csv.writer(f)
     writer.writerow(header)
     writer.writerows(csv_p_contents)
 
-# For each movie
-
-    # For each ROI
-
-        # For each subject
-
-            # Grab subject ROI
-
-            # For each subject to compare against (all)
-
-                # Grab second subjects deviation
-
-                # Correlate first subject with second subject
-
-                # Store r value
-        
-    # Store 3D array for each movie (i.e. ROI x subject x subject)
-    # or store 2D array for each movie-ROI combo (subject x subject)?
 
 
+# Mean squared error - different timepoint score on risiduals and square
+# RMSE - Send histograms
+
+# Eigenvalues within nilearn masking in nilearn?
+
+# Both values correlating should be in z scores
+
+# 

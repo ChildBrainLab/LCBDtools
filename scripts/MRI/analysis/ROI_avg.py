@@ -87,51 +87,67 @@ for movie_name in movie_names: # For each movie
     for roi in roi_names: # Iterate through ROIs
         print(f"Calculating {roi} average for movie {movie_name}")
 
-        # Skip if average already calculated
-        if os.path.exists(f"{output_dir}movie{movie_name}_{roi}_average_timecourse.npy") and _overwrite == False:
-            continue
-
         masks = ROIs[roi]['masks'] # Grab roi mask
         print(f"Masks: {masks}")
-        ROI_mask_avgs = [] # Create variable for storing intermediary values
-        max_len = 0
 
         file_identifier = f"{input_dir}sub-*/ses-0/func/sub-*_ses-0_task-movie{movie_name}_space-MNI152NLin2009cAsym_res-2_desc-preproc_bold_7mm_smoothed.nii"
         files = glob(file_identifier) # Grab all subjects for movie
-        for subject_file in files: # For each subjects data
-            print(f"Calculating average for {subject_file}")
-            image = nib.load(subject_file) # Load their data
-            
-            length = image.shape[3] # Grab image shape
-            if length > max_len: # Record if new max length found
-                max_len = length
+        random.shuffle(files)
+        for soi_file in files: # For each subjects data
+            # Grab subject ID
+            subject = soi_file.split('/')[-1].split('_')[0].split('-')[1]
 
-            for mask in masks:# Iterate through masks
-                # Resample mask to the subjects space
-                resampled_mask = resample_to_img(mask, image, interpolation='nearest')
+            ROI_mask_medians = [] # Create variable for storing intermediary values
+            max_len = 0
 
-                # Apply mask to get (n_timepoints x n_voxels)
-                masked_data = apply_mask(image, resampled_mask)
+            # Skip if average already calculated
+            if os.path.exists(f"{output_dir}{subject}/movie{movie_name}_{'-'.join(roi.split(' '))}_group_median_timecourse.npy") and _overwrite == False:
+                continue
+            elif os.path.exists(f"{output_dir}{subject}/movie{movie_name}_{'-'.join(roi.split(' '))}_group_median_timecourse.npy") and _overwrite == True:
+                os.remove(f"{output_dir}{subject}/movie{movie_name}_{'-'.join(roi.split(' '))}_group_median_timecourse.npy")
+                os.remove(f"{output_dir}{subject}/movie{movie_name}_{'-'.join(roi.split(' '))}_group_std_timecourse.npy")
 
-                # Average across voxels -> (n_timepoints,)
-                mask_avg_timecourse = masked_data.mean(axis=1)
-                print(mask_avg_timecourse)
+            for subject_file in files:
+                if soi_file == subject_file:
+                    print(f"Skipping subject {subject} from their group mean calculation...")
+                    continue
+                print(f"Calculating average for {subject_file}")
+                image = nib.load(subject_file) # Load their data
+                
+                length = image.shape[3] # Grab image shape
+                if length > max_len: # Record if new max length found
+                    max_len = length
 
-                ROI_mask_avgs.append(mask_avg_timecourse)
+                for mask in masks:# Iterate through masks
+                    # Resample mask to the subjects space
+                    resampled_mask = resample_to_img(mask, image, interpolation='nearest')
 
-        # Pad the ROI
-        for mask_ind, mask_avg in enumerate(ROI_mask_avgs):
-            new_average = np.concatenate([mask_avg, np.array([np.nan for _ in range(len(mask_avg), max_len)])])
-            ROI_mask_avgs[mask_ind] = new_average
+                    # Apply mask to get (n_timepoints x n_voxels)
+                    masked_data = apply_mask(image, resampled_mask)
 
-        # Stack mask averages and calculate average ROI average
-        mask_avg_timecourses = np.vstack(ROI_mask_avgs)
-        ROI_avg_timecourse = np.nanmean(mask_avg_timecourses, axis = 0)
-        ROI_std_timecourse = np.nanstd(mask_avg_timecourses, axis = 0)
+                    # Average across voxels -> (n_timepoints,)
+                    mask_median_timecourse = np.median(masked_data, axis=1)
+                    print(mask_median_timecourse)
 
-        # Save the average for the ROI
-        np.save(f"{output_dir}movie{movie_name}_{'-'.join(roi.split(' '))}_average_timecourse.npy", ROI_avg_timecourse)
-        np.save(f"{output_dir}movie{movie_name}_{'-'.join(roi.split(' '))}_std_timecourse.npy", ROI_std_timecourse)
+                    ROI_mask_medians.append(mask_median_timecourse)
+
+            # Pad the ROI
+            for mask_ind, mask_median in enumerate(ROI_mask_medians):
+                new_median = np.concatenate([mask_median, np.array([np.nan for _ in range(len(mask_median), max_len)])])
+                ROI_mask_medians[mask_ind] = new_median
+
+            # Stack mask averages and calculate average ROI average
+            mask_median_timecourses = np.vstack(ROI_mask_medians)
+            ROI_median_timecourse = np.nanmean(mask_median_timecourses, axis = 0)
+            ROI_std_timecourse = np.nanstd(mask_median_timecourses, axis = 0)
+
+            # Check if participant has a folder
+            if os.path.exists(f"{output_dir}{subject}") is False:
+                os.mkdir(f"{output_dir}{subject}")
+
+            # Save the average for the ROI
+            np.save(f"{output_dir}{subject}/movie{movie_name}_{'-'.join(roi.split(' '))}_group_median_timecourse.npy", ROI_median_timecourse)
+            np.save(f"{output_dir}{subject}/movie{movie_name}_{'-'.join(roi.split(' '))}_group_std_timecourse.npy", ROI_std_timecourse)
 
 
 
