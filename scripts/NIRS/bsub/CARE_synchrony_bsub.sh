@@ -7,8 +7,8 @@
 #BSUB -R "select[mem>70000]"
 
 conda init 
-source /home/dennys/.bashrc
+# source /home/dennys/.bashrc
+source /storage1/fs1/perlmansusan/Active/moochie/local/bashrc
 conda activate lcbd-env
 
-python3 /storage1/fs1/perlmansusan/Active/moochie/github/LCBDtools/scripts/NIRS/CARE_synchrony.py 
-
+python3 /storage1/fs1/perlmansusan/Active/moochie/github/LCBDtools/scripts/NIRS/analysis/CARE_synchrony.py 

@@ -12,4 +12,4 @@ export LSF_DOCKER_PRESERVE_ENVIRONMENT=true
 
 export DATE=$(date +'%m-%d')
 
-bsub -J synchrony-$DATE -oo logs/synchrony/synchrony_$DATE.log -g /$USER/preprocessing < /storage1/fs1/perlmansusan/Active/moochie/github/LCBDtools/scripts/NIRS/bsub/CARE_synchrony_bsub.sh
+bsub -J synchrony-$DATE -oo logs/synchrony/synchrony_$DATE.log -g /$USER/preprocessing < /storage1/fs1/perlmansusan/Active/moochie/github/LCBDtools/scripts/NIRS/bsub/care_synchrony_bsub.sh
