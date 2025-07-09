@@ -67,18 +67,18 @@ ROIs['paraventricular nucleus']['masks'].append(nib.load('/storage1/fs1/perlmans
 
 # Define movies being analyzed
 movies = {
+    'C': 1653,
     'A': 1605,
-    'B': 1705,
-    'C': 1653
+    'B': 1705
 }
 
 _overwrite = False
 
 print(f"ROIs {ROIs.items()}")
 
-movie_names = list(movies.keys())
+movie_names = movies.keys()
 random.shuffle(movie_names)
-for movie_name in movie_names: # For each movie
+for movie_name in reversed(movie_names): # For each movie
     movie = movies[movie_name] # Get movie number
     movie_rois = copy.deepcopy(ROIs) # Create a copy of the ROI
 
@@ -90,9 +90,11 @@ for movie_name in movie_names: # For each movie
         masks = ROIs[roi]['masks'] # Grab roi mask
         print(f"Masks: {masks}")
 
-        file_identifier = f"{input_dir}sub-*/ses-0/func/sub-*_ses-0_task-movie{movie_name}_space-MNI152NLin2009cAsym_res-2_desc-preproc_bold_7mm_smoothed.nii"
+        file_identifier = f"{input_dir}sub-*/ses-0/func/*ses-0*MNIPediatricAsym*_desc-preproc_bold_7mm_smoothed.nii"
         files = glob(file_identifier) # Grab all subjects for movie
         random.shuffle(files)
+
+        print(f"Files found {len(files)}\n{"\n -".join(files)}")
         for soi_file in files: # For each subjects data
             # Grab subject ID
             subject = soi_file.split('/')[-1].split('_')[0].split('-')[1]
@@ -102,6 +104,7 @@ for movie_name in movie_names: # For each movie
 
             # Skip if average already calculated
             if os.path.exists(f"{output_dir}{subject}/movie{movie_name}_{'-'.join(roi.split(' '))}_group_median_timecourse.npy") and _overwrite == False:
+                print(f'File already exists: {f"{output_dir}{subject}/movie{movie_name}_{'-'.join(roi.split(' '))}_group_median_timecourse.npy"}')
                 continue
             elif os.path.exists(f"{output_dir}{subject}/movie{movie_name}_{'-'.join(roi.split(' '))}_group_median_timecourse.npy") and _overwrite == True:
                 os.remove(f"{output_dir}{subject}/movie{movie_name}_{'-'.join(roi.split(' '))}_group_median_timecourse.npy")
