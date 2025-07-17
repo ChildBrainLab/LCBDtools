@@ -9,7 +9,7 @@ import numpy as np
 
 # Define runtime variables defining where data is and where to output results
 output_dir = '/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/ROI_averages/'
-input_dir = '/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/fMRI_data/derivatives/fmriprep/'
+input_dir = '/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/MRI_data/derivatives/fmriprep/'
 
 # Region of interest structure for storing intermediary data
 ROI_temp = {'masks': [], 'average_timecourse': [], 'subjects': []}
@@ -76,7 +76,8 @@ _overwrite = False
 
 print(f"ROIs {ROIs.items()}")
 
-movie_names = movies.keys()
+movie_names = list(movies.keys())
+print(movie_names)
 random.shuffle(movie_names)
 for movie_name in reversed(movie_names): # For each movie
     movie = movies[movie_name] # Get movie number
@@ -90,7 +91,7 @@ for movie_name in reversed(movie_names): # For each movie
         masks = ROIs[roi]['masks'] # Grab roi mask
         print(f"Masks: {masks}")
 
-        file_identifier = f"{input_dir}sub-*/ses-0/func/*ses-0*MNIPediatricAsym*_desc-preproc_bold_7mm_smoothed.nii"
+        file_identifier = f"{input_dir}sub-*/ses-0/func/*ses-0*MNIP*6mm_smoothed.nii"
         files = glob(file_identifier) # Grab all subjects for movie
         random.shuffle(files)
 
@@ -114,6 +115,15 @@ for movie_name in reversed(movie_names): # For each movie
                 if soi_file == subject_file:
                     print(f"Skipping subject {subject} from their group mean calculation...")
                     continue
+
+                if "run_1" in subject_file or "run_01" in subject_file:
+                    print(f"Skipping first runm scan {subject_file}") 
+                    continue
+
+                if "_copy" in subject_file:
+                    print(f"Skipping {subject_file} since it's a copy...")
+                    continue
+
                 print(f"Calculating average for {subject_file}")
                 image = nib.load(subject_file) # Load their data
                 
