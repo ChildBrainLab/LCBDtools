@@ -1,10 +1,12 @@
 import csv
 
 #studys = ['CARE', 'P-CAT']
-studys = ['P-CAT']
+#studys = ['P-CAT']
+studys = ['CARE']
 
 #filenames = ['wct_full_permuted_values_new_V2.csv', 'wct_full_permuted_values.csv', 'wct_full_permuted_values_new.csv', 'wct_full_permuted_values_new_1.csv', 'wct_full_ses-0_permuted_values_pipeline.csv']
-filenames = ['wct_full_ses-0_permuted_values_deconv.csv', "wct_full_ses-0_permuted_values_traditional.csv"]
+#filenames = ['wct_full_ses-0_permuted_values_deconv.csv', "wct_full_ses-0_permuted_values_traditional.csv"]
+filenames = ['wct_full_ses-1_permuted_values_pipeline.csv']
 
 def unstack_file(filename, folder, study, unstack = True, DOI = True, ROI = True):
 	ROI = True
