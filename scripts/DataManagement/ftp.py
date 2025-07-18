@@ -93,7 +93,7 @@ class ftp:
 		for source, destination in atlas.map.items(): # For each item in the atlas map
 			source = self.old_dir + source # Prefix on the working directory
 			destination = self.new_dir + destination # Prefix on the new directory
-			if source[-1:] is '/': # If the item is a folder
+			if source[-1:] == '/': # If the item is a folder
 				if os.path.exists(source) == True: # Check if folder exists
 					for filename in os.listdir(source):# For each file:
 						self.transfer(source + filename, destination, atlas) # Call file transfer
@@ -243,7 +243,7 @@ class care_ftp(ftp):
 		self.new_dir = 'analysis/'
 
 		self.new_atlas = lambda subject : care_nirs_atlas(subject)
-		self.add_subjects = lambda subjects, more_subjects : [new_subject for new_subject in new_subjects if new_subject not in subjects]
+		self.add_subjects = lambda subjects, more_subjects : [new_subject for new_subject in more_subjects if new_subject not in subjects]
 
 		os.chdir(self.work_dir)
 
@@ -267,3 +267,99 @@ class care_nirs_atlas:
 			f'CARE/NIRS_data/{self.subject}/':f'CARE/NIRS_data_clean_2/{self.subject}/'
 		}
 		self.replacements = {'.V':'V'} # Initialize an empty replacement to keep the filename the same
+
+class vanshb_partition_ftp(ftp):
+	def __init__(self, debug = False, copy = True):
+		self.debug = debug
+		self.copy = copy
+		self.lower_case = False
+
+		self.work_dir = './'
+		self.old_dir = '/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/MRI_data/derivatives/fmriprep/'
+		self.new_dir = '/storage1/fs1/perlmansusan/Active/vanshb_partition/fmri_data/derivatives/fmriprep/'
+
+		self.new_atlas = lambda subject : vanshb_partition_atlas(subject)
+		self.add_subjects = lambda subjects, new_subjects : [new_subject for new_subject in new_subjects if new_subject not in subjects]
+
+		os.chdir(self.work_dir)
+
+		print('Vansh partition FTP protocal initialized. Looking for new fMRI dat')
+
+		self.orient()
+
+	def orient(self):
+		# Grab subject data for Vansh's analysis
+		subjects = [subject for subject in os.listdir(self.old_dir) if subject[:4] == 'sub-' and subject[-5:] != '.html']
+		print(f"Subjects: {subjects}")
+
+		self.iterate_subjects(subjects)
+		return
+
+class vanshb_partition_atlas:
+	def __init__(self, subject):
+		self.subject = subject
+		self.map = { # List of all files/folders to transfer
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieA_space-MNIPediatricAsym_cohort-2_res-2_desc-preproc_bold_6mm_smoothed.nii':f'{subject}/ses-0/func/{subject}_ses-0_task-movieA_space-MNIPediatricAsym_cohort-2_res-2_desc-preproc_bold_6mm_smoothed.nii',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieB_space-MNIPediatricAsym_cohort-2_res-2_desc-preproc_bold_6mm_smoothed.nii':f'{subject}/ses-0/func/{subject}_ses-0_task-movieB_space-MNIPediatricAsym_cohort-2_res-2_desc-preproc_bold_6mm_smoothed.nii',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieC_space-MNIPediatricAsym_cohort-2_res-2_desc-preproc_bold_6mm_smoothed.nii':f'{subject}/ses-0/func/{subject}_ses-0_task-movieC_space-MNIPediatricAsym_cohort-2_res-2_desc-preproc_bold_6mm_smoothed.nii',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieA_run-02_space-MNIPediatricAsym_cohort-2_res-2_desc-preproc_bold_6mm_smoothed.nii':f'{subject}/ses-0/func/{subject}_ses-0_task-movieA_space-MNIPediatricAsym_cohort-2_res-2_desc-preproc_bold_6mm_smoothed.nii',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieB_run-02_space-MNIPediatricAsym_cohort-2_res-2_desc-preproc_bold_6mm_smoothed.nii':f'{subject}/ses-0/func/{subject}_ses-0_task-movieB_space-MNIPediatricAsym_cohort-2_res-2_desc-preproc_bold_6mm_smoothed.nii',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieC_run-02_space-MNIPediatricAsym_cohort-2_res-2_desc-preproc_bold_6mm_smoothed.nii':f'{subject}/ses-0/func/{subject}_ses-0_task-movieC_space-MNIPediatricAsym_cohort-2_res-2_desc-preproc_bold_6mm_smoothed.nii',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieA_space-MNI152NLin2009cAsym_res-2_desc-preproc_bold_6mm_smoothed.nii':f'{subject}/ses-0/func/{subject}_ses-0_task-movieA_space-MNI152NLin2009cAsym_res-2_desc-preproc_bold_6mm_smoothed.nii',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieB_space-MNI152NLin2009cAsym_res-2_desc-preproc_bold_6mm_smoothed.nii':f'{subject}/ses-0/func/{subject}_ses-0_task-movieB_space-MNI152NLin2009cAsym_res-2_desc-preproc_bold_6mm_smoothed.nii',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieCspace-MNI152NLin2009cAsym_res-2_desc-preproc_bold_6mm_smoothed.nii':f'{subject}/ses-0/func/{subject}_ses-0_task-movieC_space-MNI152NLin2009cAsym_res-2_desc-preproc_bold_6mm_smoothed.nii',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieA_run-02_space-MNI152NLin2009cAsym_res-2_desc-preproc_bold_6mm_smoothed.nii':f'{subject}/ses-0/func/{subject}_ses-0_task-movieA_space-MNI152NLin2009cAsym_res-2_desc-preproc_bold_6mm_smoothed.nii',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieB_run-02_space-MNI152NLin2009cAsym_res-2_desc-preproc_bold_6mm_smoothed.nii':f'{subject}/ses-0/func/{subject}_ses-0_task-movieB_space-MNI152NLin2009cAsym_res-2_desc-preproc_bold_6mm_smoothed.nii',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieC_run-02_space-MNI152NLin2009cAsym_res-2_desc-preproc_bold_6mm_smoothed.nii':f'{subject}/ses-0/func/{subject}_ses-0_task-movieC_space-MNI152NLin2009cAsym_res-2_desc-preproc_bold_6mm_smoothed.nii',
+			f'{subject}/ses-0/func/AHKJ_rating_avg_movieA.txt':f'{subject}/ses-0/func/AHKJ_rating_avg_movieA.txt',
+			f'{subject}/ses-0/func/AHKJ_rating_avg_movieB.txt':f'{subject}/ses-0/func/AHKJ_rating_avg_movieB.txt',
+			f'{subject}/ses-0/func/AHKJ_rating_avg_movieC.txt':f'{subject}/ses-0/func/AHKJ_rating_avg_movieC.txt',
+			f'{subject}/ses-0/func/AHKJ_loudness_movieA.txt':f'{subject}/ses-0/func/AHKJ_loudness_movieA.txt',
+			f'{subject}/ses-0/func/AHKJ_loudness_movieB.txt':f'{subject}/ses-0/func/AHKJ_loudness_movieB.txt',
+			f'{subject}/ses-0/func/AHKJ_loudness_movieC.txt':f'{subject}/ses-0/func/AHKJ_loudness_movieC.txt',
+			f'{subject}/ses-0/func/AHKJ_luminance_movieA.txt':f'{subject}/ses-0/func/AHKJ_luminance_movieA.txt',
+			f'{subject}/ses-0/func/AHKJ_luminance_movieB.txt':f'{subject}/ses-0/func/AHKJ_luminance_movieB.txt',
+			f'{subject}/ses-0/func/AHKJ_luminance_movieC.txt':f'{subject}/ses-0/func/AHKJ_luminance_movieC.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieA_desc-confounds_rot_x.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieA_desc-confounds_rot_x.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieA_desc-confounds_rot_y.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieA_desc-confounds_rot_y.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieA_desc-confounds_rot_z.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieA_desc-confounds_rot_z.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieA_desc-confounds_trans_x.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieA_desc-confounds_trans_x.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieA_desc-confounds_trans_y.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieA_desc-confounds_trans_y.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieA_desc-confounds_trans_z.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieA_desc-confounds_trans_z.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieB_desc-confounds_rot_x.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieB_desc-confounds_rot_x.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieB_desc-confounds_rot_y.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieB_desc-confounds_rot_y.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieB_desc-confounds_rot_z.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieB_desc-confounds_rot_z.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieB_desc-confounds_trans_x.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieB_desc-confounds_trans_x.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieB_desc-confounds_trans_y.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieB_desc-confounds_trans_y.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieB_desc-confounds_trans_z.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieB_desc-confounds_trans_z.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieC_desc-confounds_rot_x.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieC_desc-confounds_rot_x.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieC_desc-confounds_rot_y.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieC_desc-confounds_rot_y.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieC_desc-confounds_rot_z.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieC_desc-confounds_rot_z.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieC_desc-confounds_trans_x.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieC_desc-confounds_trans_x.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieC_desc-confounds_trans_y.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieC_desc-confounds_trans_y.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieC_desc-confounds_trans_z.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieC_desc-confounds_trans_z.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieA_run-02_desc-confounds_rot_x.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieA_desc-confounds_rot_x.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieA_run-02_desc-confounds_rot_y.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieA_desc-confounds_rot_y.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieA_run-02_desc-confounds_rot_z.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieA_desc-confounds_rot_z.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieA_run-02_desc-confounds_trans_x.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieA_desc-confounds_trans_x.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieA_run-02_desc-confounds_trans_y.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieA_desc-confounds_trans_y.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieA_run-02_desc-confounds_trans_z.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieA_desc-confounds_trans_z.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieB_run-02_desc-confounds_rot_x.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieB_desc-confounds_rot_x.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieB_run-02_desc-confounds_rot_y.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieB_desc-confounds_rot_y.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieB_run-02_desc-confounds_rot_z.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieB_desc-confounds_rot_z.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieB_run-02_desc-confounds_trans_x.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieB_desc-confounds_trans_x.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieB_run-02_desc-confounds_trans_y.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieB_desc-confounds_trans_y.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieB_run-02_desc-confounds_trans_z.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieB_desc-confounds_trans_z.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieC_run-02_desc-confounds_rot_x.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieC_desc-confounds_rot_x.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieC_run-02_desc-confounds_rot_y.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieC_desc-confounds_rot_y.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieC_run-02_desc-confounds_rot_z.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieC_desc-confounds_rot_z.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieC_run-02_desc-confounds_trans_x.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieC_desc-confounds_trans_x.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieC_run-02_desc-confounds_trans_y.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieC_desc-confounds_trans_y.txt',
+			f'{subject}/ses-0/func/{subject}_ses-0_task-movieC_run-02_desc-confounds_trans_z.txt':f'{subject}/ses-0/func/{subject}_ses-0_task-movieC_desc-confounds_trans_z.txt',
+		}
+		self.replacements = {}
+
+
+if __name__ == "__main__":
+	protocol = vanshb_partition_ftp()
+
