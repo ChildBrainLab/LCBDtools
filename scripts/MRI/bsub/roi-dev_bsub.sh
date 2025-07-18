@@ -11,5 +11,5 @@ source /home/dennys/.bashrc
 conda activate lcbd-env
 
 #python3 /storage1/fs1/perlmansusan/Active/moochie/github/LCBDtools/scripts/MRI/analysis/ROI_avg.py 
-python3 /storage1/fs1/perlmansusan/Active/moochie/github/LCBDtools/scripts/MRI/analysis/ROI_std.py 
-#python3 /storage1/fs1/perlmansusan/Active/moochie/github/LCBDtools/scripts/MRI/analysis/ROI_corr.py 
+#python3 /storage1/fs1/perlmansusan/Active/moochie/github/LCBDtools/scripts/MRI/analysis/ROI_std.py 
+python3 /storage1/fs1/perlmansusan/Active/moochie/github/LCBDtools/scripts/MRI/analysis/ROI_corr.py 

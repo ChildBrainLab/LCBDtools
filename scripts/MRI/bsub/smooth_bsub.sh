@@ -11,7 +11,7 @@ export PATH=$FSLDIR/bin:$PATH
 export FSLMULTIFILEQUIT=TRUE
 export FSLOUTPUTTYPE=NIFTI_GZ
 
-directory=/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/MRI_data/derivatives/fmriprep/
+directory=/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/fMRI_data/derivatives/fmriprep/
 
 for subject in `find $directory -type d -name  'sub-*' | shuf`
 do
