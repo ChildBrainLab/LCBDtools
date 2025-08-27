@@ -11,5 +11,5 @@ export LSF_DOCKER_PRESERVE_ENVIRONMENT=true
 
 export DATE=$(date +'%m-%d')
 
-bsub -J fmri-roi-$DATE -oo logs/analysis/roi-avg-$DATE.log -g /$USER/preprocessing < /storage1/fs1/perlmansusan/Active/moochie/github/LCBDtools/scripts/MRI/bsub/roi-avg_bsub.sh
-#bsub -J fmri-roi-$DATE -oo logs/analysis/roi-dev-$DATE.log -g /$USER/preprocessing < /storage1/fs1/perlmansusan/Active/moochie/github/LCBDtools/scripts/MRI/bsub/roi-dev_bsub.sh
+#bsub -J fmri-roi-$DATE -oo logs/analysis/roi-avg-$DATE.log -g /$USER/preprocessing < /storage1/fs1/perlmansusan/Active/moochie/github/LCBDtools/scripts/MRI/bsub/roi-avg_bsub.sh
+bsub -J fmri-roi-$DATE -oo logs/analysis/roi-dev-$DATE.log -g /$USER/preprocessing < /storage1/fs1/perlmansusan/Active/moochie/github/LCBDtools/scripts/MRI/bsub/roi-dev_bsub.sh

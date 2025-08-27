@@ -43,7 +43,6 @@ python /storage1/fs1/perlmansusan/Active/moochie/github/LCBDtools/scripts/MRI/te
 	--warp-surfaces-native2std  n 
 
 
-
 cp -r /tmp/$TMP_DIR/output/. /output/
 
 for file in `find /output/ -name *$SUBJECT*.gz` ; do
