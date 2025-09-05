@@ -91,7 +91,7 @@ for movie_name in reversed(movie_names): # For each movie
         masks = ROIs[roi]['masks'] # Grab roi mask
         print(f"Masks: {masks}")
 
-        file_identifier = f"{input_dir}sub-*/ses-0/func/*ses-0*MNIP*6mm_smoothed.nii"
+        file_identifier = f"{input_dir}sub-*/ses-0/func/*ses-0*movie{movie_name}*MNIP*6mm_smoothed.nii"
         files = glob(file_identifier) # Grab all subjects for movie
         random.shuffle(files)
 
@@ -112,7 +112,10 @@ for movie_name in reversed(movie_names): # For each movie
                 os.remove(f"{output_dir}{subject}/movie{movie_name}_{'-'.join(roi.split(' '))}_group_std_timecourse.npy")
 
             for subject_file in files:
-                if soi_file == subject_file:
+
+                # Check if this is the subject we are including
+                other_subject = subject_file.split('/')[-1].split('_')[0].split('-')[1]
+                if subject == other_subject:
                     print(f"Skipping subject {subject} from their group mean calculation...")
                     continue
 
