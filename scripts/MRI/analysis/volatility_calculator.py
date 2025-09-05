@@ -37,11 +37,11 @@ for atv_file in atv_files:
             if row[33] not in ['None', 'space']:
                 ratings[order[0]].append(float(row[33]))
         
-        if len(row) > 60 and row[59] != '': # Check for first movie
+        if len(row) > 60 and row[59] != '': # Check for second movie
             if row[59] not in ['None', 'space']:
                 ratings[order[1]].append(float(row[59]))
 
-        if len(row) > 86 and row[85] != '': # Check for first movie
+        if len(row) > 86 and row[85] != '': # Check for third movie
             if row[85] not in ['None', 'space']:
                 ratings[order[2]].append(float(row[85]))
 
@@ -77,12 +77,20 @@ for movie in movie_ratings.keys():
     print(f"Movie {movie} stack shape: {stack.shape}")
     volatility = np.nanstd(stack, axis = 0)
     print(f"Volatility shape: {volatility.shape}")
+
+    # Remove head and trailing nan and 0's
+    volatility = np.delete(volatility, [0, 1, 2, 3, 4, 5])
+    for ind in range(volatility.shape[0] - 1, 0, -1):
+        if volatility[ind] == np.nan or volatility[ind] == 0:
+            volatility = np.delete(volatility, ind)
     
     # Resize to TR frequency
-    volatility_old = np.linspace(0, 1, len(volatility[3:]))     # Original normalized positions (0 to 1)
+    volatility_old = np.linspace(0, 1, len(volatility))     # Original normalized positions (0 to 1)
     volatility_new = np.linspace(0, 1, movie_len[movie])
 
-    volatility_interp = np.interp(volatility_new, volatility_old, volatility[3:]) 
+    print(f"New Volatility: {volatility_new.shape}\n Old volatility: {volatility_old.shape}\n Volatility: {volatility.shape}")    
+
+    volatility_interp = np.interp(volatility_new, volatility_old, volatility) 
 
     print(f"New shape: {volatility_interp.shape}")
 
