@@ -207,7 +207,7 @@ ROIs = {
     'Right Ventrolateral Prefrontal': ['S7_D3 hbo', 'S7_D4 hbo', 'S8_D4 hbo']}
 
 # make a list of all matching session paths (in this case for V0, assuming there should be more sessions?)
-session_dirs = [d for d in glob(study_dir+"/*/V2/*") \
+session_dirs = [d for d in glob(study_dir+"/*/V0/*") \
     if os.path.basename(os.path.split(os.path.split(d)[1])[1]) not in ex_subs]
 
 subjects = list(set([os.path.basename(d)[:participant_num_len] for d in session_dirs]))
@@ -468,7 +468,7 @@ def mne_wavelet_coherence_transform(sig1: [mne.io.Raw, mne.Epochs],
         chs: Union[str] = None):
     
     t0 = sig1.times[0]
-    dt = sig1.times[1] - t0
+    dt = sig1.times[1] - sig1.times[0]
     N = len(sig1.times)
 #     t = np.arange(0, N) * dt + t0
     t = sig1.times
@@ -477,7 +477,7 @@ def mne_wavelet_coherence_transform(sig1: [mne.io.Raw, mne.Epochs],
     mother = wavelet.Morlet(6)
     s0 = 2 * dt # starting scale, in this case 2 * 0.128 s = 0.256 s
     dj = 1 / 12 # twelve sub-octaves per octaves
-    J = 10 / dj # ten powers of 2 with dj sub-octaves
+    J = int(np.log2(N * dt / s0) / dj)
     
     if chs is None:
         chs = sig1.info['ch_names']
@@ -845,32 +845,37 @@ for parent in tqdm([sub for sub in sorted(epoch_df.keys()) if "p" in sub]):
                             plot=True if "S5_D3 hbo" in ch else False, # save plots but only for some random channel because otherwise it's an insane amount
                             fig_fname=f"/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/sync_figs/{parent}_{child}_{ch.replace(' ', '_')}_{block_num}_{block_it}.png")
 
+                        # TASK RELATED FREQUENCIES ARE ARBITRARILY DETERMINED here
+                        
                         # make values outside COI = np.nan
                         nanWCT = WCT
+                        period = (1 / freqs)
+                        print(f"Max period: {period.max()} | Min period: {period.min()}")
                         for t in range(nanWCT.shape[1]):
-                            nanWCT[np.where(freqs>coi[t]), t] = np.nan
-                        # also set to nan outside frequencies of interest
+                            for j in range(nanWCT.shape[0]):
+                                if period[j] > coi[t]:
+                                    nanWCT[j, t] = np.nan
                         
-                        # TASK RELATED FREQUENCIES ARE ARBITRARILY DETERMINED here
-                        WCT[(5>(1/freqs))|((1/freqs)>105), :] = np.nan
-                        
-                        # between periods of 5s and 105s (.0095 -.2 Hz; flip for sec) which is based on Ngyuen et al. 2021
-                        
+                        # Remove frequencies not of interest
+                        mask = (freqs < 0.01) | (freqs > 0.03)
+                        nanWCT[mask, :] = np.nan
+                        # ?? 0.012 Hz – 0.312 Hz Mention in Ngyuen et al. 2021 - https://doi.org/10.1016/j.neuroimage.2021.118599
+                        # Proximity and touch are associated with neural but not physiological synchrony in naturalistic mother-infant interactions
 
                         # average inside cone of influence
                         # and within values from freq range determined above
                         pc_wcts.append(np.nanmean(nanWCT))
-#                     print(np.nanmean(nanWCT))
-    
+#                        print(np.nanmean(nanWCT))
+
                     # if anything with the WCT fails, say so
                     except:
                         print(f"Fail @ parent {parent}, child {child}, block {block}, channel {ch}, block it {block_it}")
-#                 print(np.average(pc_wcts))  
+                print(f"Average WCT: {np.average(pc_wcts)}")  
+
                 sync_df[parent][child][block][ch] = np.average(pc_wcts)
 
-# skip if you're going to load the already-saved ones. for real. don't overwrite this with an empty data file. 
 # SAVE SYNCHRONY VALUES
-
+print("Formatting into dataframe")
 channels = epoch_df[parent].keys()
 cols = ["Parent", "Child", "Block"]
 for ch in channels:
@@ -895,10 +900,10 @@ for parent in sync_df.keys():
             dic = {k: [v] for k, v in dic.items()}
             df = pd.concat([df, pd.DataFrame(dic, columns=cols)], ignore_index=True)
 
-## Save the DataFrame as CSV      
-df.to_csv("/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/Test_Analysis/wct_full_ses-2_permuted_values_pipeline.csv", index=False)
-#df.to_csv("/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/Test_Analysis/wct_full_ses-1_permuted_values_pipeline_test6subjects.csv")
-
+## Save the DataFrame as CSV   
+print("Saving!")   
+df.to_csv("/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/Test_Analysis/wct_full_ses-0_permuted_values_fix.csv", index=False)
+print("Saved")
 ## or save as a json file
 # json_object = json.dumps(perm_df, indent=4)
 # with open("/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/Test_Analysis/permuted_subjects_ses-1_pipeline_deconv.json", 'w') as outfile:
