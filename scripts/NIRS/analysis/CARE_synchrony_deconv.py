@@ -1,5 +1,5 @@
 #general dependencies (importing premade packages/libraries)
-import mne, random, os, json, sys, io, requests, shutil
+import mne, random, os, json, sys, io, requests, shutil, hrfunc
 import numpy as np
 import pandas as pd
 import pycwt as wavelet
@@ -46,7 +46,7 @@ def timeconvert_psychopy_to_nirstar(
 
 
 for ses in tqdm(nirs_session_dirs):
-    # should always work, even with multiple-runs. 
+    # should always work, even with multiple-runs.
     # TODO remember that these exist, where 2 runs are collected
     # for the same dyad of parent/child, for unknown reason. 
     # potentially check for truncated run while parsing this data in other
@@ -60,8 +60,7 @@ for ses in tqdm(nirs_session_dirs):
     # only do this if there's only 1 .evt file in study folder
     og_evt = glob(ses+"/*.evt")
     if len(og_evt) != 1:
-        print("Error: found", len(og_evt), "evt files for the given sub / visit.")
-        print("Skipping:", ses)
+        print("Events found", len(og_evt), "evt files for the given sub / visit.")
         continue
     else:
         og_evt = og_evt[0]
@@ -85,7 +84,6 @@ for ses in tqdm(nirs_session_dirs):
 #     print(child_sub)
     visit_ID = ses.strip(nirs_dir).strip("/")[participant_num_len+1:participant_num_len+3]
 #     print(visit_ID)
-    # looks like it's working!
     
     task_file = glob(join(psypy_dir, child_sub, visit_ID)+ "/*.csv")
     
@@ -216,52 +214,49 @@ scans = []
 
 # loop over all the session directories (dyads / DB-DOS folders)
 for dyad_dir in list(set([os.path.split(ses)[0] for ses in session_dirs])):
-    try:
-        
+        sub1 = None
+        sub2 = None
         # get subject and visit from this path
         sub = os.path.basename(os.path.dirname(dyad_dir))
         visit = os.path.basename(dyad_dir)
         
-        if debug:
-            print(f'{sub} - {visit}')
+        print(f'{sub} - {visit}')
         
         # determining whether sub is Child or Parent can be done by reading the config file in the .nirx directory        
-        config_files = glob(os.path.join(dyad_dir, "*fNIRS", "*config*"))
+        fif_files = glob(f"{dyad_dir}/**/*.fif")
 
         # open the file and read the line with Subject= in it
-        for config in config_files:
-            with open(config, 'r') as f:
-                line = f.readline()
-                while "Subject=" not in line:
-                    line = f.readline()
-                line = line.strip()
-                line = line.replace("Subject=", "")
-                
+        for fif_file in fif_files:
+
+                path = os.path.dirname(fif_file)
+                sub_folder = path.split('/')[-1]
+                print(sub_folder)
+
                 # if the line is 1 it's the child
-                if line == "1":
-                    sub1 = os.path.dirname(config) # child
-                elif line == "2":
-                    sub2 = os.path.dirname(config) # parent
-                    
+                if sub_folder[4] != "_":
+                    sub1 = fif_file # child
+                elif sub_folder[4] == "_":
+                    sub2 = fif_file # parent
+
+        if sub1 is None or sub2 is None:
+            print(f"No data! Skipping {dyad_dir}")
+            continue
+
         # make sure it has 'modern' .evt files
-        evts = glob(sub1 + "/*.evt")
+        evts = glob(f"{path}/*.evt")
         if len(evts) != 2:
             print("There should be 2 evt files. Skipping:", os.path.basename(sub1))
+            print(evts)
             continue
 
 #         #**load each in via hypyp loader (fixing config file so that even if child and parent numbers were flipped, they will now each be labelled as c or p in object)**
-        fnirs_participant_1 = mne.io.read_raw_nirx(sub1, preload=False, verbose="warning") # child
+        fnirs_participant_1 = mne.io.read_raw_fif(sub1, preload=False, verbose="warning") # child
         fnirs_participant_1.info['subject_info']['his_id'] = f"{sub[:participant_num_len]}c"
         
-        fnirs_participant_2 = mne.io.read_raw_nirx(sub2, preload=False, verbose="warning") # parent
+        fnirs_participant_2 = mne.io.read_raw_fif(sub2, preload=False, verbose="warning") # parent
         fnirs_participant_2.info['subject_info']['his_id'] = f"{sub[:participant_num_len]}p"
         
         scans.append((fnirs_participant_1, fnirs_participant_2))
-    
-    #when there aren't 2 evt files    
-    except:
-        print("skipping session:", dyad_dir)
-        continue
 
 #raw NIRS data for child and parent now loaded into "scans" object
 
@@ -274,7 +269,7 @@ for i, dscan in enumerate(scans):
     
 #    try:
     for scan in dscan:
-        print(scan.annotations)
+        print(f"Annotations: {scan.annotations}")
         # rename the binary annotations with actual names
         for key, desc in {'1.0': 'Block 1', '2.0': 'Block 2', '4.0': 'Block 3'}.items():
             try:
@@ -568,6 +563,7 @@ def mne_wavelet_coherence_transform(sig1: [mne.io.Raw, mne.Epochs],
 print(f"Length of scans - {len(scans)}")
 pps = []
 
+
 # for each dyad scan in scans
 for dscan in scans:
 
@@ -575,63 +571,8 @@ for dscan in scans:
     
     # individually preprocess each subject in dyad
     for scan in dscan:
-        
-        # convert to optical density
-        raw_od = mne.preprocessing.nirs.optical_density(scan)
 
-        # scalp coupling index
-        sci = mne.preprocessing.nirs.scalp_coupling_index(raw_od)
-        raw_od.info['bads'] = list(compress(raw_od.ch_names, sci < 0.5))
-        
-        # linear detrend, par example
-#         raw.data[:] = scipy.signal.detrend(raw.get_data(), axis=-1, fit='linear')
-
-        if len(raw_od.info['bads']) > 0:
-            print("Bad channels in subject", raw_od.info['subject_info']['his_id'], ":", raw_od.info['bads'])
-        
-        # temporal derivative distribution repair (motion attempt)
-        tddr_od = mne.preprocessing.nirs.tddr(raw_od)
-#         print("tddr")
-#         tddr_od.plot(
-#             n_channels=len(tddr_od.ch_names),
-#             scalings=0.1,
-#             duration=100,
-#             show_scrollbars=False)
-        
-        # savgol filter (linear polynomial smoothing)
-#         sav_od = raw_od.savgol_filter(0.5)
-#         print("savgol filtering")
-#         sav_od.plot(
-#             n_channels=len(sav_od.ch_names),
-#             scalings=0.1,
-#             duration=100,
-#             show_scrollbars=False)
-
-        bp_od = tddr_od.filter(0.01, 0.5)
-#         print("bandpass")
-#         bp_od.plot(
-#             n_channels=len(bp_od.ch_names),
-#             duration=100,
-#             scalings=0.1,
-#             show_scrollbars=False)
-    
-        # haemoglobin conversion using Beer Lambert Law (this will change channel names from frequency to hemo or deoxy hemo labelling)
-        haemo = mne.preprocessing.nirs.beer_lambert_law(bp_od, ppf=0.1)
-#         print("haemo")
-#         haemo.plot(
-#             n_channels=len(haemo.ch_names),
-#             duration=100,
-#             scalings=0.0001,
-#             show_scrollbars=False)
-
-#         print("PSD")
-#         haemo_lp.plot_psd(average=True)
-        
-        # Convolve the scan
-        deconvolved_nirx = convolver.deconvolve_hrf(haemo)
-        
-
-    ppdscan.append(deconvolved_nirx)
+        ppdscan.append(scan)
         
     pps.append(ppdscan)
 
@@ -643,8 +584,6 @@ bad_channels_dict = {}
 for dscan in pps:
     for scan in dscan:
         bad_channels_dict[scan.info['subject_info']['his_id']] = scan.info['bads']
-        
-
 
 # make a dictionary where all of the epoch'd data will go
 epoch_df = {}
@@ -776,12 +715,13 @@ for parent in tqdm([sub for sub in sorted(epoch_df.keys()) if "p" in sub]):
     perm_df[parent] = []
     
     # pick two children, one real and one random
-    children = []
+    children = [f"{parent[:5]}c"]
     
 #     children.append(parent.replace("p", "c")) # real child
     
     # random sample of N children
     # could be repeated, could be the real dyad 
+    
     randoms = random.choices(
         [sub for sub in epoch_df.keys() if "c" in sub],
         k=999) # N of random 
@@ -803,6 +743,8 @@ for parent in tqdm([sub for sub in sorted(epoch_df.keys()) if "p" in sub]):
         
         # and make them a location in the sync dictionary under this parent
         sync_df[parent][child] = {}
+
+        print(f"{parent} - {child}")
         
         # for every block type (pre-play, puzzle, post-play)
         for block_num, block in enumerate(block_types):
@@ -824,11 +766,19 @@ for parent in tqdm([sub for sub in sorted(epoch_df.keys()) if "p" in sub]):
                 print(epoch_df[parent][ch])
                 print(block_num)
                 if block_num < len(epoch_df[parent][ch]):
-                    p_epoch = epoch_df[parent][ch][block_num].load_data()
+                    try:
+                        p_epoch = epoch_df[parent][ch][block_num].load_data()
+                    except:
+                        print(f"No data available for {parent} - {child} - block {block}")
+                        continue
                 else:
                     print(f"Skipping {parent} {block_num} {ch}")
                 if block_num < len(epoch_df[child][ch]):
-                    c_epoch = epoch_df[child][ch][block_num].load_data()
+                    try:
+                        c_epoch = epoch_df[child][ch][block_num].load_data()
+                    except:
+                        print(f"No data available for {parent} - {child} - block {block}")
+                        continue
                 else:
                     print(f"Skipping {child} {block_num} {ch}")
                 
@@ -837,15 +787,47 @@ for parent in tqdm([sub for sub in sorted(epoch_df.keys()) if "p" in sub]):
                     len(p_epoch),
                     len(c_epoch)])):
                     
-                    print(ch)
-                    
                     # Calculate synchrony between parent and child with deconvolved signal
 
-#                 print(np.average(pc_wcts))  
+                    print(f"{ch} - {parent} - {ch}")
+                    # try to do the WCT with these epochs
+                    try:
+                        WCT, aWCT, coi, freqs, sig95 = mne_wavelet_coherence_transform(
+                            p_epoch[block_it],
+                            c_epoch[block_it],
+                            plot=True if "S5_D3 hbo" in ch else False, # save plots but only for some random channel because otherwise it's an insane amount
+                            fig_fname=f"/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/sync_figs/{parent}_{child}_{ch.replace(' ', '_')}_{block_num}_{block_it}.png")
+
+                        # TASK RELATED FREQUENCIES ARE ARBITRARILY DETERMINED here
+                        
+                        # make values outside COI = np.nan
+                        nanWCT = WCT
+                        period = (1 / freqs)
+                        for t in range(nanWCT.shape[1]):
+                            for j in range(nanWCT.shape[0]):
+                                if period[j] > coi[t]:
+                                    nanWCT[j, t] = np.nan
+                        
+                        # Remove frequencies not of interest
+                        nanWCT[(0.01 > freqs)|(freqs > 0.03), :] = np.nan
+                        # WCT[(2>(1/freqs))|((1/freqs)>13), :] = np.nan ?? 
+                        # ?? 0.012 Hz – 0.312 Hz Mention in Ngyuen et al. 2021 - https://doi.org/10.1016/j.neuroimage.2021.118599
+                        # Proximity and touch are associated with neural but not physiological synchrony in naturalistic mother-infant interactions
+
+                        # average inside cone of influence
+                        # and within values from freq range determined above
+                        pc_wcts.append(np.nanmean(nanWCT))
+#                        print(np.nanmean(nanWCT))
+
+                    # if anything with the WCT fails, say so
+                    except:
+                        print(f"Fail @ parent {parent}, child {child}, block {block}, channel {ch}, block it {block_it}")
+                print(f"Average WCT: {np.average(pc_wcts)}")  
+                
                 sync_df[parent][child][block][ch] = np.average(pc_wcts)
 
-# skip if you're going to load the already-saved ones. for real. don't overwrite this with an empty data file. 
 # SAVE SYNCHRONY VALUES
+print(f"Finished! Starting to save synchrony values...")
 
 channels = epoch_df[parent].keys()
 cols = ["Parent", "Child", "Block"]
@@ -871,10 +853,10 @@ for parent in sync_df.keys():
             dic = {k: [v] for k, v in dic.items()}
             df = pd.concat([df, pd.DataFrame(dic, columns=cols)], ignore_index=True)
 
-        
-df.to_csv("/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/Test_Analysis/wct_full_ses-0_permuted_values_deconv.csv")
-
+print("Saving!")
+df.to_csv("/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/Test_Analysis/wct_full_ses-0_permuted_values_deconv_fix.csv")
+print("Saved!")
 
 json_object = json.dumps(perm_df, indent=4)
-with open("/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/Test_Analysis/permuted_subjects_ses-0_deconv.json", 'w') as outfile:
+with open("/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/Test_Analysis/permuted_subjects_ses-0_deconv_new.json", 'w') as outfile:
     json.dump(perm_df, outfile)
