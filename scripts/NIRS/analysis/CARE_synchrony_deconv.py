@@ -721,7 +721,7 @@ for parent in tqdm([sub for sub in sorted(epoch_df.keys()) if "p" in sub]):
     
     # random sample of N children
     # could be repeated, could be the real dyad 
-    
+    """
     randoms = random.choices(
         [sub for sub in epoch_df.keys() if "c" in sub],
         k=999) # N of random 
@@ -732,6 +732,7 @@ for parent in tqdm([sub for sub in sorted(epoch_df.keys()) if "p" in sub]):
     # we can count # of repeats from perm_df[parent]
     for child in list(set(randoms)):
         children.append(child)
+        """
     
     # old version that just does 1 random non-real child per parent
 #     children.append(
@@ -809,7 +810,7 @@ for parent in tqdm([sub for sub in sorted(epoch_df.keys()) if "p" in sub]):
                                     nanWCT[j, t] = np.nan
                         
                         # Remove frequencies not of interest
-                        nanWCT[(0.01 > freqs)|(freqs > 0.03), :] = np.nan
+                        nanWCT[(0.01 > freqs)|(freqs > 0.05), :] = np.nan
                         # WCT[(2>(1/freqs))|((1/freqs)>13), :] = np.nan ?? 
                         # ?? 0.012 Hz – 0.312 Hz Mention in Ngyuen et al. 2021 - https://doi.org/10.1016/j.neuroimage.2021.118599
                         # Proximity and touch are associated with neural but not physiological synchrony in naturalistic mother-infant interactions

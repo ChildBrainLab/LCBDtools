@@ -546,7 +546,7 @@ WCT, aWCT, coi, freqs, sig95 = mne_wavelet_coherence_transform(
     scans[4][1].copy().pick(['S3_D2 850']).crop(tmax=400),
     plot=True)
 
- [markdown]
+
 # # Preprocessing Step
 # 
 # Now that data are loaded in and events are correctly distinct, we iterate through each dyad and each individual scan to apply LCBD-standard preprocessing functions. 
@@ -572,62 +572,36 @@ for dscan in scans:
     
     # individually preprocess each subject in dyad
     for scan in dscan:
-        print(scan)
-        # convert to optical density
-        raw_od = mne.preprocessing.nirs.optical_density(scan)
-
-        # scalp coupling index
-        sci = mne.preprocessing.nirs.scalp_coupling_index(raw_od)
-        raw_od.info['bads'] = list(compress(raw_od.ch_names, sci < 0.5))
-        
-        # linear detrend, par example
-#         raw.data[:] = scipy.signal.detrend(raw.get_data(), axis=-1, fit='linear')
-
-        if len(raw_od.info['bads']) > 0:
-            print("Bad channels in subject", raw_od.info['subject_info']['his_id'], ":", raw_od.info['bads'])
-        
         try:
-            # temporal derivative distribution repair (motion attempt)
-            tddr_od = mne.preprocessing.nirs.tddr(raw_od)
-    #         print("tddr")
-    #         tddr_od.plot(
-    #             n_channels=len(tddr_od.ch_names),
-    #             scalings=0.1,
-    #             duration=100,
-    #             show_scrollbars=False)
-        
-            # savgol filter (linear polynomial smoothing)
-    #         sav_od = raw_od.savgol_filter(0.5)
-    #         print("savgol filtering")
-    #         sav_od.plot(
-    #             n_channels=len(sav_od.ch_names),
-    #             scalings=0.1,
-    #             duration=100,
-    #             show_scrollbars=False)
+            # 1. Load and convert to OD
+            raw_od = mne.preprocessing.nirs.optical_density(scan)
 
-            bp_od = tddr_od.filter(0.01, 0.5)
-    #         print("bandpass")
-    #         bp_od.plot(
-    #             n_channels=len(bp_od.ch_names),
-    #             duration=100,
-    #             scalings=0.1,
-    #             show_scrollbars=False)
+            # 2. Mark bads with SCI
+            sci = mne.preprocessing.nirs.scalp_coupling_index(raw_od)
+            raw_od.info['bads'] = list(compress(raw_od.ch_names, sci < 0.5))
+            raw_od.drop_channels(raw_od.info['bads'])  # drop bads
 
-            # haemoglobin conversion using Beer Lambert Law (this will change channel names from frequency to hemo or deoxy hemo labelling)
-            haemo = mne.preprocessing.nirs.beer_lambert_law(bp_od, ppf=0.1)
-    #         print("haemo")
-    #         haemo.plot(
-    #             n_channels=len(haemo.ch_names),
-    #             duration=100,
-    #             scalings=0.0001,
-    #             show_scrollbars=False)
+            # 3. Motion correction
+            raw_od = mne.preprocessing.nirs.tddr(raw_od)
 
-    #         print("PSD")
-    #         haemo_lp.plot_psd(average=True)
+            # (Optional) wavelet filtering if motion is severe
+            # raw_od = mne.preprocessing.nirs.wavelet_filter(raw_od)
+
+            # 4. Detrend / high-pass
+            raw_od = raw_od.filter(l_freq=0.005, h_freq=None)
+
+            # 5. Short-channel regression (if available)
+            # raw_od = mne.preprocessing.nirs.short_channels_regression(raw_od, short_chs)
+
+            # 6. Broad bandpass for general preprocessing
+            raw_od = raw_od.filter(l_freq=0.01, h_freq=0.2)
+
+            # 7. Convert to Hb
+            haemo = mne.preprocessing.nirs.beer_lambert_law(raw_od, ppf=0.1)
 
             ppdscan.append(haemo)
         except:
-            print(f"Failed! {scan}")
+            print(f"subject failed to preprocess {scan}")
         
     pps.append(ppdscan)
 
@@ -764,46 +738,6 @@ for dscan in pps:
             epoch_df[scan.info['subject_info']['his_id']][ROI].append(postplay_epochs)
 
 
-# here is the way to access information in the epoch dictionary
-
-
-#Will tell you how many dyads are retaining for final analyses 
-len([sub for sub in epoch_df.keys() if "c" in sub])
-
-
-# a single subject 
-epoch_df['1250c']
-
-
-# a specific channel from the subject
-epoch_df['1250c']['S1_D1 hbo']
-
-
-# a specific block at that subject / channel, in this case the first (0) is pre-play, second (1) is puzzle, and second (2) is post-play
-#ask Susan about baseline 
-epoch_df['1250c']['S1_D1 hbo'][2]
-
-
-# a specific iteration (trial) of that block at that subject / channel, in this case the first (0) is pre-play, we look at the 4th (3) iteration of the block
-#120 sec duration of individual trial/iteration
-epoch_df['1250c']['S1_D1 hbo'][0][3]
-
-
-event_dict
-
-
-# example WCT between a real dyad, puzzle block (1), iteration 0 (0)
-WCT, aWCT, coi, freqs, sig95 = mne_wavelet_coherence_transform(
-    epoch_df['1250p']['S1_D1 hbo'][1][0].copy(),
-    epoch_df['1250c']['S1_D1 hbo'][1][0].copy(),
-    plot=True)
-
-# same WCT but a random false dyad
-WCT, aWCT, coi, freqs, sig95 = mne_wavelet_coherence_transform(
-    epoch_df['1250p']['S1_D1 hbo'][1][0].copy(),
-    epoch_df['1121c']['S1_D1 hbo'][1][0].copy(),
-    plot=True)
-
 
 # list out all the subjects in the epoch df
 epoch_df.keys()
@@ -835,10 +769,11 @@ for parent in tqdm([sub for sub in sorted(epoch_df.keys()) if "p" in sub]):
     perm_df[parent] = []
     
     # pick two children, one real and one random
-    children = []
+    children = [f"{parent[:4]}c"]
     
 #     children.append(parent.replace("p", "c")) # real child
     
+    """
     # random sample of N children
     # could be repeated, could be the real dyad 
     randoms = random.choices(
@@ -851,51 +786,66 @@ for parent in tqdm([sub for sub in sorted(epoch_df.keys()) if "p" in sub]):
     # we can count # of repeats from perm_df[parent]
     for child in list(set(randoms)):
         children.append(child)
-    
-    # old version that just does 1 random non-real child per parent
-#     children.append(
-#         random.choice([sub for sub in epoch_df.keys() if "c" in sub \
-#             and parent.replace("p", "") not in sub])) # random pick
+    """
     
     # loop over these 2 selected children (1 real, N random)
     for child in children:
         
         # and make them a location in the sync dictionary under this parent
         sync_df[parent][child] = {}
-        
+
         # for every block type (pre-play, puzzle, post-play)
         for block_num, block in enumerate(block_types):
-            
+
             # make this parent/child combo a location for this block type, also a dictionary
             sync_df[parent][child][block] = {}
-                
+                    
             # for each channel available with this subject (not dropped)
             for ch in epoch_df[parent].keys():
-
-                # our sync value is going to go here
-                # sync_df[parent][child][block][ch]
-                # i.e. averaging over the 4 block iterations
-
-                # so start keeping track of values to average now
-                pc_wcts = []
+                print(f"Channel {ch}")
 
                 # load in their epoched data for this subject / channel / block
-                p_epoch = epoch_df[parent][ch][block_num].load_data()
-                c_epoch = epoch_df[child][ch][block_num].load_data()
+                if ch in epoch_df[parent].keys() and ch in epoch_df[child].keys():
+                    if block_num < len(epoch_df[parent][ch]) and block_num < len(epoch_df[child][ch]):
+                        p_epoch = epoch_df[parent][ch][block_num].load_data()
+                        c_epoch = epoch_df[child][ch][block_num].load_data()
+                    else:
+                        print(f"No data in block {block_num}, skipping...")
+                        continue
+                else:
+                    print(f"No data in channel {ch} for {parent}-{child}")
+                    continue
+
+                # load in their epoched data for this subject / channel / block
+                if block_num < len(epoch_df[parent][ch]):
+                    p_epoch = epoch_df[parent][ch][block_num].load_data()
+                else:
+                    print(f"Skipping {parent} {block_num} {ch}")
+                    continue
+
+                if block_num < len(epoch_df[child][ch]):
+                    c_epoch = epoch_df[child][ch][block_num].load_data()
+                else:
+                    print(f"Skipping {child} {block_num} {ch}")
+                    continue
 
                 # for each iteration of this block (max 4)
                 for block_it in np.arange(0, np.min([
                     len(p_epoch),
                     len(c_epoch)])):
 
+                    sync_df[parent][child][block][ch] = []
+
+                    # so start keeping track of values to average now
+                    pc_wcts = []
+
                     # try to do the WCT with these epochs
                     try:
-                        sync_df[parent][child][block][f'Trial {block_it + 1}'] = {}
                         WCT, aWCT, coi, freqs, sig95 = mne_wavelet_coherence_transform(
                             p_epoch[block_it],
                             c_epoch[block_it],
                             plot=True if "S5_D3" in ch else False, # save plots but only for some random channel because otherwise it's an insane amount
-                            fig_fname=f"/data/perlman/moochie/analysis/eDOC_NARSAD/sync_figs/{parent}_{child}_{ch.replace(' ', '_')}_{block_num}_{block_it}.png")
+                            fig_fname=f"/storage1/fs1/perlmansusan/Active/moochie/analysis/P-CAT/sync_figs/{parent}_{child}_{ch.replace(' ', '_')}_{block_num}_{block_it}.png")
 
                         # make values outside COI = np.nan
                         nanWCT = WCT
@@ -908,7 +858,7 @@ for parent in tqdm([sub for sub in sorted(epoch_df.keys()) if "p" in sub]):
 
                         # TASK RELATED FREQUENCIES ARE ARBITRARILY DETERMINED here
                         # Remove frequencies not of interest
-                        mask = (freqs < 0.01) | (freqs > 0.03)
+                        mask = (freqs < 0.05) | (freqs > 0.15)
                         nanWCT[mask, :] = np.nan
 
                         # between periods of 2s and 13s (.08 -.5 Hz; flip for sec) which is based on Reindl et al 2018 paper (in Reindl study a single trial typcially took 5-8 sec)
@@ -917,34 +867,21 @@ for parent in tqdm([sub for sub in sorted(epoch_df.keys()) if "p" in sub]):
 
                         # average inside cone of influence
                         # and within values from freq range determined above
-                        sync_df[parent][child][block][f'Trial {block_it + 1}'][ch] = np.nanmean(nanWCT)
+                        average_wct = np.nanmean(nanWCT)
+                        #pc_wcts.append(average_wct)
+                        
+                        print(f"Channel {ch} - {average_wct}")
                     # if anything with the WCT fails, say so
                     except:
                         print(f"Fail @ parent {parent}, child {child}, block {block}, channel {ch}, block it {block_it}")
-#                 print(np.average(pc_wcts))  
+                    print(f"Average WCT: {average_wct}")  
 
-
-                
-
-
-sync_df['1110p']['1160c']['Block 2']['Trial 1'].keys()
-
-
-list(sync_df['1194p']['1194c']['Block 1']['Trial 1'].values())
-
+                    sync_df[parent][child][block][ch].append(np.average(pc_wcts))
 
 #important to set channels here
-channels = epoch_df[].keys()
-
-
-channels
-
-
-epoch_df['1176p']
-
+channels = epoch_df[parent].keys()
 
 # ATTENTION READ THE FOLLOWING COMMENT CAREFULLY BEFORE PROCEEDING (Stats test are being ran concerning study hypotheses, use a different notebook)
-
 
 # skip if you're going to load the already-saved ones. for real. don't overwrite this with an empty data file. 
 # SAVE SYNCHRONY VALUES
@@ -952,47 +889,49 @@ epoch_df['1176p']
 import json
 json_object = json.dumps(sync_df, indent=4)
 
-with open("/data/perlman/moochie/analysis/P-CAT/Test_Analysis/trail_wct_full_permuted_values_fixed.json", 'w') as outfile:
+with open("/storage1/fs1/perlmansusan/Active/moochie/analysis/P-CAT/Test_Analysis/trail_wct_full_permuted_values_fixed_sb.json", 'w') as outfile:
     json.dump(sync_df, outfile)
-    
     
 # also save as CSV
 import pandas as pd
 
-cols = ["Parent", "Child", "Block", "Trial"]
+cols = ["Parent", "Child", "Block", "Channel", "Trial"]
 for ch in channels:
     cols.append(ch)
     
-df = pd.DataFrame(columns=cols)    
+df = pd.DataFrame(columns=cols)
 
 for parent in sync_df.keys():
     
     for child in sync_df[parent].keys():
-        
+
         for block in sync_df[parent][child].keys():
-            
-            for trial in sync_df[parent][child][block].keys():
-            
-                dic = {
-                    'Parent': parent,
-                    'Child': child,
-                    'Block': block,
-                    'Trial': trial}
 
-                for key, val in sync_df[parent][child][block][trial].items():
-                    dic[key] = val
+            for ch, val in sync_df[parent][child][block].items():
 
-    #             print(dic)
-                df = df.append(dic, ignore_index=True)
-        
+                for block_it, sync_value in enumerate(sync_df[parent][child][block][ch]):
+
+                    dic = {
+                        'Parent': parent,
+                        'Child': child,
+                        'Block': block,
+                        'Trial': block_it,
+                    }
+
+                    for another_ch_var in sync_df[parent][child][block].items():
+                        dic[ch] = sync_df[parent][child][block][another_ch_var][block_it]
+                    
+                    df = pd.concat([df, pd.DataFrame([dic], columns=cols)], ignore_index=True)
+
+                break
+
 print(df)
-df.to_csv("/data/perlman/moochie/analysis/P-CAT/Test_Analysis/trial_wct_full_permuted_values_fixed.csv")
-
+df.to_csv("/storage1/fs1/perlmansusan/Active/moochie/analysis/P-CAT/Test_Analysis/trial_wct_full_permuted_values_fixed_sb.csv")
 
 # Save permuted values
 
 json_object = json.dumps(perm_df, indent=4)
-with open("/data/perlman/moochie/analysis/CARE/Test_Analysis/trial_permuted_subjects_fixed.json", 'w') as outfile:
+with open("/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/Test_Analysis/trial_permuted_subjects_fixed_sb.json", 'w') as outfile:
     json.dump(perm_df, outfile)
 
 
