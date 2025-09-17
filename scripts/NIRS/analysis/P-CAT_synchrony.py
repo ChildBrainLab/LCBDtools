@@ -772,8 +772,7 @@ for parent in tqdm([sub for sub in sorted(epoch_df.keys()) if "p" in sub]):
     children = [f"{parent[:4]}c"]
     
 #     children.append(parent.replace("p", "c")) # real child
-    
-    """
+
     # random sample of N children
     # could be repeated, could be the real dyad 
     randoms = random.choices(
@@ -786,7 +785,6 @@ for parent in tqdm([sub for sub in sorted(epoch_df.keys()) if "p" in sub]):
     # we can count # of repeats from perm_df[parent]
     for child in list(set(randoms)):
         children.append(child)
-    """
     
     # loop over these 2 selected children (1 real, N random)
     for child in children:
@@ -829,12 +827,14 @@ for parent in tqdm([sub for sub in sorted(epoch_df.keys()) if "p" in sub]):
                     print(f"Skipping {child} {block_num} {ch}")
                     continue
 
+                sync_df[parent][child][block][ch] = []
+
                 # for each iteration of this block (max 4)
                 for block_it in np.arange(0, np.min([
                     len(p_epoch),
                     len(c_epoch)])):
 
-                    sync_df[parent][child][block][ch] = []
+                    
 
                     # so start keeping track of values to average now
                     pc_wcts = []
@@ -876,10 +876,12 @@ for parent in tqdm([sub for sub in sorted(epoch_df.keys()) if "p" in sub]):
                         print(f"Fail @ parent {parent}, child {child}, block {block}, channel {ch}, block it {block_it}")
                     print(f"Average WCT: {average_wct}")  
 
-                    sync_df[parent][child][block][ch].append(np.average(pc_wcts))
+                    sync_df[parent][child][block][ch].append(np.average(average_wct))
 
 #important to set channels here
 channels = epoch_df[parent].keys()
+
+print(f"sync_df is: {sync_df}")
 
 # ATTENTION READ THE FOLLOWING COMMENT CAREFULLY BEFORE PROCEEDING (Stats test are being ran concerning study hypotheses, use a different notebook)
 
@@ -889,49 +891,51 @@ channels = epoch_df[parent].keys()
 import json
 json_object = json.dumps(sync_df, indent=4)
 
-with open("/storage1/fs1/perlmansusan/Active/moochie/analysis/P-CAT/Test_Analysis/trail_wct_full_permuted_values_fixed_sb.json", 'w') as outfile:
+with open("/storage1/fs1/perlmansusan/Active/moochie/analysis/P-CAT/Test_Analysis/trail_wct_full_permuted_values_fixed_nb.json", 'w') as outfile:
     json.dump(sync_df, outfile)
     
 # also save as CSV
 import pandas as pd
 
-cols = ["Parent", "Child", "Block", "Channel", "Trial"]
+cols = ["Parent", "Child", "Block", "Trial"]
 for ch in channels:
     cols.append(ch)
     
 df = pd.DataFrame(columns=cols)
 
 for parent in sync_df.keys():
-    
+
     for child in sync_df[parent].keys():
 
         for block in sync_df[parent][child].keys():
+            
+            # assume all channels have the same number of trials
+            n_trials = len(next(iter(sync_df[parent][child][block].values())))
+            
+            for block_it in range(n_trials):
+                # start dictionary with identifiers
+                dic = {
+                    'Parent': parent,
+                    'Child': child,
+                    'Block': block,
+                    'Trial': block_it
+                }
+                
+                # add all channel values for this trial
+                for ch, values in sync_df[parent][child][block].items():
+                    dic[ch] = values[block_it]
+                    if ch not in cols:
+                        cols.append(ch)
 
-            for ch, val in sync_df[parent][child][block].items():
-
-                for block_it, sync_value in enumerate(sync_df[parent][child][block][ch]):
-
-                    dic = {
-                        'Parent': parent,
-                        'Child': child,
-                        'Block': block,
-                        'Trial': block_it,
-                    }
-
-                    for another_ch_var in sync_df[parent][child][block].items():
-                        dic[ch] = sync_df[parent][child][block][another_ch_var][block_it]
-                    
-                    df = pd.concat([df, pd.DataFrame([dic], columns=cols)], ignore_index=True)
-
-                break
-
+                print(f"dic: {dic}")
+                df = pd.concat([df, pd.DataFrame([dic], columns=cols)], ignore_index=True)
 print(df)
-df.to_csv("/storage1/fs1/perlmansusan/Active/moochie/analysis/P-CAT/Test_Analysis/trial_wct_full_permuted_values_fixed_sb.csv")
+df.to_csv("/storage1/fs1/perlmansusan/Active/moochie/analysis/P-CAT/Test_Analysis/trial_wct_full_permuted_values_fixed_nb.csv")
 
 # Save permuted values
 
 json_object = json.dumps(perm_df, indent=4)
-with open("/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/Test_Analysis/trial_permuted_subjects_fixed_sb.json", 'w') as outfile:
+with open("/storage1/fs1/perlmansusan/Active/moochie/analysis/P-CAT/Test_Analysis/trial_permuted_subjects_fixed_nb.json", 'w') as outfile:
     json.dump(perm_df, outfile)
 
 

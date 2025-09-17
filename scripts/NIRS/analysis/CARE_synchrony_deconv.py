@@ -810,7 +810,7 @@ for parent in tqdm([sub for sub in sorted(epoch_df.keys()) if "p" in sub]):
                                     nanWCT[j, t] = np.nan
                         
                         # Remove frequencies not of interest
-                        nanWCT[(0.01 > freqs)|(freqs > 0.05), :] = np.nan
+                        nanWCT[(0.02 > freqs)|(freqs > 0.05), :] = np.nan
                         # WCT[(2>(1/freqs))|((1/freqs)>13), :] = np.nan ?? 
                         # ?? 0.012 Hz – 0.312 Hz Mention in Ngyuen et al. 2021 - https://doi.org/10.1016/j.neuroimage.2021.118599
                         # Proximity and touch are associated with neural but not physiological synchrony in naturalistic mother-infant interactions
@@ -855,9 +855,9 @@ for parent in sync_df.keys():
             df = pd.concat([df, pd.DataFrame(dic, columns=cols)], ignore_index=True)
 
 print("Saving!")
-df.to_csv("/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/Test_Analysis/wct_full_ses-0_permuted_values_deconv_fix.csv")
+df.to_csv("/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/Test_Analysis/wct_full_ses-0_permuted_values_deconv_neurogenic.csv")
 print("Saved!")
 
 json_object = json.dumps(perm_df, indent=4)
-with open("/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/Test_Analysis/permuted_subjects_ses-0_deconv_new.json", 'w') as outfile:
+with open("/storage1/fs1/perlmansusan/Active/moochie/analysis/CARE/Test_Analysis/permuted_subjects_ses-0_deconv_neurogenic.json", 'w') as outfile:
     json.dump(perm_df, outfile)
