@@ -858,7 +858,7 @@ for parent in tqdm([sub for sub in sorted(epoch_df.keys()) if "p" in sub]):
 
                         # TASK RELATED FREQUENCIES ARE ARBITRARILY DETERMINED here
                         # Remove frequencies not of interest
-                        mask = (freqs < 0.05) | (freqs > 0.15)
+                        mask = (freqs < 0.0095) | (freqs > 0.2)
                         nanWCT[mask, :] = np.nan
 
                         # between periods of 2s and 13s (.08 -.5 Hz; flip for sec) which is based on Reindl et al 2018 paper (in Reindl study a single trial typcially took 5-8 sec)
@@ -891,7 +891,7 @@ print(f"sync_df is: {sync_df}")
 import json
 json_object = json.dumps(sync_df, indent=4)
 
-with open("/storage1/fs1/perlmansusan/Active/moochie/analysis/P-CAT/Test_Analysis/trail_wct_full_permuted_values_fixed_nb.json", 'w') as outfile:
+with open("/storage1/fs1/perlmansusan/Active/moochie/analysis/P-CAT/Test_Analysis/trail_wct_full_permuted_values_fixed_ob.json", 'w') as outfile:
     json.dump(sync_df, outfile)
     
 # also save as CSV
@@ -904,16 +904,17 @@ for ch in channels:
 df = pd.DataFrame(columns=cols)
 
 for parent in sync_df.keys():
-
     for child in sync_df[parent].keys():
-
         for block in sync_df[parent][child].keys():
             
+            block_dict = sync_df[parent][child][block]
+            if not block_dict:  # skip if empty
+                continue
+            
             # assume all channels have the same number of trials
-            n_trials = len(next(iter(sync_df[parent][child][block].values())))
+            n_trials = len(next(iter(block_dict.values())))
             
             for block_it in range(n_trials):
-                # start dictionary with identifiers
                 dic = {
                     'Parent': parent,
                     'Child': child,
@@ -921,8 +922,7 @@ for parent in sync_df.keys():
                     'Trial': block_it
                 }
                 
-                # add all channel values for this trial
-                for ch, values in sync_df[parent][child][block].items():
+                for ch, values in block_dict.items():
                     dic[ch] = values[block_it]
                     if ch not in cols:
                         cols.append(ch)
@@ -930,12 +930,12 @@ for parent in sync_df.keys():
                 print(f"dic: {dic}")
                 df = pd.concat([df, pd.DataFrame([dic], columns=cols)], ignore_index=True)
 print(df)
-df.to_csv("/storage1/fs1/perlmansusan/Active/moochie/analysis/P-CAT/Test_Analysis/trial_wct_full_permuted_values_fixed_nb.csv")
+df.to_csv("/storage1/fs1/perlmansusan/Active/moochie/analysis/P-CAT/Test_Analysis/trial_wct_full_permuted_values_fixed_ob.csv")
 
 # Save permuted values
 
 json_object = json.dumps(perm_df, indent=4)
-with open("/storage1/fs1/perlmansusan/Active/moochie/analysis/P-CAT/Test_Analysis/trial_permuted_subjects_fixed_nb.json", 'w') as outfile:
+with open("/storage1/fs1/perlmansusan/Active/moochie/analysis/P-CAT/Test_Analysis/trial_permuted_subjects_fixed_ob.json", 'w') as outfile:
     json.dump(perm_df, outfile)
 
 
