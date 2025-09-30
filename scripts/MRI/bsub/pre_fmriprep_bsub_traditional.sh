@@ -5,6 +5,7 @@
 
 # Grab passed in subject
 export SUBJECT=$1
+export SESSION=$2
 
 # Define storage allocations areas of interest
 export STORAGE_ALLOCATION=/storage1/fs1/perlmansusan/Active/
@@ -102,6 +103,6 @@ export HOME="/scratch1/fs1/perlmansusan"
 
 # -------- Call to bsub to run the bsub file ------------ #
 
-bsub -J $SUBJECT-fmriprep-traditional -oo logs/fmriprep/$SUBJECT-fmriprep-traditional.log -g /$USER/preprocessing < fmriprep_bsub_traditional.sh
+bsub -J $SUBJECT-$SESSION-fmriprep-traditional -oo logs/fmriprep/$SUBJECT-$SESSION-fmriprep-traditional.log -g /$USER/preprocessing < fmriprep_bsub_traditional.sh
 
 
